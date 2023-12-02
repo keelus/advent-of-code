@@ -1,9 +1,8 @@
 package main
 
 import (
-	"bufio"
+	"advent-of-code-23/common"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -98,18 +97,8 @@ func parseGames(lines []string) (int, int) {
 }
 
 func main() {
-	file, err := os.Open("./input")
-	if err != nil {
-		log.Fatal("Error reading the input file")
-	}
+	lines := common.GetInputByLines()
 
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	lines := []string{}
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
 	sum, sumOfPowers := parseGames(lines)
 	log.Printf("[Part 1] Possible game sum: %d", sum)
 	log.Printf("[Part 2] Games power sum: %d", sumOfPowers)

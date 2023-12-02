@@ -1,10 +1,9 @@
 package main
 
 import (
-	"bufio"
+	"advent-of-code-23/common"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 )
 
@@ -76,18 +75,7 @@ func getCalibrationSum(lines []string, parseSpelled bool) int {
 }
 
 func main() {
-	file, err := os.Open("./input")
-	if err != nil {
-		log.Fatal("Error reading the input file")
-	}
-
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-
-	lines := []string{}
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
+	lines := common.GetInputByLines()
 
 	fmt.Printf("[Part 1] Total calibration sum: %d\n", getCalibrationSum(lines, false))
 	fmt.Printf("[Part 2] Total calibration sum: %d\n", getCalibrationSum(lines, true))
