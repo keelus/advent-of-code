@@ -75,7 +75,7 @@ func getCalibrationSum(lines []string, parseSpelled bool) int {
 }
 
 func main() {
-	lines := common.GetInputByLines()
+	lines := common.GetInputByLines("")
 
 	fmt.Printf("[Part 1] Total calibration sum: %d\n", getCalibrationSum(lines, false))
 	fmt.Printf("[Part 2] Total calibration sum: %d\n", getCalibrationSum(lines, true))

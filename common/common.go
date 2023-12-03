@@ -2,6 +2,7 @@ package common
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 )
@@ -15,8 +16,8 @@ func GetInput() string {
 	return string(bContent)
 }
 
-func GetInputByLines() []string {
-	file, err := os.Open("./input")
+func GetInputByLines(suffix string) []string {
+	file, err := os.Open(fmt.Sprintf("./input%s", suffix))
 	if err != nil {
 		log.Fatal("Error reading the input file")
 	}

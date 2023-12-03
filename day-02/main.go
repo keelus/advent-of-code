@@ -97,7 +97,7 @@ func parseGames(lines []string) (int, int) {
 }
 
 func main() {
-	lines := common.GetInputByLines()
+	lines := common.GetInputByLines("")
 
 	sum, sumOfPowers := parseGames(lines)
 	log.Printf("[Part 1] Possible game sum: %d", sum)
