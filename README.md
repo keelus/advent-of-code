@@ -8,7 +8,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 1](day-01)  | ⭐️ ⭐️ | 57346 | 57345 |
 | [Day 2](day-02)  | ⭐️ ⭐️ | 2377 | 71220 |
 | [Day 3](day-03)  | ⭐️ ⭐️ | 537732 | 84883664 |
-| [Day 4](day-04)  |  |  |  |
+| [Day 4](day-04)  | ⭐️ ⭐️ | 22674 | 5747443 |
 | [Day 5](day-05)  |  |  |  |
 | [Day 6](day-06)  |  |  |  |
 | [Day 7](day-07)  |  |  |  |
