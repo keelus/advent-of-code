@@ -3,30 +3,21 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 
 > The solutions are based in my AoC inputs. Yours could be different.
 
-| Puzzle | Stars completed | Solution 1 | Solution 2 |
-|--------|-----------------|------------|------------|
-| [Day 1](day-01)  | ⭐️ ⭐️ | 57346 | 57345 |
-| [Day 2](day-02)  | ⭐️ ⭐️ | 2377 | 71220 |
-| [Day 3](day-03)  | ⭐️ ⭐️ | 537732 | 84883664 |
-| [Day 4](day-04)  | ⭐️ ⭐️ | 22674 | 5747443 |
-| [Day 5](day-05)  | ⭐️ ⭐️ | 346433842 | 60294664 |
-| [Day 6](day-06)  |  |  |  |
-| [Day 7](day-07)  |  |  |  |
-| [Day 8](day-08)  |  |  |  |
-| [Day 9](day-09)  |  |  |  |
-| [Day 10](day-10) |  |  |  |
-| [Day 11](day-11) |  |  |  |
-| [Day 12](day-12) |  |  |  |
-| [Day 13](day-13) |  |  |  |
-| [Day 14](day-14) |  |  |  |
-| [Day 15](day-15) |  |  |  |
-| [Day 16](day-16) |  |  |  |
-| [Day 17](day-17) |  |  |  |
-| [Day 18](day-18) |  |  |  |
-| [Day 19](day-19) |  |  |  |
-| [Day 20](day-20) |  |  |  |
-| [Day 21](day-21) |  |  |  |
-| [Day 22](day-22) |  |  |  |
-| [Day 23](day-23) |  |  |  |
-| [Day 24](day-24) |  |  |  |
-| [Day 25](day-25) |  |  |  |
+### Days, stars and solutions 
+| Day                                                       | #1 | #1 Solution | #2 | #2 Solution |
+|-----------------------------------------------------------|----|-------------|----|-------------|
+| [Day 1: Trebuchet?!](day-01/main.go)                      | ⭐ | 57346      | ⭐ | 57345       |
+| [Day 2: Cube Conundrum](day-02/main.go)                   | ⭐ | 2377       | ⭐ | 71220       |
+| [Day 3: Gear Ratios](day-03/main.go)                     	| ⭐ | 537732     | ⭐ | 84883664    |
+| [Day 4: Scratchcards](day-04/main.go)                    	| ⭐ | 22674      | ⭐ | 5747443     |
+| [Day 5: If You Give A Seed A Fertilizer](day-05/main.go)  | ⭐ | 346433842  | ⭐ | 60294664    |
+
+### Performance
+| Day                                    | Setup runtime | #1 Runtime | #2 Runtime |
+|----------------------------------------|---------------|------------|------------|
+| Day 1: Trebuchet?!                     | -             | -          | -          |
+| Day 2: Cube Conundrum                  | -             | -          | -          |
+| Day 3: Gear Ratios                     | -             | -          | -          |
+| Day 4: Scratchcards                    | -             | -          | -          |
+| Day 5: If You Give A Seed A Fertilizer | -             | -          | -          |
+> The runtimes include the parsing of the given input but do not include the input file read time.
