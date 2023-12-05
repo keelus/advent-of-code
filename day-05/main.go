@@ -60,6 +60,7 @@ func parseAlmanac(lines []string) almanac.Almanac {
 func main() {
 	lines := common.GetInputByLines("")
 
-	almanacPart1 := parseAlmanac(lines)
-	log.Printf("[Part 1] Lowest nearest location: %d", almanacPart1.GetLowestNearestLocation())
+	almanacPart := parseAlmanac(lines)
+	log.Printf("[Part 1] Lowest nearest location: %d", almanacPart.GetLowestNearestLocationPart1())
+	log.Printf("[Part 2] Lowest nearest location: %d", almanacPart.GetLowestNearestLocationPart2())
 }
