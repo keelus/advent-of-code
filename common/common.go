@@ -7,19 +7,17 @@ import (
 	"os"
 )
 
-func GetInput() string {
-	bContent, err := os.ReadFile("./input")
-	if err != nil {
-		log.Fatal("Error reading the input file")
-	}
+type Day struct{}
 
-	return string(bContent)
-}
-
-func GetInputByLines(suffix string) []string {
-	file, err := os.Open(fmt.Sprintf("./input%s", suffix))
+func GetInputByLines(suffix string, day int) []string {
+	inputPath := fmt.Sprintf("./day%02d/_input/%s", day, suffix)
+	file, err := os.Open(inputPath)
 	if err != nil {
-		log.Fatal("Error reading the input file")
+		if os.IsNotExist(err) {
+			log.Fatalf("Input file '%s' not found.", inputPath)
+		} else {
+			log.Fatal("Unexpected error happened while reading the input file")
+		}
 	}
 	defer file.Close()
 
