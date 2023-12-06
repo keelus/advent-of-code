@@ -22,15 +22,16 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 210.81s    |
 
 ## Run it yourself
-Both the run and test executions will use the input file that is located on each day's folder.
 ### Run a day 
 While being at the root directory:
-```bash
-go run . -day=X #Replace X with the day you want to execute [1-25]
 ```
+go run . [-day=<1-25>] [-input=<file_name>]
+```
+> -day=<1-25> (default:`1`) Specify the day to execute the puzzle `(1-25)`
 
+> -input=<file_name> (default:`input`) Specify the puzzle input file (located at `dayXX/.input/<file_name>`)
 ### Bench a day
 While being at the root directory:
-```bash
-go test . -bench -day=X
+```
+go test . -bench [-day=<1-25>] [-input=<file_name>]
 ```
