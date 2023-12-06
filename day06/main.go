@@ -65,8 +65,8 @@ func (d Day) SolvePart2(timesAndRecordsI interface{}) int {
 // W: Record
 func getWinWays(T int, R int) int {
 	shared := float64((T*T - 4*R))
-	timePressedMin := int(math.Floor(math.Abs((-float64(T) + math.Sqrt(shared)) / 2)))
-	timePressedMax := int(math.Ceil(math.Abs((-float64(T) - math.Sqrt(shared)) / 2)))
+	timePressedMin := int(math.Floor((-float64(T)+math.Sqrt(shared))/-2)) + 1
+	timePressedMax := int(math.Ceil((-float64(T)-math.Sqrt(shared))/-2)) - 1
 
-	return (timePressedMax - timePressedMin) - 1
+	return (timePressedMax - timePressedMin) + 1
 }
