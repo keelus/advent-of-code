@@ -2,6 +2,7 @@ package day06
 
 import (
 	"log"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -49,16 +50,7 @@ func (d Day) SolvePart1(timesAndRecordsI interface{}) int {
 	timesAndRecords := timesAndRecordsI.(ParseResult).Part1Parse
 	waysToWin := 1
 	for i, raceTime := range timesAndRecords[0] {
-		winFoundAt := -1
-		for j := 0; j <= raceTime/2; j++ {
-			distance := j * (raceTime - j)
-			if distance > timesAndRecords[1][i] {
-				winFoundAt = j
-				break
-			}
-		}
-
-		waysToWin *= raceTime - winFoundAt*2 + 1
+		waysToWin *= getWinWays(raceTime, timesAndRecords[1][i])
 	}
 
 	return waysToWin
@@ -66,15 +58,15 @@ func (d Day) SolvePart1(timesAndRecordsI interface{}) int {
 
 func (d Day) SolvePart2(timesAndRecordsI interface{}) int {
 	timeAndRecord := timesAndRecordsI.(ParseResult).Part2Parse
-	raceTime := timeAndRecord[0]
+	return getWinWays(timeAndRecord[0], timeAndRecord[1])
+}
 
-	winFoundAt := -1
-	for i := 0; i <= raceTime/2; i++ {
-		distance := i * (raceTime - i)
-		if distance > timeAndRecord[1] {
-			winFoundAt = i
-			break
-		}
-	}
-	return raceTime - winFoundAt*2 + 1
+// T: Time of the race
+// W: Record
+func getWinWays(T int, R int) int {
+	shared := float64((T*T - 4*R))
+	timePressedMin := int(math.Floor(math.Abs((-float64(T) + math.Sqrt(shared)) / 2)))
+	timePressedMax := int(math.Ceil(math.Abs((-float64(T) - math.Sqrt(shared)) / 2)))
+
+	return (timePressedMax - timePressedMin) - 1
 }

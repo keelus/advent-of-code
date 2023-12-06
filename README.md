@@ -21,7 +21,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 3: Gear Ratios                     | 29.14ns     | 2.62ms     | 3.49ms     |
 | Day 4: Scratchcards                    | 338.38μs    | 45.84μs    | 357.59μs   |
 | Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 210.81s    |
-| Day 6: Wait For It                     | 592.9ns     | 82.58ns    | 4.9ms      |
+| Day 6: Wait For It                     | 611.1ns     | 25.89ns    | 7.31ns     |
 
 ## Run it yourself
 ### Run a day 
