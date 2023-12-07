@@ -23,7 +23,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 4: Scratchcards                    | 338.38μs    | 45.84μs    | 357.59μs   |
 | Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 68.33s     |
 | Day 6: Wait For It                     | 611.1ns     | 25.89ns    | 7.31ns     |
-| Day 7: Camel Cards                     | 74.9μs      | 5.44ms     | 5.22ms     |
+| Day 7: Camel Cards                     | 65.29μs     | 251.90μs   | 240.13μs   |
 
 ## Run it yourself
 ### Run a day 

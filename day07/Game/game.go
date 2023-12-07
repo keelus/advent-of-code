@@ -3,6 +3,7 @@ package game
 import (
 	hand "advent-of-code-23/day07/Hand"
 	"fmt"
+	"sort"
 )
 
 type Game struct {
@@ -18,14 +19,9 @@ func (g *Game) Print() {
 }
 
 func (g *Game) SortByRank(part1 bool) {
-	for i := 0; i < len(g.Hands); i++ {
-		for j := i; j < len(g.Hands); j++ {
-			comp := g.Hands[i].CompareTo(g.Hands[j], part1)
-			if comp == 1 { // Sort from higher rank (1) to lower rank(n)
-				g.Hands[i], g.Hands[j] = g.Hands[j], g.Hands[i]
-			}
-		}
-	}
+	sort.Slice(g.Hands, func(i, j int) bool {
+		return g.Hands[j].CompareTo(g.Hands[i], part1) == 1
+	})
 }
 
 func (g *Game) GetWinnings() int {

@@ -13,20 +13,18 @@ type Day struct{}
 
 func (d Day) GetInput(lines []string) interface{} {
 	game := game.Game{}
-	for _, line := range lines {
-		newHand := hand.Hand{}
+	game.Hands = make([]hand.Hand, len(lines))
+	for i, line := range lines {
+		newHand := &game.Hands[i]
 		parts := strings.Fields(line)
 		for i, c := range parts[0] {
 			newHand.Cards[i] = card.Card{Letter: c}
 		}
 
-		bid, err := strconv.Atoi(parts[1])
-		if err != nil {
+		var err error
+		if newHand.Bid, err = strconv.Atoi(parts[1]); err != nil {
 			log.Fatalf("Error while parsing the integer '%s'", parts[1])
 		}
-		newHand.Bid = bid
-
-		game.Hands = append(game.Hands, newHand)
 	}
 
 	return game
