@@ -13,43 +13,39 @@ func getLineCard(line string) card.Card {
 	parts := strings.Split(line, ": ")
 
 	sId := strings.ReplaceAll(parts[0], "Card", "")
-	id, err := strconv.ParseInt(strings.TrimSpace(sId), 10, 64)
+	id, err := strconv.Atoi(strings.TrimSpace(sId))
 	if err != nil {
 		log.Fatalf("There was an error parsing the integer '%s'", sId)
 	}
 
 	numberParts := strings.Split(parts[1], " | ")
-	sWinningNumbers := strings.Split(strings.TrimSpace(numberParts[0]), " ")
-	sNumbers := strings.Split(strings.TrimSpace(numberParts[1]), " ")
+	sWinningNumbers := strings.Fields(numberParts[0])
+	sNumbers := strings.Fields(numberParts[1])
 
 	stringSliceToInt := func(sSlice []string) []int {
-		integerSlice := make([]int, 0)
-		for _, sElement := range sSlice {
-			if strings.TrimSpace(sElement) == "" {
-				continue
-			}
-			element, err := strconv.ParseInt(sElement, 10, 64)
+		integerSlice := make([]int, len(sSlice))
+		for i, sElement := range sSlice {
+			element, err := strconv.Atoi(sElement)
 			if err != nil {
 				log.Fatalf("There was an error parsing a number of the slice to integer '%s'", sElement)
 			}
-			integerSlice = append(integerSlice, int(element))
+			integerSlice[i] = element
 		}
 		return integerSlice
 	}
 
 	return card.Card{
-		CardID:         int(id),
+		CardID:         id,
 		Numbers:        stringSliceToInt(sWinningNumbers),
 		WinningNumbers: stringSliceToInt(sNumbers),
 	}
 }
 
 func (d Day) GetInput(lines []string) interface{} {
-	cards := make([]card.Card, 0)
-	for _, line := range lines {
+	cards := make([]card.Card, len(lines))
+	for i, line := range lines {
 		card := getLineCard(line)
-		cards = append(cards, card)
-
+		cards[i] = card
 	}
 
 	return cards
@@ -68,19 +64,18 @@ func (d Day) SolvePart2(cardsI interface{}) int {
 	cards := cardsI.([]card.Card)
 	wonCardAmounts := make([]int, len(cards))
 
+	sum := 0
 	for i := len(cards) - 1; i >= 0; i-- {
 		wonCards := cards[i].GetWonCards()
 
-		wonCardAmounts[i] = len(wonCards) // Save how many cars this card wins
+		wonCardAmounts[i] = len(wonCards) // Save how many cards this card wins
 
 		for _, j := range wonCards {
 			wonCardAmounts[i] += wonCardAmounts[j-1] // Add how many cards each won card wins
 		}
+
+		sum += wonCardAmounts[i]
 	}
 
-	sum := 0
-	for _, val := range wonCardAmounts {
-		sum += val + 1 // The card's won card amount + the card itself
-	}
-	return sum
+	return sum + len(cards) // Also sum the original cards
 }
