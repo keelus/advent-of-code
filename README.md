@@ -18,7 +18,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day                                    | Input parse | #1 Runtime | #2 Runtime |
 |----------------------------------------|-------------|------------|------------|
 | Day 1: Trebuchet?!                     | 31.72ns     | 177.83μs   | 745.05μs   |
-| Day 2: Cube Conundrum                  | 338.17μs    | 4.93μs     | 76.74ns    |
+| Day 2: Cube Conundrum                  | 198.08μs    | 4.93μs     | 76.74ns    |
 | Day 3: Gear Ratios                     | 29.14ns     | 2.62ms     | 3.49ms     |
 | Day 4: Scratchcards                    | 181.83μs    | 45.84μs    | 357.59μs   |
 | Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 68.33s     |

@@ -41,39 +41,44 @@ func (game Game) isPossible() bool {
 func parseGame(gameStr string) Game {
 	gameParts := strings.Split(strings.ReplaceAll(gameStr, " ", ""), ":")
 
-	sGameId := strings.Replace(gameParts[0], "Game", "", 1)
-	gameId, err := strconv.ParseInt(sGameId, 10, 64)
+	sGameId := strings.TrimPrefix(gameParts[0], "Game")
+	gameId, err := strconv.Atoi(sGameId)
 	if err != nil {
-		log.Fatalf("Erro while parsing the game id to integer '%s'", sGameId)
+		log.Fatalf("Error while parsing the game id to integer '%s'", sGameId)
 	}
 
-	game := Game{ID: int(gameId), Sets: make([]CubeSet, 0)}
 	minCubes := map[string]int{"red": 0, "green": 0, "blue": 0}
 
-	for _, sets := range strings.Split(gameParts[1], ";") {
-		cubeSet := CubeSet{Cubes: make([]Cube, 0)}
-		for _, sCube := range strings.Split(sets, ",") {
-			color := ""
+	sCubeSets := strings.Split(gameParts[1], ";")
+
+	game := Game{ID: gameId, Sets: make([]CubeSet, len(sCubeSets))}
+
+	for i, sets := range sCubeSets {
+		sCubes := strings.Split(sets, ",")
+		cubeSet := CubeSet{Cubes: make([]Cube, len(sCubes))}
+		for j, sCube := range sCubes {
+			var color string
 			for _, aColor := range COLORS {
 				if strings.Contains(sCube, aColor) {
 					color = aColor
+					break
 				}
 			}
 
-			sAmount := strings.Replace(sCube, color, "", 1)
-			amount, err := strconv.ParseInt(sAmount, 10, 64)
+			sAmount := strings.TrimRight(sCube, color)
+			amount, err := strconv.Atoi(sAmount)
 			if err != nil {
 				log.Fatalf("Erro while parsing the cube amount integer '%s'", sAmount)
 			}
 
-			if int(amount) > minCubes[color] {
-				minCubes[color] = int(amount)
+			if amount > minCubes[color] {
+				minCubes[color] = amount
 			}
 
-			cube := Cube{Color: color, Amount: int(amount)}
-			cubeSet.Cubes = append(cubeSet.Cubes, cube)
+			cube := Cube{Color: color, Amount: amount}
+			cubeSet.Cubes[j] = cube
 		}
-		game.Sets = append(game.Sets, cubeSet)
+		game.Sets[i] = cubeSet
 	}
 
 	game.Power = 1
@@ -98,10 +103,10 @@ func parseGames(lines []string) (int, int) {
 }
 
 func (d Day) GetInput(lines []string) interface{} {
-	games := make([]Game, 0)
-	for _, line := range lines {
+	games := make([]Game, len(lines))
+	for i, line := range lines {
 		game := parseGame(line)
-		games = append(games, game)
+		games[i] = game
 	}
 	return games
 }
