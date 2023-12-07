@@ -12,6 +12,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 4: Scratchcards](day-04/main.go)                    	| ⭐ | 22674      | ⭐ | 5747443     |
 | [Day 5: If You Give A Seed A Fertilizer](day-05/main.go)  | ⭐ | 346433842  | ⭐ | 60294664    |
 | [Day 6: Wait For It](day-06/main.go)                      | ⭐ | 2374848    | ⭐ | 39132886    |
+| [Day 7: Camel Cards](day-07/main.go)                      | ⭐ | 252295678  | ⭐ | 250577259   |
 
 ### Performance
 | Day                                    | Input parse | #1 Runtime | #2 Runtime |
@@ -20,8 +21,9 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 2: Cube Conundrum                  | 338.17μs    | 4.93μs     | 76.74ns    |
 | Day 3: Gear Ratios                     | 29.14ns     | 2.62ms     | 3.49ms     |
 | Day 4: Scratchcards                    | 338.38μs    | 45.84μs    | 357.59μs   |
-| Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 68.33s    |
+| Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 68.33s     |
 | Day 6: Wait For It                     | 611.1ns     | 25.89ns    | 7.31ns     |
+| Day 7: Camel Cards                     | 74.9μs      | 5.44ms     | 5.22ms     |
 
 ## Run it yourself
 ### Run a day 
