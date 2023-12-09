@@ -6,14 +6,15 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 ### Days, stars and solutions 
 | Day                                                       | #1 | #1 Solution | #2 | #2 Solution    |
 |-----------------------------------------------------------|----|-------------|----|----------------|
-| [Day 1: Trebuchet?!](day-01/main.go)                      | ⭐ | 57346      | ⭐ | 57345          |
-| [Day 2: Cube Conundrum](day-02/main.go)                   | ⭐ | 2377       | ⭐ | 71220          |
-| [Day 3: Gear Ratios](day-03/main.go)                     	| ⭐ | 537732     | ⭐ | 84883664       |
-| [Day 4: Scratchcards](day-04/main.go)                    	| ⭐ | 22674      | ⭐ | 5747443        |
-| [Day 5: If You Give A Seed A Fertilizer](day-05/main.go)  | ⭐ | 346433842  | ⭐ | 60294664       |
-| [Day 6: Wait For It](day-06/main.go)                      | ⭐ | 2374848    | ⭐ | 39132886       |
-| [Day 7: Camel Cards](day-07/main.go)                      | ⭐ | 252295678  | ⭐ | 250577259      |
-| [Day 8: Haunted Wasteland](day-08/main.go)                | ⭐ | 18023      | ⭐ | 14449445933179 |
+| [Day 1: Trebuchet?!](day01/main.go)                       | ⭐ | 57346      | ⭐ | 57345          |
+| [Day 2: Cube Conundrum](day02/main.go)                    | ⭐ | 2377       | ⭐ | 71220          |
+| [Day 3: Gear Ratios](day03/main.go)                       | ⭐ | 537732     | ⭐ | 84883664       |
+| [Day 4: Scratchcards](day04/main.go)                      | ⭐ | 22674      | ⭐ | 5747443        |
+| [Day 5: If You Give A Seed A Fertilizer](day05/main.go)   | ⭐ | 346433842  | ⭐ | 60294664       |
+| [Day 6: Wait For It](day06/main.go)                       | ⭐ | 2374848    | ⭐ | 39132886       |
+| [Day 7: Camel Cards](day07/main.go)                       | ⭐ | 252295678  | ⭐ | 250577259      |
+| [Day 8: Haunted Wasteland](day08/main.go)                 | ⭐ | 18023      | ⭐ | 14449445933179 |
+| [Day 9: Mirage Maintenance](day09/main.go)                | ⭐ | 1955513104 | ⭐ | 1131           |
 
 ### Performance
 | Day                                    | Input parse | #1 Runtime | #2 Runtime |
@@ -26,6 +27,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 6: Wait For It                     | 611.1ns     | 25.89ns    | 7.31ns     |
 | Day 7: Camel Cards                     | 65.29μs     | 251.90μs   | 240.13μs   |
 | Day 8: Haunted Wasteland               | 63.53μs     | 23.87μs    | 469.90μs   |
+| Day 9: Mirage Maintenance              | 105.56μs    | 152.22μs   | 158.92μs   |
 
 ## Run it yourself
 ### Run a day 
