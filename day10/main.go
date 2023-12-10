@@ -167,15 +167,20 @@ func (d Day) GetInput(lines []string) interface{} {
 	}
 	currentNode.Next = beginNode // Close last node with starting node
 
-	return beginNode
+	return ParsedInput{BeginNode: beginNode, PipeMap: pipeMap}
 }
 
-func (d Day) SolvePart1(beginNodeI interface{}) int {
-	beginNode := beginNodeI.(*Node)
+type ParsedInput struct {
+	BeginNode *Node
+	PipeMap   [][]rune
+}
+
+func (d Day) SolvePart1(parsedInputI interface{}) int {
+	beginNode := parsedInputI.(ParsedInput).BeginNode
 
 	currentNode := beginNode
-	cicleSteps := 0 // Counting the S
-	for !(currentNode == beginNode && cicleSteps > 0) {
+	cicleSteps := 1 // Count the S
+	for currentNode.Next != beginNode {
 		currentNode = currentNode.Next
 		cicleSteps++
 	}
@@ -183,6 +188,51 @@ func (d Day) SolvePart1(beginNodeI interface{}) int {
 	return cicleSteps / 2
 }
 
-func (d Day) SolvePart2(mapParseI interface{}) int {
-	return -1
+func isPartOfTheCycle(beginNode *Node, i, j int) bool {
+	currentNode := beginNode
+	began := false
+	for !(currentNode == beginNode && began) {
+		began = true
+		if currentNode.Pos[0] == i && currentNode.Pos[1] == j {
+			return true
+		}
+		currentNode = currentNode.Next
+	}
+	return false
+}
+
+func isPointInside(beginNode *Node, y, x int) bool {
+	count := 0
+
+	currentNode := beginNode
+	for currentNode.Next != beginNode {
+		p1 := currentNode.Pos
+		p2 := currentNode.Next.Pos
+
+		x1, y1 := p1[1], p1[0]
+		x2, y2 := p2[1], p2[0]
+
+		if (y < y1) != (y < y2) && x < x1+((y-y1)/(y2-y1))*(x2-x1) {
+			count++
+		}
+
+		currentNode = currentNode.Next
+	}
+
+	return count%2 == 1
+}
+
+func (d Day) SolvePart2(parsedInputI interface{}) int {
+	parsedInput := parsedInputI.(ParsedInput)
+
+	count := 0
+	for i := 0; i < len(parsedInput.PipeMap); i++ {
+		for j := 0; j < len(parsedInput.PipeMap[i]); j++ {
+			if !isPartOfTheCycle(parsedInput.BeginNode, i, j) && isPointInside(parsedInput.BeginNode, i, j) {
+				count++
+			}
+		}
+	}
+
+	return count
 }
