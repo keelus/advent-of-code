@@ -15,6 +15,9 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 7: Camel Cards](day07/main.go)                       | ⭐ | 252295678  | ⭐ | 250577259      |
 | [Day 8: Haunted Wasteland](day08/main.go)                 | ⭐ | 18023      | ⭐ | 14449445933179 |
 | [Day 9: Mirage Maintenance](day09/main.go)                | ⭐ | 1955513104 | ⭐ | 1131           |
+| [Day 10: Pipe Maze](day10/main.go)                        | ⭐ | 6682       |     | -              |
+
+
 
 ### Performance
 | Day                                    | Input parse | #1 Runtime | #2 Runtime |
@@ -28,6 +31,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 7: Camel Cards                     | 65.29μs     | 251.90μs   | 240.13μs   |
 | Day 8: Haunted Wasteland               | 63.53μs     | 23.87μs    | 469.90μs   |
 | Day 9: Mirage Maintenance              | 105.56μs    | 152.22μs   | 158.92μs   |
+| Day 10: Pipe Maze                      | 3758.61μs   | 19.42μs    | -          |
 
 ## Run it yourself
 ### Run a day 
