@@ -32,8 +32,8 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 7: Camel Cards                     | 65.29μs     | 251.90μs   | 240.13μs   |
 | Day 8: Haunted Wasteland               | 63.53μs     | 23.87μs    | 469.90μs   |
 | Day 9: Mirage Maintenance              | 105.56μs    | 152.22μs   | 158.92μs   |
-| Day 10: Pipe Maze                      | 3758.61μs   | 19.42μs    | 458.23ms   |
-| Day 11: Cosmic Expansion               | 785.06μs    | 3.96m      | 3.97m      |
+| Day 10: Pipe Maze                      | 3.76ms      | 19.42μs    | 458.23ms   |
+| Day 11: Cosmic Expansion               | 64.26μs     | 2.56ms     | 2.57ms     |
 
 ## Run it yourself
 ### Run a day 
