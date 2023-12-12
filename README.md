@@ -17,6 +17,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 9: Mirage Maintenance](day09/main.go)                | ⭐ | 1955513104 | ⭐ | 1131           |
 | [Day 10: Pipe Maze](day10/main.go)                        | ⭐ | 6682       | ⭐ | 353            |
 | [Day 11: Cosmic Expansion](day11/main.go)                 | ⭐ | 9556896    | ⭐ | 685038186836   |
+| [Day 12: Hot Springs](day12/main.go)                      | ⭐ | 7084       |    |                 |
 
 
 
@@ -34,6 +35,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 9: Mirage Maintenance              | 105.56μs    | 152.22μs   | 158.92μs   |
 | Day 10: Pipe Maze                      | 3.76ms      | 19.42μs    | 458.23ms   |
 | Day 11: Cosmic Expansion               | 64.26μs     | 2.56ms     | 2.57ms     |
+| Day 12: Hot Springs                    | 198.19μs    | 2.57s      | -          |
 
 ## Run it yourself
 ### Run a day 
