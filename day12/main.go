@@ -39,7 +39,7 @@ func (d Day) GetInput(lines []string) interface{} {
 func (d Day) SolvePart1(rowsI interface{}) (amount int) {
 	rows := rowsI.([]Row)
 	for _, row := range rows {
-		amount += possibleArrangmentAmount(row)
+		amount += possibleArrangmentAmount(row.Record, "", row.OperationalGrouping)
 	}
 
 	return

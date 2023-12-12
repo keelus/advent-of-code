@@ -25,27 +25,24 @@ func isValid(combination string, operationalRules []int) bool {
 	return true
 }
 
-func possibleArrangmentAmount(row Row) int {
-	combinations := []string{""}
-
-	for _, char := range row.Record {
-		newCombinations := []string{}
-		for _, existingCombination := range combinations {
-			if char == '?' {
-				newCombinations = append(newCombinations, existingCombination+"#", existingCombination+".")
-			} else {
-				newCombinations = append(newCombinations, existingCombination+string(char))
-			}
+func possibleArrangmentAmount(todo, partialArrangment string, grouping []int) int {
+	matches := 0
+	if len(todo) == 0 {
+		if isValid(partialArrangment, grouping) {
+			return 1
 		}
-		combinations = newCombinations
+		return 0
 	}
 
-	validCombinationAmount := 0
-	for _, combination := range combinations {
-		if isValid(combination, row.OperationalGrouping) {
-			validCombinationAmount++
-		}
+	firstElement := string(todo[0])
+	inputWithoutFirstElement := todo[1:]
+
+	if firstElement == "?" {
+		matches += possibleArrangmentAmount(inputWithoutFirstElement, partialArrangment+"#", grouping)
+		matches += possibleArrangmentAmount(inputWithoutFirstElement, partialArrangment+".", grouping)
+	} else {
+		matches += possibleArrangmentAmount(inputWithoutFirstElement, partialArrangment+firstElement, grouping)
 	}
 
-	return validCombinationAmount
+	return matches
 }
