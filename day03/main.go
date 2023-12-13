@@ -69,8 +69,7 @@ func getLineParts(line string, originalRow int, originalCol int, dir Direction, 
 				if err != nil {
 					log.Fatalf("Error while parsing the part to integer '%s'", string(buffer))
 				}
-				part := Part{Value: int(iPart), SymbolCoords: fmt.Sprintf("%d.%d", originalCol, originalRow), Symbol: symbol}
-				parts = append(parts, part)
+				parts = append(parts, Part{Value: int(iPart), SymbolCoords: fmt.Sprintf("%d.%d", originalCol, originalRow), Symbol: symbol})
 			}
 
 			// Clear the read number
@@ -83,80 +82,14 @@ func getLineParts(line string, originalRow int, originalCol int, dir Direction, 
 	return parts
 }
 
-func getPartAndGearSums(lines []string) (int, int) {
-	foundParts := make([]Part, 0)
-	for i, line := range lines {
-		for j, char := range line {
-			if isSymbol(char) {
-				appendParts := func(direction Direction, lineIndex int) {
-					for _, part := range getLineParts(lines[lineIndex], i, j, direction, char) {
-						foundParts = append(foundParts, part)
-					}
-				}
-
-				if i != 0 {
-					appendParts(TOP, i-1)
-				}
-
-				if j != 0 {
-					appendParts(LEFT, i)
-				}
-
-				if j != len(line)-1 {
-					appendParts(RIGHT, i)
-				}
-
-				if i != len(lines)-1 {
-					appendParts(BOTTOM, i+1)
-				}
-			}
-		}
-	}
-
-	sum := 0
-	gearSum := 0
-
-	asteriskAdjAmount := make(map[string]int, 0)
-	for _, part := range foundParts {
-		sum += part.Value
-
-		if part.Symbol == '*' {
-			if _, ok := asteriskAdjAmount[part.SymbolCoords]; ok {
-				asteriskAdjAmount[part.SymbolCoords]++
-			} else {
-				asteriskAdjAmount[part.SymbolCoords] = 1
-			}
-		}
-	}
-
-	for symbolCoords, adjAmount := range asteriskAdjAmount {
-		if adjAmount == 2 {
-			ratio := 1
-			for _, part := range foundParts {
-				if part.SymbolCoords == symbolCoords {
-					ratio *= part.Value
-				}
-			}
-			gearSum += ratio
-		}
-	}
-
-	return sum, gearSum
-}
-
 func (d Day) GetInput(lines []string) interface{} {
-	return lines
-}
-
-func (d Day) SolvePart1(linesI interface{}) int {
-	lines := linesI.([]string)
-	foundParts := make([]Part, 0)
+	parts := make([]Part, 0)
 	for i, line := range lines {
 		for j, char := range line {
 			if isSymbol(char) {
 				appendParts := func(direction Direction, lineIndex int) {
 					for _, part := range getLineParts(lines[lineIndex], i, j, direction, char) {
-						foundParts = append(foundParts, part)
+						parts = append(parts, part)
 					}
 				}
 
@@ -179,10 +112,16 @@ func (d Day) SolvePart1(linesI interface{}) int {
 		}
 	}
 
+	return parts
+}
+
+func (d Day) SolvePart1(partsI interface{}) int {
+	parts := partsI.([]Part)
+
 	sum := 0
 
 	asteriskAdjAmount := make(map[string]int, 0)
-	for _, part := range foundParts {
+	for _, part := range parts {
 		sum += part.Value
 
 		if part.Symbol == '*' {
@@ -197,41 +136,13 @@ func (d Day) SolvePart1(linesI interface{}) int {
 	return sum
 }
 
-func (d Day) SolvePart2(linesI interface{}) int {
-	lines := linesI.([]string)
-	foundParts := make([]Part, 0)
-	for i, line := range lines {
-		for j, char := range line {
-			if isSymbol(char) {
-				appendParts := func(direction Direction, lineIndex int) {
-					for _, part := range getLineParts(lines[lineIndex], i, j, direction, char) {
-						foundParts = append(foundParts, part)
-					}
-				}
-
-				if i != 0 {
-					appendParts(TOP, i-1)
-				}
-
-				if j != 0 {
-					appendParts(LEFT, i)
-				}
-
-				if j != len(line)-1 {
-					appendParts(RIGHT, i)
-				}
-
-				if i != len(lines)-1 {
-					appendParts(BOTTOM, i+1)
-				}
-			}
-		}
-	}
+func (d Day) SolvePart2(partsI interface{}) int {
+	parts := partsI.([]Part)
 
 	gearSum := 0
 
 	asteriskAdjAmount := make(map[string]int, 0)
-	for _, part := range foundParts {
+	for _, part := range parts {
 		if part.Symbol == '*' {
 			if _, ok := asteriskAdjAmount[part.SymbolCoords]; ok {
 				asteriskAdjAmount[part.SymbolCoords]++
@@ -244,7 +155,7 @@ func (d Day) SolvePart2(linesI interface{}) int {
 	for symbolCoords, adjAmount := range asteriskAdjAmount {
 		if adjAmount == 2 {
 			ratio := 1
-			for _, part := range foundParts {
+			for _, part := range parts {
 				if part.SymbolCoords == symbolCoords {
 					ratio *= part.Value
 				}
