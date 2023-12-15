@@ -1,23 +1,25 @@
 package main
 
 import (
-	"advent-of-code-23/common"
+	"advent-of-code/common"
 	"flag"
 	"testing"
-	// import other day packages here
 )
 
 var dayNumber int
+var yearNumber int
 var inputFile string
 
 func init() {
-	flag.IntVar(&dayNumber, "day", 0, "The day to run the test in")
+	flag.IntVar(&dayNumber, "day", 0, "The day of the puzzle to run")
+	flag.IntVar(&dayNumber, "day", 2023, "The year of the puzzle to run")
 	flag.StringVar(&inputFile, "input", "input", "The file to read the puzzle input from")
 }
 
 func Benchmark(b *testing.B) {
-	day := GetRunner(dayNumber)
-	lines := common.GetInputByLines(inputFile, dayNumber)
+	year := GetYearRunner(yearNumber)
+	day := year.GetDayRunner(dayNumber)
+	lines := common.GetInputByLines(inputFile, yearNumber, dayNumber)
 
 	b.ResetTimer()
 	b.Run("Input parsing", func(b *testing.B) {

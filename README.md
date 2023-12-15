@@ -46,13 +46,15 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 ### Run a day 
 While being at the root directory:
 ```
-go run . [-day=<1-25>] [-input=<file_name>]
+go run . [-day=<1-25>] [-input=<file_name>] -year=2023
 ```
 > -day=<1-25> (default:`1`) Specify the day to execute the puzzle `(1-25)`
 
-> -input=<file_name> (default:`input`) Specify the puzzle input file (located at `dayXX/.input/<file_name>`)
+> -input=<file_name> (default:`input`) Specify the puzzle input file (located at `2023/dayXX/.input/<file_name>`)
 ### Bench a day
 While being at the root directory:
 ```
-go test . -bench [-day=<1-25>] [-input=<file_name>]
+go test . -bench [-day=<1-25>] [-input=<file_name>] -year=2023
 ```
+
+##
