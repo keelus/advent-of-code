@@ -19,7 +19,9 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 11: Cosmic Expansion](day11/main.go)                 | ⭐ | 9556896    | ⭐ | 685038186836   |
 | [Day 12: Hot Springs](day12/main.go)                      | ⭐ | 7084       |    |                 |
 | [Day 13: Point of Incidence](day13/main.go)               | ⭐ | 33047      | ⭐ | 28806          |
-| [Day 14: Parabolic Reflector Dish](day14/main.go)         | ⭐ | 107142     | ⭐ | 104815        |
+| [Day 14: Parabolic Reflector Dish](day14/main.go)         | ⭐ | 107142     | ⭐ | 104815         |
+| [Day 15: Lens Library](day15/main.go)                     | ⭐ | 517551     | ⭐ | 286097         |
+
 
 ### Performance
 | Day                                    | Input parse | #1 Runtime | #2 Runtime |
@@ -38,6 +40,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 12: Hot Springs                    | 198.19μs    | 2.25s      | -          |
 | Day 13: Point of Incidence             | 107.92μs    | 389.71μs   | 369.36μs   |
 | Day 14: Parabolic Reflector Dish       | 15.70μs     | 56.54μs    | 4.24ms     |
+| Day 15: Lens Library                   | 259.64μs    | 36.16μs    | 262.12μs   |
 
 ## Run it yourself
 ### Run a day 

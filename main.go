@@ -16,6 +16,7 @@ import (
 	"advent-of-code-23/day12"
 	"advent-of-code-23/day13"
 	"advent-of-code-23/day14"
+	"advent-of-code-23/day15"
 	"flag"
 	"log"
 	// import other day packages here
@@ -57,6 +58,8 @@ func GetRunner(day int) Day {
 		return day13.Day{}
 	case 14:
 		return day14.Day{}
+	case 15:
+		return day15.Day{}
 	default:
 		return nil
 	}
