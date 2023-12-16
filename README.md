@@ -6,21 +6,22 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 ### Days, stars and solutions 
 | Day                                                       | #1 | #1 Solution | #2 | #2 Solution    |
 |-----------------------------------------------------------|----|-------------|----|----------------|
-| [Day 1: Trebuchet?!](day01/main.go)                       | ⭐ | 57346      | ⭐ | 57345          |
-| [Day 2: Cube Conundrum](day02/main.go)                    | ⭐ | 2377       | ⭐ | 71220          |
-| [Day 3: Gear Ratios](day03/main.go)                       | ⭐ | 537732     | ⭐ | 84883664       |
-| [Day 4: Scratchcards](day04/main.go)                      | ⭐ | 22674      | ⭐ | 5747443        |
-| [Day 5: If You Give A Seed A Fertilizer](day05/main.go)   | ⭐ | 346433842  | ⭐ | 60294664       |
-| [Day 6: Wait For It](day06/main.go)                       | ⭐ | 2374848    | ⭐ | 39132886       |
-| [Day 7: Camel Cards](day07/main.go)                       | ⭐ | 252295678  | ⭐ | 250577259      |
-| [Day 8: Haunted Wasteland](day08/main.go)                 | ⭐ | 18023      | ⭐ | 14449445933179 |
-| [Day 9: Mirage Maintenance](day09/main.go)                | ⭐ | 1955513104 | ⭐ | 1131           |
-| [Day 10: Pipe Maze](day10/main.go)                        | ⭐ | 6682       | ⭐ | 353            |
-| [Day 11: Cosmic Expansion](day11/main.go)                 | ⭐ | 9556896    | ⭐ | 685038186836   |
-| [Day 12: Hot Springs](day12/main.go)                      | ⭐ | 7084       |    |                 |
-| [Day 13: Point of Incidence](day13/main.go)               | ⭐ | 33047      | ⭐ | 28806          |
-| [Day 14: Parabolic Reflector Dish](day14/main.go)         | ⭐ | 107142     | ⭐ | 104815         |
-| [Day 15: Lens Library](day15/main.go)                     | ⭐ | 517551     | ⭐ | 286097         |
+| [Day 1: Trebuchet?!](2023/day01/main.go)                       | ⭐ | 57346      | ⭐ | 57345          |
+| [Day 2: Cube Conundrum](2023/day02/main.go)                    | ⭐ | 2377       | ⭐ | 71220          |
+| [Day 3: Gear Ratios](2023/day03/main.go)                       | ⭐ | 537732     | ⭐ | 84883664       |
+| [Day 4: Scratchcards](2023/day04/main.go)                      | ⭐ | 22674      | ⭐ | 5747443        |
+| [Day 5: If You Give A Seed A Fertilizer](2023/day05/main.go)   | ⭐ | 346433842  | ⭐ | 60294664       |
+| [Day 6: Wait For It](2023/day06/main.go)                       | ⭐ | 2374848    | ⭐ | 39132886       |
+| [Day 7: Camel Cards](2023/day07/main.go)                       | ⭐ | 252295678  | ⭐ | 250577259      |
+| [Day 8: Haunted Wasteland](2023/day08/main.go)                 | ⭐ | 18023      | ⭐ | 14449445933179 |
+| [Day 9: Mirage Maintenance](2023/day09/main.go)                | ⭐ | 1955513104 | ⭐ | 1131           |
+| [Day 10: Pipe Maze](2023/day10/main.go)                        | ⭐ | 6682       | ⭐ | 353            |
+| [Day 11: Cosmic Expansion](2023/day11/main.go)                 | ⭐ | 9556896    | ⭐ | 685038186836   |
+| [Day 12: Hot Springs](2023/day12/main.go)                      | ⭐ | 7084       |   |                |
+| [Day 13: Point of Incidence](2023/day13/main.go)               | ⭐ | 33047      | ⭐ | 28806          |
+| [Day 14: Parabolic Reflector Dish](2023/day14/main.go)         | ⭐ | 107142     | ⭐ | 104815         |
+| [Day 15: Lens Library](2023/day15/main.go)                     | ⭐ | 517551     | ⭐ | 286097         |
+| [Day 16: The Floor Will Be Lava](2023/day16/main.go)           | ⭐ | 6855       |   |                |
 
 
 ### Performance
@@ -41,6 +42,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 13: Point of Incidence             | 107.92μs    | 389.71μs   | 369.36μs   |
 | Day 14: Parabolic Reflector Dish       | 15.70μs     | 56.54μs    | 4.24ms     |
 | Day 15: Lens Library                   | 259.64μs    | 36.16μs    | 262.12μs   |
+| Day 16: The Floor Will Be Lava         | 18.56μs     | 15.38s     | -          |
 
 ## Run it yourself
 ### Run a day 

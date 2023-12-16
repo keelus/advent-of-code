@@ -16,6 +16,7 @@ import (
 	"advent-of-code/2023/day13"
 	"advent-of-code/2023/day14"
 	"advent-of-code/2023/day15"
+	"advent-of-code/2023/day16"
 	"advent-of-code/common"
 	"log"
 )
@@ -54,6 +55,8 @@ func (year Year) GetDayRunner(day int) common.Day {
 		return day14.Day{}
 	case 15:
 		return day15.Day{}
+	case 16:
+		return day16.Day{}
 	default:
 		log.Fatalf("Day %d is not defined.", day)
 		return nil
