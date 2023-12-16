@@ -1,59 +1,67 @@
 package day16
 
-import (
-	"math"
-)
-
-type Direction string
+type Direction int
 
 const (
-	UP    Direction = "UP"
-	DOWN  Direction = "DOWN"
-	LEFT  Direction = "LEFT"
-	RIGHT Direction = "RIGHT"
+	UP    Direction = 0
+	DOWN  Direction = 1
+	LEFT  Direction = 2
+	RIGHT Direction = 3
 )
 
 type Light struct {
-	I   int
-	J   int
-	Dir Direction
+	Coord Coordinate
+	Dir   Direction
 }
 
-func moveLight(contraption, energized [][]rune, lights []Light, prevEnergized int, repetitionAcc int) {
+type Coordinate struct {
+	I int
+	J int
+}
+
+type Visit struct {
+	Coord Coordinate
+	Dir   Direction
+}
+
+func moveLight(contraption [][]rune, energized map[Coordinate]bool, lights []Light, visited map[Visit]bool) int {
+	energizedAmount := 0
 	if len(lights) == 0 {
-		return
+		return energizedAmount
 	}
 
 	newLights := []Light{}
 	for _, light := range lights {
-		energized[light.I][light.J] = '#'
-		nextStates := nextState(light, contraption, energized)
+		if _, ok := energized[light.Coord]; !ok {
+			energized[light.Coord] = true
+			energizedAmount++
+		}
+
+		nextStates := nextState(light, contraption)
 
 		if len(nextStates) > 0 {
 			newLights = append(newLights, nextStates...)
 		}
 	}
 
-	if getEnergizedAmount(energized) == prevEnergized {
-		repetitionAcc++
-
-		max := int(math.Max(float64(len(contraption)), float64(len(contraption[0]))))
-		if repetitionAcc > max {
-			return
+	unvisitedsRemaining := false
+	for _, newLight := range newLights {
+		visit := Visit{Coord: newLight.Coord, Dir: newLight.Dir}
+		if _, ok := visited[visit]; !ok {
+			visited[visit] = true
+			unvisitedsRemaining = true
 		}
-	} else {
-		repetitionAcc = 0
 	}
 
-	moveLight(contraption, energized, newLights, getEnergizedAmount(energized), repetitionAcc)
+	if unvisitedsRemaining {
+		energizedAmount += moveLight(contraption, energized, newLights, visited)
+	}
 
-	return
+	return energizedAmount
 }
 
-func nextState(light Light, contraption, energized [][]rune) []Light {
-	i := light.I
-	j := light.J
-	dir := light.Dir
+func nextState(light Light, contraption [][]rune) []Light {
+	i, j, dir := light.Coord.I, light.Coord.J, light.Dir
 
 	newDir := dir
 
@@ -84,11 +92,15 @@ func nextState(light Light, contraption, energized [][]rune) []Light {
 		}
 	case '|':
 		if dir == LEFT || dir == RIGHT {
-			newLights = append(newLights, Light{I: i - 1, J: j, Dir: UP}, Light{I: i + 1, J: j, Dir: DOWN})
+			newLights = append(newLights,
+				Light{Coord: Coordinate{I: i - 1, J: j}, Dir: UP},
+				Light{Coord: Coordinate{I: i + 1, J: j}, Dir: DOWN})
 		}
 	case '-':
 		if dir == UP || dir == DOWN {
-			newLights = append(newLights, Light{I: i, J: j - 1, Dir: LEFT}, Light{I: i, J: j + 1, Dir: RIGHT})
+			newLights = append(newLights,
+				Light{Coord: Coordinate{I: i, J: j - 1}, Dir: LEFT},
+				Light{Coord: Coordinate{I: i, J: j + 1}, Dir: RIGHT})
 		}
 	}
 
@@ -97,11 +109,11 @@ func nextState(light Light, contraption, energized [][]rune) []Light {
 		if newI < 0 || newI > len(contraption)-1 || newJ < 0 || newJ > len(contraption[0])-1 {
 			return []Light{}
 		}
-		return []Light{{I: newI, J: newJ, Dir: newDir}}
+		return []Light{{Coord: Coordinate{I: newI, J: newJ}, Dir: newDir}}
 	} else {
 		validLights := []Light{}
 		for _, newLight := range newLights {
-			if newLight.I < 0 || newLight.I > len(contraption)-1 || newLight.J < 0 || newLight.J > len(contraption[0])-1 {
+			if newLight.Coord.I < 0 || newLight.Coord.I > len(contraption)-1 || newLight.Coord.J < 0 || newLight.Coord.J > len(contraption[0])-1 {
 				continue
 			}
 			validLights = append(validLights, newLight)
@@ -124,16 +136,4 @@ func nextPosition(i, j int, dir Direction) (int, int) {
 	}
 
 	return -1, -1
-}
-
-func getEnergizedAmount(energized [][]rune) (amount int) {
-	for _, row := range energized {
-		for _, elem := range row {
-			if elem == '#' {
-				amount++
-			}
-		}
-	}
-
-	return
 }

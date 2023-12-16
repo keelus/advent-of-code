@@ -21,7 +21,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 13: Point of Incidence](2023/day13/day13.go)             | ⭐ | 33047      | ⭐ | 28806          |
 | [Day 14: Parabolic Reflector Dish](2023/day14/day14.go)       | ⭐ | 107142     | ⭐ | 104815         |
 | [Day 15: Lens Library](2023/day15/main.go)                    | ⭐ | 517551     | ⭐ | 286097         |
-| [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       |   |                |
+| [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513           |
 
 
 ### Performance
@@ -42,7 +42,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 13: Point of Incidence             | 107.92μs    | 389.71μs   | 369.36μs   |
 | Day 14: Parabolic Reflector Dish       | 15.70μs     | 56.54μs    | 4.24ms     |
 | Day 15: Lens Library                   | 259.64μs    | 36.16μs    | 262.12μs   |
-| Day 16: The Floor Will Be Lava         | 18.56μs     | 15.38s     | -          |
+| Day 16: The Floor Will Be Lava         | 18.56μs     | 1.66s      | 3.35min    |
 
 ## Run it yourself
 ### Run a day 
