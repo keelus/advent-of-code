@@ -4,7 +4,6 @@ import (
 	"advent-of-code/2023/day05/convertionMapList"
 	"math"
 	"sync"
-	"sync/atomic"
 
 	"golang.org/x/exp/slices"
 )
@@ -28,9 +27,11 @@ func (a *Almanac) GetLowestNearestLocationPart1() int {
 }
 
 func (a *Almanac) GetLowestNearestLocationPart2() int {
-	var smallest int64 = math.MaxInt
+
+	var smallest = math.MaxInt
 
 	var wg sync.WaitGroup
+	var mu sync.Mutex
 
 	for i := 0; i < len(a.Seeds); i += 2 {
 		wg.Add(1)
@@ -51,12 +52,15 @@ func (a *Almanac) GetLowestNearestLocationPart2() int {
 				}
 			}
 
-			atomic.StoreInt64(&smallest, int64(math.Min(float64(atomic.LoadInt64(&smallest)), float64(curSmallest))))
-
+			mu.Lock()
+			if curSmallest < smallest {
+				smallest = curSmallest
+			}
+			mu.Unlock()
 		}(beginning, length)
 	}
 
 	wg.Wait()
 
-	return int(smallest)
+	return smallest
 }
