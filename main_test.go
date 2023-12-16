@@ -12,7 +12,7 @@ var inputFile string
 
 func init() {
 	flag.IntVar(&dayNumber, "day", 0, "The day of the puzzle to run")
-	flag.IntVar(&dayNumber, "day", 2023, "The year of the puzzle to run")
+	flag.IntVar(&yearNumber, "year", 2023, "The year of the puzzle to run")
 	flag.StringVar(&inputFile, "input", "input", "The file to read the puzzle input from")
 }
 
