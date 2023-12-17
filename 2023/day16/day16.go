@@ -1,9 +1,7 @@
 package day16
 
 import (
-	"math"
 	"sync"
-	"sync/atomic"
 )
 
 type Day struct{}
@@ -23,7 +21,7 @@ func (d Day) GetInput(lines []string) interface{} {
 func (d Day) SolvePart1(contraptionI interface{}) (energizedAmount int) {
 	contraption := contraptionI.([][]rune)
 
-	energizedAmount = moveLight(contraption, map[Coordinate]bool{}, []Light{{Coord: Coordinate{I: 0, J: 0}, Dir: RIGHT}}, map[Visit]bool{})
+	energizedAmount = moveBeam(contraption, Beam{Coord: Coordinate{I: 0, J: 0}, Dir: RIGHT})
 
 	return energizedAmount
 }
@@ -32,51 +30,49 @@ func (d Day) SolvePart2(contraptionI interface{}) int {
 	contraption := contraptionI.([][]rune)
 
 	var wg sync.WaitGroup
+	var mu sync.Mutex
 
-	var maxEnergizedAmount int64 = 0
+	var maxEnergizedAmount = 0
 
-	for i := 0; i < len(contraption); i++ {
-		wg.Add(1)
-		go func(index int) {
-			defer wg.Done()
-			energizedAmount := moveLight(contraption, map[Coordinate]bool{}, []Light{{Coord: Coordinate{I: index, J: 0}, Dir: RIGHT}}, map[Visit]bool{})
-			atomic.StoreInt64(&maxEnergizedAmount, int64(math.Max(float64(atomic.LoadInt64(&maxEnergizedAmount)), float64(energizedAmount))))
-		}(i)
-	}
-	wg.Wait()
-
-	for i := 0; i < len(contraption); i++ {
-		wg.Add(1)
-		go func(index int) {
-			defer wg.Done()
-			energizedAmount := moveLight(contraption, map[Coordinate]bool{}, []Light{{Coord: Coordinate{I: index, J: len(contraption) - 1}, Dir: LEFT}}, map[Visit]bool{})
-			atomic.StoreInt64(&maxEnergizedAmount, int64(math.Max(float64(atomic.LoadInt64(&maxEnergizedAmount)), float64(energizedAmount))))
-		}(i)
-	}
-
-	wg.Wait()
-
-	for i := 0; i < len(contraption[0]); i++ {
-		wg.Add(1)
-		go func(index int) {
-			defer wg.Done()
-			energizedAmount := moveLight(contraption, map[Coordinate]bool{}, []Light{{Coord: Coordinate{I: 0, J: index}, Dir: DOWN}}, map[Visit]bool{})
-			atomic.StoreInt64(&maxEnergizedAmount, int64(math.Max(float64(atomic.LoadInt64(&maxEnergizedAmount)), float64(energizedAmount))))
-		}(i)
+	// 0-n Rows
+	origins := [2]int{0, len(contraption[0]) - 1}
+	directions := [2]Direction{RIGHT, LEFT}
+	for i := 0; i < 2; i++ {
+		for row := 0; row < len(contraption); row++ {
+			wg.Add(1)
+			go func(rowIndex, colOrigin int, dir Direction) {
+				defer wg.Done()
+				energizedAmount := moveBeam(contraption, Beam{Coord: Coordinate{I: rowIndex, J: colOrigin}, Dir: dir})
+				mu.Lock()
+				if energizedAmount > maxEnergizedAmount {
+					maxEnergizedAmount = energizedAmount
+				}
+				mu.Unlock()
+			}(row, origins[i], directions[i])
+		}
 	}
 
 	wg.Wait()
 
-	for i := 0; i < len(contraption[0]); i++ {
-		wg.Add(1)
-		go func(index int) {
-			defer wg.Done()
-			energizedAmount := moveLight(contraption, map[Coordinate]bool{}, []Light{{Coord: Coordinate{I: len(contraption) - 1, J: index}, Dir: UP}}, map[Visit]bool{})
-			atomic.StoreInt64(&maxEnergizedAmount, int64(math.Max(float64(atomic.LoadInt64(&maxEnergizedAmount)), float64(energizedAmount))))
-		}(i)
+	// 0-m Columns
+	origins = [2]int{0, len(contraption) - 1}
+	directions = [2]Direction{DOWN, UP}
+	for i := 0; i < 2; i++ {
+		for col := 0; col < len(contraption[0]); col++ {
+			wg.Add(1)
+			go func(colIndex, rowOrigin int, dir Direction) {
+				defer wg.Done()
+				energizedAmount := moveBeam(contraption, Beam{Coord: Coordinate{I: rowOrigin, J: colIndex}, Dir: dir})
+				mu.Lock()
+				if energizedAmount > maxEnergizedAmount {
+					maxEnergizedAmount = energizedAmount
+				}
+				mu.Unlock()
+			}(col, origins[i], directions[i])
+		}
 	}
 
 	wg.Wait()
 
-	return int(maxEnergizedAmount)
+	return maxEnergizedAmount
 }

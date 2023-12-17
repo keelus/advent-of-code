@@ -1,6 +1,6 @@
 package day16
 
-type Direction int
+type Direction uint8
 
 const (
 	UP    Direction = 0
@@ -9,7 +9,7 @@ const (
 	RIGHT Direction = 3
 )
 
-type Light struct {
+type Beam struct {
 	Coord Coordinate
 	Dir   Direction
 }
@@ -24,48 +24,43 @@ type Visit struct {
 	Dir   Direction
 }
 
-func moveLight(contraption [][]rune, energized map[Coordinate]bool, lights []Light, visited map[Visit]bool) int {
-	energizedAmount := 0
-	if len(lights) == 0 {
-		return energizedAmount
-	}
+func moveBeam(contraption [][]rune, startBeam Beam) int {
+	energized := make(map[Coordinate]struct{})
+	visited := make(map[Visit]struct{})
 
-	newLights := []Light{}
-	for _, light := range lights {
-		if _, ok := energized[light.Coord]; !ok {
-			energized[light.Coord] = true
+	energizedAmount := 0
+
+	stack := []Beam{startBeam}
+
+	for len(stack) > 0 {
+		beam := stack[0]
+		stack = stack[1:]
+
+		if _, ok := energized[beam.Coord]; !ok {
+			energized[beam.Coord] = struct{}{}
 			energizedAmount++
 		}
 
-		nextStates := nextState(light, contraption)
+		newBeams := evaluate(beam, contraption)
 
-		if len(nextStates) > 0 {
-			newLights = append(newLights, nextStates...)
+		for _, newBeam := range newBeams {
+			visit := Visit{Coord: newBeam.Coord, Dir: newBeam.Dir}
+			if _, ok := visited[visit]; !ok {
+				visited[visit] = struct{}{}
+				stack = append(stack, newBeam)
+			}
 		}
-	}
-
-	unvisitedsRemaining := false
-	for _, newLight := range newLights {
-		visit := Visit{Coord: newLight.Coord, Dir: newLight.Dir}
-		if _, ok := visited[visit]; !ok {
-			visited[visit] = true
-			unvisitedsRemaining = true
-		}
-	}
-
-	if unvisitedsRemaining {
-		energizedAmount += moveLight(contraption, energized, newLights, visited)
 	}
 
 	return energizedAmount
 }
 
-func nextState(light Light, contraption [][]rune) []Light {
-	i, j, dir := light.Coord.I, light.Coord.J, light.Dir
+func evaluate(beam Beam, contraption [][]rune) []Beam {
+	i, j, dir := beam.Coord.I, beam.Coord.J, beam.Dir
 
 	newDir := dir
 
-	newLights := []Light{}
+	newBeams := []Beam{}
 
 	switch contraption[i][j] {
 	case '/':
@@ -92,34 +87,34 @@ func nextState(light Light, contraption [][]rune) []Light {
 		}
 	case '|':
 		if dir == LEFT || dir == RIGHT {
-			newLights = append(newLights,
-				Light{Coord: Coordinate{I: i - 1, J: j}, Dir: UP},
-				Light{Coord: Coordinate{I: i + 1, J: j}, Dir: DOWN})
+			newBeams = append(newBeams,
+				Beam{Coord: Coordinate{I: i - 1, J: j}, Dir: UP},
+				Beam{Coord: Coordinate{I: i + 1, J: j}, Dir: DOWN})
 		}
 	case '-':
 		if dir == UP || dir == DOWN {
-			newLights = append(newLights,
-				Light{Coord: Coordinate{I: i, J: j - 1}, Dir: LEFT},
-				Light{Coord: Coordinate{I: i, J: j + 1}, Dir: RIGHT})
+			newBeams = append(newBeams,
+				Beam{Coord: Coordinate{I: i, J: j - 1}, Dir: LEFT},
+				Beam{Coord: Coordinate{I: i, J: j + 1}, Dir: RIGHT})
 		}
 	}
 
-	if len(newLights) == 0 { // Element was not | nor -
+	if len(newBeams) == 0 { // Element was not | nor -
 		newI, newJ := nextPosition(i, j, newDir)
 		if newI < 0 || newI > len(contraption)-1 || newJ < 0 || newJ > len(contraption[0])-1 {
-			return []Light{}
+			return []Beam{}
 		}
-		return []Light{{Coord: Coordinate{I: newI, J: newJ}, Dir: newDir}}
+		return []Beam{{Coord: Coordinate{I: newI, J: newJ}, Dir: newDir}}
 	} else {
-		validLights := []Light{}
-		for _, newLight := range newLights {
-			if newLight.Coord.I < 0 || newLight.Coord.I > len(contraption)-1 || newLight.Coord.J < 0 || newLight.Coord.J > len(contraption[0])-1 {
+		validBeams := []Beam{}
+		for _, newBeam := range newBeams {
+			if newBeam.Coord.I < 0 || newBeam.Coord.I > len(contraption)-1 || newBeam.Coord.J < 0 || newBeam.Coord.J > len(contraption[0])-1 {
 				continue
 			}
-			validLights = append(validLights, newLight)
+			validBeams = append(validBeams, newBeam)
 		}
 
-		return validLights
+		return validBeams
 	}
 }
 
