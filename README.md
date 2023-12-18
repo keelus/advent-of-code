@@ -17,11 +17,13 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 9: Mirage Maintenance](2023/day09/day09.go)              | ⭐ | 1955513104 | ⭐ | 1131           |
 | [Day 10: Pipe Maze](2023/day10/day10.go)                      | ⭐ | 6682       | ⭐ | 353            |
 | [Day 11: Cosmic Expansion](2023/day11/day11.go)               | ⭐ | 9556896    | ⭐ | 685038186836   |
-| [Day 12: Hot Springs](2023/day12/day12.go)                    | ⭐ | 7084       |   |                |
+| [Day 12: Hot Springs](2023/day12/day12.go)                    | ⭐ | 7084       |   | -              |
 | [Day 13: Point of Incidence](2023/day13/day13.go)             | ⭐ | 33047      | ⭐ | 28806          |
 | [Day 14: Parabolic Reflector Dish](2023/day14/day14.go)       | ⭐ | 107142     | ⭐ | 104815         |
 | [Day 15: Lens Library](2023/day15/main.go)                    | ⭐ | 517551     | ⭐ | 286097         |
 | [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513           |
+| [Day 17: Clumsy Crucible](2023/day17/day17.go)                |   | -          |   | -              |
+| [Day 18: Lavaduct Lagoon](2023/day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719 |
 
 
 ### Performance
@@ -31,7 +33,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 2: Cube Conundrum                  | 198.08μs    | 4.93μs     | 76.74ns    |
 | Day 3: Gear Ratios                     | 2.59ms      | 57.83μs    | 883.95μs   |
 | Day 4: Scratchcards                    | 181.83μs    | 45.84μs    | 357.59μs   |
-| Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 68.33s     |
+| Day 5: If You Give A Seed A Fertilizer | 47.36μs     | 1.73μs     | 75.17s     |
 | Day 6: Wait For It                     | 611.1ns     | 25.89ns    | 7.31ns     |
 | Day 7: Camel Cards                     | 65.29μs     | 251.90μs   | 240.13μs   |
 | Day 8: Haunted Wasteland               | 63.53μs     | 23.87μs    | 469.90μs   |
@@ -42,7 +44,9 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 13: Point of Incidence             | 107.92μs    | 389.71μs   | 369.36μs   |
 | Day 14: Parabolic Reflector Dish       | 15.70μs     | 56.54μs    | 4.24ms     |
 | Day 15: Lens Library                   | 259.64μs    | 36.16μs    | 262.12μs   |
-| Day 16: The Floor Will Be Lava         | 18.56μs     | 1.66s      | 3.35min    |
+| Day 16: The Floor Will Be Lava         | 18.56μs     | 2.31ms     | 89.21ms    |
+| Day 17: Clumsy Crucible                | -           | -          | -          |
+| Day 18: Lavaduct Lagoon                | 75.64μs     | 8.52μs     | 8.85μs     |
 
 ## Run it yourself
 ### Run a day 
