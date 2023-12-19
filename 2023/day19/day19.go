@@ -100,5 +100,18 @@ func (d Day) SolvePart1(parsedInputI interface{}) int {
 }
 
 func (d Day) SolvePart2(parsedInputI interface{}) int {
-	return -1
+	parsedInput := parsedInputI.(ParsedInput)
+
+	workflows := parsedInput.Workflows
+
+	ranges := make(map[Category]Range)
+
+	ranges['x'] = Range{Min: 1, Max: 4000}
+	ranges['m'] = Range{Min: 1, Max: 4000}
+	ranges['a'] = Range{Min: 1, Max: 4000}
+	ranges['s'] = Range{Min: 1, Max: 4000}
+
+	val := workflows["in"].calcCombinations(workflows, ranges)
+
+	return val
 }

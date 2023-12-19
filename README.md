@@ -4,27 +4,27 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 > The solutions are based in my AoC inputs. Yours could be different.
 
 ### Days, stars and solutions 
-| Day                                                           | #1 | #1 Solution | #2 | #2 Solution    |
-|---------------------------------------------------------------|----|-------------|----|----------------|
-| [Day 1: Trebuchet?!](2023/day01/day01.go)                     | ⭐ | 57346      | ⭐ | 57345          |
-| [Day 2: Cube Conundrum](2023/day02/day02.go)                  | ⭐ | 2377       | ⭐ | 71220          |
-| [Day 3: Gear Ratios](2023/day03/day03.go)                     | ⭐ | 537732     | ⭐ | 84883664       |
-| [Day 4: Scratchcards](2023/day04/day04.go)                    | ⭐ | 22674      | ⭐ | 5747443        |
-| [Day 5: If You Give A Seed A Fertilizer](2023/day05/day05.go) | ⭐ | 346433842  | ⭐ | 60294664       |
-| [Day 6: Wait For It](2023/day06/day06.go)                     | ⭐ | 2374848    | ⭐ | 39132886       |
-| [Day 7: Camel Cards](2023/day07/day07.go)                     | ⭐ | 252295678  | ⭐ | 250577259      |
-| [Day 8: Haunted Wasteland](2023/day08/day08.go)               | ⭐ | 18023      | ⭐ | 14449445933179 |
-| [Day 9: Mirage Maintenance](2023/day09/day09.go)              | ⭐ | 1955513104 | ⭐ | 1131           |
-| [Day 10: Pipe Maze](2023/day10/day10.go)                      | ⭐ | 6682       | ⭐ | 353            |
-| [Day 11: Cosmic Expansion](2023/day11/day11.go)               | ⭐ | 9556896    | ⭐ | 685038186836   |
-| [Day 12: Hot Springs](2023/day12/day12.go)                    | ⭐ | 7084       |   | -              |
-| [Day 13: Point of Incidence](2023/day13/day13.go)             | ⭐ | 33047      | ⭐ | 28806          |
-| [Day 14: Parabolic Reflector Dish](2023/day14/day14.go)       | ⭐ | 107142     | ⭐ | 104815         |
-| [Day 15: Lens Library](2023/day15/main.go)                    | ⭐ | 517551     | ⭐ | 286097         |
-| [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513           |
-| [Day 17: Clumsy Crucible](2023/day17/day17.go)                | ⭐ | 845        |   | -              |
-| [Day 18: Lavaduct Lagoon](2023/day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719 |
-| [Day 19: Aplenty](2023/day19/day19.go)                        | ⭐ | 319062     |   |                |
+| Day                                                           | #1 | #1 Solution | #2 | #2 Solution     |
+|---------------------------------------------------------------|----|-------------|----|-----------------|
+| [Day 1: Trebuchet?!](2023/day01/day01.go)                     | ⭐ | 57346      | ⭐ | 57345           |
+| [Day 2: Cube Conundrum](2023/day02/day02.go)                  | ⭐ | 2377       | ⭐ | 71220           |
+| [Day 3: Gear Ratios](2023/day03/day03.go)                     | ⭐ | 537732     | ⭐ | 84883664        |
+| [Day 4: Scratchcards](2023/day04/day04.go)                    | ⭐ | 22674      | ⭐ | 5747443         |
+| [Day 5: If You Give A Seed A Fertilizer](2023/day05/day05.go) | ⭐ | 346433842  | ⭐ | 60294664        |
+| [Day 6: Wait For It](2023/day06/day06.go)                     | ⭐ | 2374848    | ⭐ | 39132886        |
+| [Day 7: Camel Cards](2023/day07/day07.go)                     | ⭐ | 252295678  | ⭐ | 250577259       |
+| [Day 8: Haunted Wasteland](2023/day08/day08.go)               | ⭐ | 18023      | ⭐ | 14449445933179  |
+| [Day 9: Mirage Maintenance](2023/day09/day09.go)              | ⭐ | 1955513104 | ⭐ | 1131            |
+| [Day 10: Pipe Maze](2023/day10/day10.go)                      | ⭐ | 6682       | ⭐ | 353             |
+| [Day 11: Cosmic Expansion](2023/day11/day11.go)               | ⭐ | 9556896    | ⭐ | 685038186836    |
+| [Day 12: Hot Springs](2023/day12/day12.go)                    | ⭐ | 7084       |   | -               |
+| [Day 13: Point of Incidence](2023/day13/day13.go)             | ⭐ | 33047      | ⭐ | 28806           |
+| [Day 14: Parabolic Reflector Dish](2023/day14/day14.go)       | ⭐ | 107142     | ⭐ | 104815          |
+| [Day 15: Lens Library](2023/day15/main.go)                    | ⭐ | 517551     | ⭐ | 286097          |
+| [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513            |
+| [Day 17: Clumsy Crucible](2023/day17/day17.go)                | ⭐ | 845        |   | -               |
+| [Day 18: Lavaduct Lagoon](2023/day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719  |
+| [Day 19: Aplenty](2023/day19/day19.go)                        | ⭐ | 319062     | ⭐ | 118638369682135 |
 
 
 ### Performance
@@ -48,7 +48,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 16: The Floor Will Be Lava         | 18.56μs     | 2.31ms     | 89.21ms    |
 | Day 17: Clumsy Crucible                | 187.45μs    | 3.98min    | -          |
 | Day 18: Lavaduct Lagoon                | 75.64μs     | 8.52μs     | 8.85μs     |
-| Day 19: Aplenty                        | 399.30μs    | 58.82μs    | -          |
+| Day 19: Aplenty                        | 388.29μs    | 39.96μs    | 488.24μs   |
 
 ## Run it yourself
 ### Run a day 
