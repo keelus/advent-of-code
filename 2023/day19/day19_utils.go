@@ -2,6 +2,8 @@ package day19
 
 import (
 	"log"
+
+	"golang.org/x/exp/maps"
 )
 
 type Category rune
@@ -10,6 +12,13 @@ type Operation byte
 
 type Part struct {
 	Values map[Category]int
+}
+
+func (p Part) sum() (sumVal int) {
+	for _, val := range p.Values {
+		sumVal += val
+	}
+	return
 }
 
 type Range struct {
@@ -30,69 +39,44 @@ type Rule struct {
 	Destination string
 }
 
-func (wf Workflow) parsePart(wfs map[string]Workflow, part Part) bool {
-	for _, rule := range wf.Rules {
-		if (rule.Op == '<' && part.Values[rule.Cat] < rule.Val) || (rule.Op == '>' && part.Values[rule.Cat] > rule.Val) {
-			switch rule.Destination {
-			case "A", "R":
-				return rule.Destination == "A"
-			default:
-				return wfs[rule.Destination].parsePart(wfs, part)
-			}
-		}
-	}
-
-	switch wf.Exception {
+func (workflow Workflow) parsePart(workflows map[string]Workflow, part Part) bool {
+	switch workflow.Name {
 	case "A", "R":
-		return wf.Exception == "A"
+		return workflow.Name == "A"
 	default:
-		return wfs[wf.Exception].parsePart(wfs, part)
-	}
-}
-
-func (wf Workflow) calcCombinations(wfs map[string]Workflow, ranges map[Category]Range) int {
-	combinations := 0
-
-	currentRanges := cloneRanges(ranges)
-
-	for _, rule := range wf.Rules {
-		cat := rule.Cat
-
-		newSelfRange, adjacentRange := currentRanges[cat].resize(rule.Val, rule.Op)
-
-		currentRanges[cat] = adjacentRange
-
-		selfRanges := cloneRanges(currentRanges)
-		selfRanges[cat] = newSelfRange
-
-		if rule.Destination == "A" || rule.Destination == "R" {
-			if rule.Destination == "A" {
-				combinations += rangeCombinations(selfRanges)
+		for _, rule := range workflow.Rules {
+			if (rule.Op == '<' && part.Values[rule.Cat] < rule.Val) || (rule.Op == '>' && part.Values[rule.Cat] > rule.Val) {
+				return workflows[rule.Destination].parsePart(workflows, part)
 			}
-			continue
 		}
 
-		combinations += wfs[rule.Destination].calcCombinations(wfs, selfRanges)
+		return workflows[workflow.Exception].parsePart(workflows, part)
 	}
-
-	if wf.Exception == "A" || wf.Exception == "R" {
-		if wf.Exception == "A" {
-			combinations += rangeCombinations(currentRanges)
-		}
-		return combinations
-	}
-
-	return combinations + wfs[wf.Exception].calcCombinations(wfs, currentRanges)
 }
 
-func cloneRanges(ranges map[Category]Range) map[Category]Range {
-	newRanges := make(map[Category]Range, 4)
+func (workflow Workflow) getCombinations(workflows map[string]Workflow, ranges map[Category]Range) int {
+	switch workflow.Name {
+	case "A":
+		return rangeCombinations(ranges)
+	case "R":
+		return 0
+	default:
+		combinations := 0
+		currentRanges := maps.Clone(ranges)
 
-	for category, r := range ranges {
-		newRanges[category] = Range{Min: r.Min, Max: r.Max}
+		for _, rule := range workflow.Rules {
+			newSelfRange, adjacentRange := currentRanges[rule.Cat].resize(rule.Val, rule.Op)
+
+			currentRanges[rule.Cat] = adjacentRange
+
+			selfRanges := maps.Clone(currentRanges)
+			selfRanges[rule.Cat] = newSelfRange
+
+			combinations += workflows[rule.Destination].getCombinations(workflows, selfRanges)
+		}
+
+		return combinations + workflows[workflow.Exception].getCombinations(workflows, currentRanges)
 	}
-
-	return newRanges
 }
 
 func (r Range) resize(value int, operation Operation) (Range, Range) {
