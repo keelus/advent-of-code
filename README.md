@@ -22,7 +22,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 14: Parabolic Reflector Dish](2023/day14/day14.go)       | ⭐ | 107142     | ⭐ | 104815         |
 | [Day 15: Lens Library](2023/day15/main.go)                    | ⭐ | 517551     | ⭐ | 286097         |
 | [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513           |
-| [Day 17: Clumsy Crucible](2023/day17/day17.go)                |   | -          |   | -              |
+| [Day 17: Clumsy Crucible](2023/day17/day17.go)                | ⭐ | 845        |   | -              |
 | [Day 18: Lavaduct Lagoon](2023/day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719 |
 
 
@@ -45,7 +45,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 14: Parabolic Reflector Dish       | 15.70μs     | 56.54μs    | 4.24ms     |
 | Day 15: Lens Library                   | 259.64μs    | 36.16μs    | 262.12μs   |
 | Day 16: The Floor Will Be Lava         | 18.56μs     | 2.31ms     | 89.21ms    |
-| Day 17: Clumsy Crucible                | -           | -          | -          |
+| Day 17: Clumsy Crucible                | 187.45μs    | 3.98min    | -          |
 | Day 18: Lavaduct Lagoon                | 75.64μs     | 8.52μs     | 8.85μs     |
 
 ## Run it yourself
