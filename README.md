@@ -24,6 +24,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513           |
 | [Day 17: Clumsy Crucible](2023/day17/day17.go)                | ⭐ | 845        |   | -              |
 | [Day 18: Lavaduct Lagoon](2023/day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719 |
+| [Day 19: Aplenty](2023/day19/day19.go)                        | ⭐ | 319062     |   |                |
 
 
 ### Performance
@@ -47,6 +48,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 16: The Floor Will Be Lava         | 18.56μs     | 2.31ms     | 89.21ms    |
 | Day 17: Clumsy Crucible                | 187.45μs    | 3.98min    | -          |
 | Day 18: Lavaduct Lagoon                | 75.64μs     | 8.52μs     | 8.85μs     |
+| Day 19: Aplenty                        | 399.30μs    | 58.82μs    | -          |
 
 ## Run it yourself
 ### Run a day 
