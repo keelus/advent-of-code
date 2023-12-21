@@ -25,7 +25,8 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 17: Clumsy Crucible](2023/day17/day17.go)                | ⭐ | 845        | ⭐ | 993             |
 | [Day 18: Lavaduct Lagoon](2023/day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719  |
 | [Day 19: Aplenty](2023/day19/day19.go)                        | ⭐ | 319062     | ⭐ | 118638369682135 |
-| [Day 20: Pulse Propagation](2023/day19/day19.go)              | ⭐ | 867118762  |   |                 |
+| [Day 20: Pulse Propagation](2023/day20/day20.go)              | ⭐ | 867118762  |   |                 |
+| [Day 21: Step Counter](2023/day21/day21.go)                   | ⭐ | 3758       |   |                 |
 
 
 ### Performance
@@ -51,6 +52,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 18: Lavaduct Lagoon                | 75.64μs     | 8.52μs     | 8.85μs     |
 | Day 19: Aplenty                        | 388.29μs    | 39.96μs    | 488.24μs   |
 | Day 20: Pulse Propagation              | 17.62μs     | 7.87ms     | -          |
+| Day 21: Step Counter                   | 25.47μs     | 11.15ms    | -          |
 
 ## Run it yourself
 ### Run a day 
