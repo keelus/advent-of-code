@@ -1,78 +1,16 @@
 package day17
 
 import (
+	"container/heap"
+	"image"
 	"log"
-
-	"golang.org/x/exp/maps"
-	"golang.org/x/exp/slices"
 )
-
-type Direction uint8
-
-const (
-	UP    Direction = 0
-	DOWN  Direction = 1
-	LEFT  Direction = 2
-	RIGHT Direction = 3
-	NODIR Direction = 4
-)
-
-type Coordinate struct {
-	I int
-	J int
-}
-
-type Node struct {
-	Coord Coordinate
-	Cost  int
-}
 
 type Visit struct {
-	Coord                 Coordinate
-	HeatLoss, Accumulator int
-	Dir                   Direction
-}
-
-type PriorityQueue map[int][]Visit
-
-type Visited map[Visit]bool
-
-func (pq PriorityQueue) AddWithPriority(visit Visit) {
-	cost := visit.HeatLoss
-
-	if _, ok := pq[cost]; ok {
-		pq[cost] = append(pq[cost], visit)
-	} else {
-		pq[cost] = []Visit{visit}
-	}
-}
-
-func (pq PriorityQueue) Pop() Visit {
-	minimumCost := slices.Min(maps.Keys(pq))
-
-	minimum := pq[minimumCost][0]
-	pq[minimumCost] = pq[minimumCost][1:]
-
-	if len(pq[minimumCost]) == 0 {
-		delete(pq, minimumCost)
-	}
-
-	return minimum
-}
-
-func NewVisit(i, j, d int, dir Direction, acc int) Visit {
-	return Visit{Coord: Coordinate{I: i, J: j}, HeatLoss: d, Dir: dir, Accumulator: acc}
-}
-
-func (s Visited) Contains(visit Visit) bool {
-	if _, ok := s[visit]; ok {
-		return true
-	}
-	return false
-}
-
-func (s Visited) Add(visit Visit) {
-	s[visit] = true
+	Pos image.Point
+	// HeatLoss
+	Accumulator int
+	Dir         image.Point
 }
 
 var (
@@ -80,42 +18,82 @@ var (
 	COLS = -1
 )
 
-func shortestPathCost(island [][]Node, source Coordinate, dest Coordinate, minAccumulator, maxAccumulator int) int {
+type PriorityQueue []Task
+
+type Task struct {
+	V Visit
+	H int
+}
+
+func (pq PriorityQueue) Len() int           { return len(pq) }
+func (pq PriorityQueue) Less(i, j int) bool { return pq[i].H < pq[j].H }
+func (pq PriorityQueue) Swap(i, j int)      { pq[i], pq[j] = pq[j], pq[i] }
+
+func (pq *PriorityQueue) Push(x interface{}) {
+	*pq = append(*pq, x.(Task))
+}
+
+func (pq *PriorityQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	item := old[n-1]
+	*pq = old[0 : n-1]
+	return item
+}
+
+func (pq *PriorityQueue) YPush(visit Visit, heat int) {
+	heap.Push(pq, Task{V: visit, H: heat})
+}
+
+func (pq *PriorityQueue) YPop() (Visit, int) {
+	el := heap.Pop(pq).(Task)
+
+	return el.V, el.H
+}
+
+func shortestPathCost(island [][]int, source image.Point, dest image.Point, minAccumulator, maxAccumulator int) int {
 	ROWS = len(island)
 	COLS = len(island[0])
 
-	visited := make(Visited)
-	pq := make(PriorityQueue)
+	visited := make(map[Visit]int)
+	pq := make(PriorityQueue, 0)
 
-	di, dj := dest.I, dest.J
-
-	pq.AddWithPriority(NewVisit(0, 0, 0, NODIR, 0))
+	pq.YPush(Visit{Pos: image.Point{0, 0}, Dir: image.Point{0, 1}, Accumulator: 1}, 0)
+	pq.YPush(Visit{Pos: image.Point{0, 0}, Dir: image.Point{1, 0}, Accumulator: 1}, 0)
 
 	for len(pq) > 0 {
-		u := pq.Pop()
+		u, heat := pq.YPop()
 
-		if u.Coord.I == di && u.Coord.J == dj && u.Accumulator >= minAccumulator {
-			return u.HeatLoss
+		if !u.Pos.Eq(image.Point{0, 0}) {
+			heat += island[u.Pos.X][u.Pos.Y]
 		}
 
-		if visited.Contains(u) {
-			continue
+		if u.Pos.Eq(dest) && u.Accumulator >= minAccumulator {
+			return heat
 		}
 
-		visited.Add(u)
-
-		if u.Accumulator < maxAccumulator && u.Dir != NODIR {
-			newPos := nextPos(u.Coord, u.Dir)
-			ni, nj := newPos.I, newPos.J
-			if ni >= 0 && ni < ROWS && nj >= 0 && nj < COLS {
-				pq.AddWithPriority(NewVisit(ni, nj, u.HeatLoss+island[ni][nj].Cost, u.Dir, u.Accumulator+1))
+		if _, ok := visited[u]; ok {
+			if visited[u] <= heat {
+				continue
 			}
 		}
 
-		if u.Accumulator >= minAccumulator || u.Dir == NODIR {
-			for dir, v := range GetNeighbors(u.Coord, island, u.Dir) {
-				if v != nil {
-					pq.AddWithPriority(NewVisit(v.Coord.I, v.Coord.J, u.HeatLoss+v.Cost, dir, 1))
+		visited[u] = heat
+
+		if u.Accumulator < maxAccumulator {
+			nextPos := u.Pos.Add(u.Dir)
+			if isInside(nextPos) {
+				newVisit := Visit{Pos: nextPos, Dir: u.Dir, Accumulator: u.Accumulator + 1}
+				pq.YPush(newVisit, heat)
+			}
+		}
+
+		if u.Accumulator >= minAccumulator {
+			for _, dir := range neighbors[u.Dir] {
+				pos := u.Pos.Add(dir)
+				if isInside(pos) {
+					newVisit := Visit{Pos: pos, Dir: image.Point{dir.X, dir.Y}, Accumulator: 1}
+					pq.YPush(newVisit, heat)
 				}
 			}
 		}
@@ -125,46 +103,13 @@ func shortestPathCost(island [][]Node, source Coordinate, dest Coordinate, minAc
 	return -1
 }
 
-func nextPos(coord Coordinate, dir Direction) Coordinate {
-	switch dir {
-	case UP:
-		return Coordinate{I: coord.I - 1, J: coord.J}
-	case DOWN:
-		return Coordinate{I: coord.I + 1, J: coord.J}
-	case LEFT:
-		return Coordinate{I: coord.I, J: coord.J - 1}
-	case RIGHT:
-		return Coordinate{I: coord.I, J: coord.J + 1}
-	}
-
-	log.Fatalf("Error NODIR got in nextPos")
-	return Coordinate{-1, -1}
+func isInside(point image.Point) bool {
+	return point.X >= 0 && point.X < ROWS && point.Y >= 0 && point.Y < COLS
 }
 
-func GetNeighbors(coord Coordinate, island [][]Node, forbiddenDir Direction) map[Direction]*Node {
-	i := coord.I
-	j := coord.J
-
-	neighbors := map[Direction]*Node{}
-
-	if forbiddenDir != UP && forbiddenDir != DOWN {
-		if i-1 >= 0 {
-			neighbors[UP] = &island[i-1][j]
-		}
-		if i+1 < ROWS {
-			neighbors[DOWN] = &island[i+1][j]
-		}
-	}
-
-	if forbiddenDir != LEFT && forbiddenDir != RIGHT {
-		if j-1 >= 0 {
-			neighbors[LEFT] = &island[i][j-1]
-		}
-
-		if j+1 < COLS {
-			neighbors[RIGHT] = &island[i][j+1]
-		}
-	}
-
-	return neighbors
+var neighbors = map[image.Point][2]image.Point{
+	{-1, 0}: {{0, 1}, {0, -1}},
+	{1, 0}:  {{0, 1}, {0, -1}},
+	{0, -1}: {{1, 0}, {-1, 0}},
+	{0, 1}:  {{1, 0}, {-1, 0}},
 }
