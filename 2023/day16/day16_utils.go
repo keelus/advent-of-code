@@ -1,31 +1,21 @@
 package day16
 
-type Direction uint8
-
-const (
-	UP    Direction = 0
-	DOWN  Direction = 1
-	LEFT  Direction = 2
-	RIGHT Direction = 3
+import (
+	"advent-of-code/common/pair"
 )
 
 type Beam struct {
-	Coord Coordinate
-	Dir   Direction
-}
-
-type Coordinate struct {
-	I int
-	J int
+	Coord pair.Pair
+	Dir   pair.Pair
 }
 
 type Visit struct {
-	Coord Coordinate
-	Dir   Direction
+	Coord pair.Pair
+	Dir   pair.Pair
 }
 
 func moveBeam(contraption [][]rune, startBeam Beam) int {
-	energized := make(map[Coordinate]struct{})
+	energized := make(map[pair.Pair]struct{})
 	visited := make(map[Visit]struct{})
 
 	energizedAmount := 0
@@ -44,7 +34,7 @@ func moveBeam(contraption [][]rune, startBeam Beam) int {
 		newBeams := evaluate(beam, contraption)
 
 		for _, newBeam := range newBeams {
-			visit := Visit{Coord: newBeam.Coord, Dir: newBeam.Dir}
+			visit := Visit{Coord: newBeam.Coord, Dir: newBeam.Dir.Copy()}
 			if _, ok := visited[visit]; !ok {
 				visited[visit] = struct{}{}
 				stack = append(stack, newBeam)
@@ -56,79 +46,51 @@ func moveBeam(contraption [][]rune, startBeam Beam) int {
 }
 
 func evaluate(beam Beam, contraption [][]rune) []Beam {
-	i, j, dir := beam.Coord.I, beam.Coord.J, beam.Dir
+	_, _, dir := beam.Coord.I, beam.Coord.J, beam.Dir.Copy()
 
 	newDir := dir
 
 	newBeams := []Beam{}
 
-	switch contraption[i][j] {
-	case '/':
-		switch dir {
-		case UP:
-			newDir = RIGHT
-		case DOWN:
-			newDir = LEFT
-		case LEFT:
-			newDir = DOWN
-		case RIGHT:
-			newDir = UP
+	switch contraption[beam.Coord.I][beam.Coord.J] {
+	case '/', '\\':
+		if dir.Perp(pair.New(1, 0)) {
+			newDir = dir.TurnL()
+		} else {
+			newDir = dir.TurnR()
 		}
-	case '\\':
-		switch dir {
-		case UP:
-			newDir = LEFT
-		case DOWN:
-			newDir = RIGHT
-		case LEFT:
-			newDir = UP
-		case RIGHT:
-			newDir = DOWN
+
+		if contraption[beam.Coord.I][beam.Coord.J] == '\\' { // In \, we have to negate the new direction
+			newDir = newDir.Neg()
 		}
 	case '|':
-		if dir == LEFT || dir == RIGHT {
+		if dir.Perp(pair.New(1, 0)) {
 			newBeams = append(newBeams,
-				Beam{Coord: Coordinate{I: i - 1, J: j}, Dir: UP},
-				Beam{Coord: Coordinate{I: i + 1, J: j}, Dir: DOWN})
+				Beam{Coord: beam.Coord.Add(pair.Up()), Dir: pair.Up()},
+				Beam{Coord: beam.Coord.Add(pair.Down()), Dir: pair.Down()})
 		}
 	case '-':
-		if dir == UP || dir == DOWN {
+		if dir.Perp(pair.New(0, 1)) {
 			newBeams = append(newBeams,
-				Beam{Coord: Coordinate{I: i, J: j - 1}, Dir: LEFT},
-				Beam{Coord: Coordinate{I: i, J: j + 1}, Dir: RIGHT})
+				Beam{Coord: beam.Coord.Add(pair.Left()), Dir: pair.Left()},
+				Beam{Coord: beam.Coord.Add(pair.Right()), Dir: pair.Right()})
 		}
 	}
 
 	if len(newBeams) == 0 { // Element was not | nor -
-		newI, newJ := nextPosition(i, j, newDir)
-		if newI < 0 || newI > len(contraption)-1 || newJ < 0 || newJ > len(contraption[0])-1 {
-			return []Beam{}
+		newPos := beam.Coord.Add(newDir)
+		if newPos.InBounds(0, 0, len(contraption), len(contraption[0])) {
+			return []Beam{{Coord: newPos, Dir: newDir}}
 		}
-		return []Beam{{Coord: Coordinate{I: newI, J: newJ}, Dir: newDir}}
+		return []Beam{}
 	} else {
 		validBeams := []Beam{}
 		for _, newBeam := range newBeams {
-			if newBeam.Coord.I < 0 || newBeam.Coord.I > len(contraption)-1 || newBeam.Coord.J < 0 || newBeam.Coord.J > len(contraption[0])-1 {
-				continue
+			if newBeam.Coord.InBounds(0, 0, len(contraption), len(contraption[0])) {
+				validBeams = append(validBeams, newBeam)
 			}
-			validBeams = append(validBeams, newBeam)
 		}
 
 		return validBeams
 	}
-}
-
-func nextPosition(i, j int, dir Direction) (int, int) {
-	switch dir {
-	case UP:
-		return i - 1, j
-	case DOWN:
-		return i + 1, j
-	case LEFT:
-		return i, j - 1
-	case RIGHT:
-		return i, j + 1
-	}
-
-	return -1, -1
 }

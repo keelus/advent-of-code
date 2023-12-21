@@ -1,6 +1,8 @@
 package day11
 
-import "math"
+import (
+	"advent-of-code/common/pair"
+)
 
 func getUniverseExpansions(universe []string) ([]int, []int) {
 	expansionRows := make([]int, 0)
@@ -38,8 +40,8 @@ func timesPathGoesThrough(expansions []int, oIndex, dIndex int) (passing int) {
 	return
 }
 
-func calcDistance(origin, dest Coordinate, expansionCols, expansionRows []int, expansionAmount int) int {
-	result := int(math.Abs(float64(dest.J-origin.J)) + math.Abs(float64(dest.I-origin.I))) // Manhattan distance
+func calcDistance(origin, dest pair.Pair, expansionCols, expansionRows []int, expansionAmount int) int {
+	result := origin.MDist(dest)
 
 	passingRows := timesPathGoesThrough(expansionRows, origin.I, dest.I)
 	passingCols := timesPathGoesThrough(expansionCols, origin.J, dest.J)
@@ -50,11 +52,11 @@ func calcDistance(origin, dest Coordinate, expansionCols, expansionRows []int, e
 	return result
 }
 
-func getGalaxies(universe []string) (galaxies []Coordinate) {
+func getGalaxies(universe []string) (galaxies []pair.Pair) {
 	for i, row := range universe {
 		for j, node := range row {
 			if node == '#' {
-				galaxies = append(galaxies, Coordinate{I: i, J: j})
+				galaxies = append(galaxies, pair.New(i, j))
 			}
 		}
 	}

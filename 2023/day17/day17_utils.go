@@ -58,8 +58,8 @@ func shortestPathCost(island [][]int, source pair.Pair, dest pair.Pair, minAccum
 	visited := make(map[Visit]int)
 	pq := make(PriorityQueue, 0)
 
-	pq.YPush(Visit{Pos: pair.Zero(), Dir: pair.New(0, 1), Accumulator: 1}, 0)
-	pq.YPush(Visit{Pos: pair.Zero(), Dir: pair.New(1, 0), Accumulator: 1}, 0)
+	pq.YPush(Visit{Pos: pair.Zero(), Dir: pair.Right(), Accumulator: 1}, 0)
+	pq.YPush(Visit{Pos: pair.Zero(), Dir: pair.Down(), Accumulator: 1}, 0)
 
 	for len(pq) > 0 {
 		u, heat := pq.YPop()
@@ -82,7 +82,7 @@ func shortestPathCost(island [][]int, source pair.Pair, dest pair.Pair, minAccum
 
 		if u.Accumulator < maxAccumulator {
 			nextPos := u.Pos.Add(u.Dir)
-			if isInside(nextPos) {
+			if nextPos.InBounds(0, 0, ROWS, COLS) {
 				newVisit := Visit{Pos: nextPos, Dir: u.Dir, Accumulator: u.Accumulator + 1}
 				pq.YPush(newVisit, heat)
 			}
@@ -91,7 +91,7 @@ func shortestPathCost(island [][]int, source pair.Pair, dest pair.Pair, minAccum
 		if u.Accumulator >= minAccumulator {
 			for _, dir := range neighbors[u.Dir] {
 				pos := u.Pos.Add(dir)
-				if isInside(pos) {
+				if pos.InBounds(0, 0, ROWS, COLS) {
 					newVisit := Visit{Pos: pos, Dir: dir.Copy(), Accumulator: 1}
 					pq.YPush(newVisit, heat)
 				}
@@ -103,13 +103,9 @@ func shortestPathCost(island [][]int, source pair.Pair, dest pair.Pair, minAccum
 	return -1
 }
 
-func isInside(point pair.Pair) bool {
-	return point.I >= 0 && point.I < ROWS && point.J >= 0 && point.J < COLS
-}
-
 var neighbors = map[pair.Pair][2]pair.Pair{
-	pair.New(-1, 0): {pair.New(0, 1), pair.New(0, -1)},
-	pair.New(1, 0):  {pair.New(0, 1), pair.New(0, -1)},
-	pair.New(0, -1): {pair.New(1, 0), pair.New(-1, 0)},
-	pair.New(0, 1):  {pair.New(1, 0), pair.New(-1, 0)},
+	pair.Up():    {pair.Left(), pair.Right()},
+	pair.Down():  {pair.Left(), pair.Right()},
+	pair.Left():  {pair.Up(), pair.Down()},
+	pair.Right(): {pair.Up(), pair.Down()},
 }

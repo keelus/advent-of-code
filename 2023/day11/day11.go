@@ -1,14 +1,12 @@
 package day11
 
-type Day struct{}
+import "advent-of-code/common/pair"
 
-type Coordinate struct {
-	I, J int
-}
+type Day struct{}
 
 type ParsedInput struct {
 	ExpansionCols, ExpansionRows []int
-	Galaxies                     []Coordinate
+	Galaxies                     []pair.Pair
 }
 
 func (d Day) GetInput(lines []string) interface{} {
