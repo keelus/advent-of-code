@@ -16,8 +16,8 @@ func isNicePart1(word string) bool {
 				}
 			}
 
-			pair := string(r) + string(word[i+1])
-			if pair == "ab" || pair == "cd" || pair == "pq" || pair == "xy" {
+			sPair := string(r) + string(word[i+1])
+			if sPair == "ab" || sPair == "cd" || sPair == "pq" || sPair == "xy" {
 				return false
 			}
 		}
@@ -28,16 +28,16 @@ func isNicePart1(word string) bool {
 
 func isNicePart2(word string) bool {
 	letterBetween := false
-	pairs := make(map[string][]int)
+	sPairs := make(map[string][]int)
 
 	for i, r := range word {
 		if i < len(word)-1 {
-			pair := string(r) + string(word[i+1])
+			sPair := string(r) + string(word[i+1])
 
-			if _, ok := pairs[pair]; ok {
-				pairs[pair] = append(pairs[pair], i)
+			if _, ok := sPairs[sPair]; ok {
+				sPairs[sPair] = append(sPairs[sPair], i)
 			} else {
-				pairs[pair] = []int{i}
+				sPairs[sPair] = []int{i}
 			}
 		}
 	}
@@ -51,7 +51,7 @@ func isNicePart2(word string) bool {
 		}
 	}
 
-	for _, appearances := range pairs {
+	for _, appearances := range sPairs {
 		if len(appearances) >= 2 {
 			for i := 0; i < len(appearances); i++ {
 				for j := 1; j < len(appearances); j++ {
@@ -65,3 +65,6 @@ func isNicePart2(word string) bool {
 
 	return false
 }
+
+// Benchmark/Input_parsing-16                 25352             47190 ns/op
+// Benchmark/Part_1-16                       704833              1810 ns/op
