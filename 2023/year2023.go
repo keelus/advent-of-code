@@ -29,6 +29,7 @@ import (
 type Year struct{}
 
 func (year Year) GetDayRunner(day int) common.Day {
+
 	switch day {
 	case 1:
 		return day01.Day{}

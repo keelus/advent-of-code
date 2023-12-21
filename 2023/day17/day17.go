@@ -1,7 +1,7 @@
 package day17
 
 import (
-	"image"
+	"advent-of-code/common/pair"
 	"log"
 	"strconv"
 )
@@ -28,11 +28,11 @@ func (d Day) GetInput(lines []string) interface{} {
 func (d Day) SolvePart1(islandI interface{}) int {
 	island := islandI.([][]int)
 
-	return shortestPathCost(island, image.Point{0, 0}, image.Point{len(island) - 1, len(island[0]) - 1}, 1, 3)
+	return shortestPathCost(island, pair.Zero(), pair.New(len(island)-1, len(island[0])-1), 1, 3)
 }
 
 func (d Day) SolvePart2(islandI interface{}) int {
 	island := islandI.([][]int)
 
-	return shortestPathCost(island, image.Point{0, 0}, image.Point{len(island) - 1, len(island[0]) - 1}, 4, 10)
+	return shortestPathCost(island, pair.Zero(), pair.New(len(island)-1, len(island[0])-1), 4, 10)
 }

@@ -1,16 +1,16 @@
 package day17
 
 import (
+	"advent-of-code/common/pair"
 	"container/heap"
-	"image"
 	"log"
 )
 
 type Visit struct {
-	Pos image.Point
+	Pos pair.Pair
 	// HeatLoss
 	Accumulator int
-	Dir         image.Point
+	Dir         pair.Pair
 }
 
 var (
@@ -51,21 +51,21 @@ func (pq *PriorityQueue) YPop() (Visit, int) {
 	return el.V, el.H
 }
 
-func shortestPathCost(island [][]int, source image.Point, dest image.Point, minAccumulator, maxAccumulator int) int {
+func shortestPathCost(island [][]int, source pair.Pair, dest pair.Pair, minAccumulator, maxAccumulator int) int {
 	ROWS = len(island)
 	COLS = len(island[0])
 
 	visited := make(map[Visit]int)
 	pq := make(PriorityQueue, 0)
 
-	pq.YPush(Visit{Pos: image.Point{0, 0}, Dir: image.Point{0, 1}, Accumulator: 1}, 0)
-	pq.YPush(Visit{Pos: image.Point{0, 0}, Dir: image.Point{1, 0}, Accumulator: 1}, 0)
+	pq.YPush(Visit{Pos: pair.Zero(), Dir: pair.New(0, 1), Accumulator: 1}, 0)
+	pq.YPush(Visit{Pos: pair.Zero(), Dir: pair.New(1, 0), Accumulator: 1}, 0)
 
 	for len(pq) > 0 {
 		u, heat := pq.YPop()
 
-		if !u.Pos.Eq(image.Point{0, 0}) {
-			heat += island[u.Pos.X][u.Pos.Y]
+		if !u.Pos.Zero() {
+			heat += island[u.Pos.I][u.Pos.J]
 		}
 
 		if u.Pos.Eq(dest) && u.Accumulator >= minAccumulator {
@@ -92,7 +92,7 @@ func shortestPathCost(island [][]int, source image.Point, dest image.Point, minA
 			for _, dir := range neighbors[u.Dir] {
 				pos := u.Pos.Add(dir)
 				if isInside(pos) {
-					newVisit := Visit{Pos: pos, Dir: image.Point{dir.X, dir.Y}, Accumulator: 1}
+					newVisit := Visit{Pos: pos, Dir: dir.Copy(), Accumulator: 1}
 					pq.YPush(newVisit, heat)
 				}
 			}
@@ -103,13 +103,13 @@ func shortestPathCost(island [][]int, source image.Point, dest image.Point, minA
 	return -1
 }
 
-func isInside(point image.Point) bool {
-	return point.X >= 0 && point.X < ROWS && point.Y >= 0 && point.Y < COLS
+func isInside(point pair.Pair) bool {
+	return point.I >= 0 && point.I < ROWS && point.J >= 0 && point.J < COLS
 }
 
-var neighbors = map[image.Point][2]image.Point{
-	{-1, 0}: {{0, 1}, {0, -1}},
-	{1, 0}:  {{0, 1}, {0, -1}},
-	{0, -1}: {{1, 0}, {-1, 0}},
-	{0, 1}:  {{1, 0}, {-1, 0}},
+var neighbors = map[pair.Pair][2]pair.Pair{
+	pair.New(-1, 0): {pair.New(0, 1), pair.New(0, -1)},
+	pair.New(1, 0):  {pair.New(0, 1), pair.New(0, -1)},
+	pair.New(0, -1): {pair.New(1, 0), pair.New(-1, 0)},
+	pair.New(0, 1):  {pair.New(1, 0), pair.New(-1, 0)},
 }
