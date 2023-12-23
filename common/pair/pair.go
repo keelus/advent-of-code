@@ -123,3 +123,8 @@ func (p Pair) TurnL() Pair {
 func (p Pair) TurnR() Pair {
 	return Pair{p.J, -p.I}
 }
+
+// Opp gives the opposite direction.
+func (p Pair) Opp() Pair {
+	return Pair{-p.I, -p.J}
+}
