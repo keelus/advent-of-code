@@ -20,20 +20,7 @@ func (grid Grid) explorePath(currentCost int, from, wantDir, end pair.Pair) int 
 		return grid.explorePath(currentCost+1, newPos, grid[newPos.I][newPos.J].ForcesDir, end)
 	}
 
-	directions := []pair.Pair{pair.Up(), pair.Down(), pair.Left(), pair.Right()}
-	newDirs := []pair.Pair{}
-	for _, dir := range directions {
-		if dir.Eq(wantDir.Opp()) { // Prevent going back
-			continue
-		}
-
-		newCoord := newPos.Add(dir)
-		if newCoord.InBounds(0, 0, len(grid), len(grid[0])) {
-			if !grid[newCoord.I][newCoord.J].IsForest {
-				newDirs = append(newDirs, dir)
-			}
-		}
-	}
+	newDirs := grid.getNeighborDirections(newPos, wantDir)
 
 	if newPos.Eq(end) {
 		return currentCost
@@ -54,4 +41,23 @@ func (grid Grid) explorePath(currentCost int, from, wantDir, end pair.Pair) int 
 	}
 
 	return maxCost
+}
+
+func (grid Grid) getNeighborDirections(pos, forbiddenDir pair.Pair) []pair.Pair {
+	directions := []pair.Pair{pair.Up(), pair.Down(), pair.Left(), pair.Right()}
+	newDirs := []pair.Pair{}
+	for _, dir := range directions {
+		if dir.Eq(forbiddenDir.Opp()) { // Prevent going back
+			continue
+		}
+
+		newCoord := pos.Add(dir)
+		if newCoord.InBounds(0, 0, len(grid), len(grid[0])) {
+			if !grid[newCoord.I][newCoord.J].IsForest {
+				newDirs = append(newDirs, dir)
+			}
+		}
+	}
+
+	return newDirs
 }
