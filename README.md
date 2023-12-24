@@ -28,6 +28,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | [Day 20: Pulse Propagation](2023/day20/day20.go)              | ⭐ | 867118762  |   |                 |
 | [Day 21: Step Counter](2023/day21/day21.go)                   | ⭐ | 3758       |   |                 |
 | [Day 23: A Long Walk](2023/day23/day23.go)                    | ⭐ | 1930       |   |                 |
+| [Day 24: Never Tell Me The Odds](2023/day23/day23.go)         | ⭐ | 13149      |   |                 |
 
 
 ### Performance
@@ -55,6 +56,7 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 | Day 20: Pulse Propagation              | 17.62μs     | 7.87ms     | -          |
 | Day 21: Step Counter                   | 25.47μs     | 11.15ms    | -          |
 | Day 23: A Long Walk                    | 289.81μs    | 7.82ms     | -          |
+| Day 24: Never Tell Me The Odds         | 147.54μs    | 1.05ms     | -          |
 
 ## Run it yourself
 ### Run a day 
