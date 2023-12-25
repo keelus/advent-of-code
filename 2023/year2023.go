@@ -22,6 +22,7 @@ import (
 	"advent-of-code/2023/day19"
 	"advent-of-code/2023/day20"
 	"advent-of-code/2023/day21"
+	"advent-of-code/2023/day23"
 	"advent-of-code/2023/day24"
 	"advent-of-code/common"
 	"log"
@@ -74,6 +75,8 @@ func (year Year) GetDayRunner(day int) common.Day {
 		return day20.Day{}
 	case 21:
 		return day21.Day{}
+	case 23:
+		return day23.Day{}
 	case 24:
 		return day24.Day{}
 	default:
