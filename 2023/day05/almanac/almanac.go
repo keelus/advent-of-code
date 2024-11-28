@@ -1,7 +1,7 @@
 package almanac
 
 import (
-	"advent-of-code/2023/day05/convertionMapList"
+	"2023/day05/convertionMapList"
 	"math"
 	"sync"
 

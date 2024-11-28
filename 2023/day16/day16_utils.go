@@ -1,7 +1,7 @@
 package day16
 
 import (
-	"advent-of-code/common/pair"
+	"2023/common/pair"
 )
 
 type Beam struct {

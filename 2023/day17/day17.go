@@ -1,7 +1,7 @@
 package day17
 
 import (
-	"advent-of-code/common/pair"
+	"2023/common/pair"
 	"log"
 	"strconv"
 )

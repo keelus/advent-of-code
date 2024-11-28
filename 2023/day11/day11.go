@@ -1,6 +1,6 @@
 package day11
 
-import "advent-of-code/common/pair"
+import "2023/common/pair"
 
 type Day struct{}
 

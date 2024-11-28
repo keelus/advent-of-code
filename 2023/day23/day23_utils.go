@@ -1,7 +1,7 @@
 package day23
 
 import (
-	"advent-of-code/common/pair"
+	"2023/common/pair"
 )
 
 type Node struct {

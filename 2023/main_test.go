@@ -1,7 +1,7 @@
 package main
 
 import (
-	"advent-of-code/common"
+	"2023/common"
 	"flag"
 	"testing"
 )

@@ -1,6 +1,6 @@
 package convertionMapList
 
-import "advent-of-code/2023/day05/convertionMap"
+import "2023/day05/convertionMap"
 
 type ConvertionMapList struct {
 	List []convertionMap.ConvertionMap

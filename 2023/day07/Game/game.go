@@ -1,7 +1,7 @@
 package game
 
 import (
-	hand "advent-of-code/2023/day07/Hand"
+	hand "2023/day07/Hand"
 	"fmt"
 	"sort"
 )

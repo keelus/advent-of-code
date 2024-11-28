@@ -1,9 +1,9 @@
 package day07
 
 import (
-	card "advent-of-code/2023/day07/Card"
-	game "advent-of-code/2023/day07/Game"
-	hand "advent-of-code/2023/day07/Hand"
+	card "2023/day07/Card"
+	game "2023/day07/Game"
+	hand "2023/day07/Hand"
 	"log"
 	"strconv"
 	"strings"

@@ -1,9 +1,9 @@
 package day05
 
 import (
-	"advent-of-code/2023/day05/almanac"
-	"advent-of-code/2023/day05/convertionMap"
-	"advent-of-code/2023/day05/convertionMapList"
+	"2023/day05/almanac"
+	"2023/day05/convertionMap"
+	"2023/day05/convertionMapList"
 	"log"
 	"strconv"
 	"strings"

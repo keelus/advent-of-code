@@ -1,7 +1,7 @@
 package hand
 
 import (
-	card "advent-of-code/2023/day07/Card"
+	card "2023/day07/Card"
 	"fmt"
 )
 

@@ -17,8 +17,8 @@ type Day interface {
 	SolvePart2(interface{}) int
 }
 
-func GetInputByLines(suffix string, year int, day int) []string {
-	inputPath := fmt.Sprintf("./%d/day%02d/_input/%s", year, day, suffix)
+func GetInputByLines(suffix string /*, year int*/, day int) []string {
+	inputPath := fmt.Sprintf("./day%02d/_input/%s" /*year,*/, day, suffix)
 	file, err := os.Open(inputPath)
 	if err != nil {
 		if os.IsNotExist(err) {

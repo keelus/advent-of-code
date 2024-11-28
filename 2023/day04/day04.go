@@ -1,7 +1,7 @@
 package day04
 
 import (
-	"advent-of-code/2023/day04/card"
+	"2023/day04/card"
 	"log"
 	"strconv"
 	"strings"

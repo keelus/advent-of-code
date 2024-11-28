@@ -1,7 +1,7 @@
 package day11
 
 import (
-	"advent-of-code/common/pair"
+	"2023/common/pair"
 )
 
 func getUniverseExpansions(universe []string) ([]int, []int) {
