@@ -3,7 +3,8 @@ use colored::Colorize;
 use std::{fs, time::Instant};
 
 mod common;
-mod day01;
+mod solutions;
+use solutions::*;
 
 macro_rules! time_action {
     ($action:path, $($args:expr),*) => {{
