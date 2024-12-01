@@ -6,7 +6,7 @@ This repo contains my solutions for different years.
 ## Days, stars and solutions 
 | Day | Solution | Stars | Part 1 benchmark | Part 2 benchmark |
 |-----|----------|-------|------------------|------------------|
-| Day 1: Historian Hysteria | [Here](./2024/day01/solutions/day01.rs) | ⭐⭐ | - | - |
+| [Day 1](https://adventofcode.com/2024/day/1): Historian Hysteria | [Here](./2024/day01/solutions/day01.rs) | ⭐⭐ | 18µs | 638µs |
 
 ## Run it yourself
 ### Run a day 

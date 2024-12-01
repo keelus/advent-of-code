@@ -14,8 +14,8 @@ macro_rules! time_action {
 
         let (time, unit) = match spent.as_nanos() {
             0..=999 => (spent.as_nanos(), "ns"),
-            1_000..=9_999 => (spent.as_micros(), "μs"),
-            1_000_000..=9_999_999 => (spent.as_millis(), "ms"),
+            1_000..=999_999 => (spent.as_micros(), "μs"),
+            1_000_000..=999_999_999 => (spent.as_millis(), "ms"),
             _ => (spent.as_secs().into(), "s")
         };
 
