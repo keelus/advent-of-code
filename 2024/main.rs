@@ -1,26 +1,35 @@
 use clap::{command, Arg, ArgAction};
-use colored::Colorize;
-use std::{fs, time::Instant};
+use colored::{Color, Colorize};
+use std::{
+    fs,
+    time::{Duration, Instant},
+};
 
 mod common;
 mod solutions;
 use solutions::*;
 
+fn format_nanos(nanos: u128) -> (u128, &'static str) {
+    let spent = Duration::from_nanos(nanos as u64);
+    match spent.as_nanos() {
+        0..=999 => (spent.as_nanos(), "ns"),
+        1_000..=999_999 => (spent.as_micros(), "μs"),
+        1_000_000..=999_999_999 => (spent.as_millis(), "ms"),
+        _ => (spent.as_secs().into(), "s"),
+    }
+}
+
 macro_rules! time_action {
     ($action:path, $($args:expr),*) => {{
         let start = Instant::now();
-        let result = $action($($args),*);
+        let result = std::hint::black_box($action($($args),*));
         let spent = Instant::now().duration_since(start);
 
-        let (time, unit) = match spent.as_nanos() {
-            0..=999 => (spent.as_nanos(), "ns"),
-            1_000..=999_999 => (spent.as_micros(), "μs"),
-            1_000_000..=999_999_999 => (spent.as_millis(), "ms"),
-            _ => (spent.as_secs().into(), "s")
-        };
+        let (time, unit) = format_nanos(spent.as_nanos());
 
         ActionResult {
             value: result,
+            time_nanos: spent.as_nanos(),
             time,
             time_unit: unit,
         }
@@ -29,12 +38,24 @@ macro_rules! time_action {
 
 struct ActionResult<T> {
     value: T,
+    time_nanos: u128,
     time: u128,
     time_unit: &'static str,
 }
 
-fn get_time_str(prefix_len: usize, terminal_width: usize, time: u128, time_unit: &str) -> String {
-    let visual = format!("({}{})", time, time_unit);
+fn get_time_str(
+    prefix_len: usize,
+    terminal_width: usize,
+    time: u128,
+    time_unit: &str,
+    show_avg: bool,
+) -> String {
+    let visual = format!(
+        "({}{}{})",
+        if show_avg { "avg=" } else { "" },
+        time,
+        time_unit
+    );
     let width = terminal_width.saturating_sub(prefix_len);
     format!("{:>width$}", visual.truecolor(150, 150, 150))
 }
@@ -45,6 +66,7 @@ fn print_part(
     value: Option<i64>,
     time: u128,
     time_unit: &str,
+    is_bench: bool,
 ) {
     let complete_prefix = if let Some(value) = value {
         format!(
@@ -62,36 +84,141 @@ fn print_part(
     };
     println!(
         "{complete_prefix}{}{}",
-        get_time_str(complete_prefix_len, terminal_width, time, time_unit),
-        if value.is_none() { "\n" } else { "" }
+        get_time_str(
+            complete_prefix_len,
+            terminal_width,
+            time,
+            time_unit,
+            is_bench
+        ),
+        if !is_bench && value.is_none() {
+            "\n"
+        } else {
+            ""
+        }
     );
 }
 
-macro_rules! advent_day {
-    ($day_num:expr, $day_mod:ident, $input_path:expr) => {{
-        let input_data = fs::read_to_string(format!("./inputs/day{:0>2}/{}", $day_num, $input_path)).expect("The day input file does not exist");
+fn print_centered(
+    text: &str,
+    side_margin: usize,
+    visual_width: usize,
+    terminal_width: usize,
+    color: Color,
+) {
+    let (side_left, side_right) = {
+        let side_width = ((terminal_width - side_margin * 2) as f32 - visual_width as f32) / 2.0;
+        (side_width.floor() as usize, side_width.ceil() as usize)
+    };
 
-        let parse = time_action!($day_mod::parse, input_data);
-        let part1 = time_action!($day_mod::part_1, &parse.value);
-        let part2 = time_action!($day_mod::part_2, &parse.value);
+    println!(
+        "|{:>side_left$}{}{:>side_right$}|",
+        " ",
+        text.color(color),
+        " "
+    );
+}
+
+fn print_title_box(day_number: usize, benchmark_runs: usize, terminal_width: usize) {
+    // Top bar
+    println!("+{}+", "=".repeat(terminal_width - 2));
+
+    // Day information
+    let day_str = format!("🎄 Day {:0>2} 🎄", day_number);
+    let day_str_visual_width = day_str.chars().count() + 2;
+    print_centered(
+        &day_str,
+        1,
+        day_str_visual_width,
+        terminal_width,
+        Color::Yellow,
+    );
+
+    // Bench information
+    if benchmark_runs > 0 {
+        let bench_str = format!("Benchmarking {} times", benchmark_runs);
+        let bench_str_visual_width = bench_str.chars().count();
+        print_centered(
+            &bench_str,
+            1,
+            bench_str_visual_width,
+            terminal_width,
+            Color::Red,
+        );
+    }
+
+    // Bottom bar
+    println!("+{}+", "=".repeat(terminal_width - 2));
+}
+
+// ($day_num:expr, $day_mod:ident, $input_path:expr, $benchmark_runs:expr) => {{
+macro_rules! advent_day {
+    ($day_module:ident, $args:expr) => {{
+        let input_data = fs::read_to_string(format!(
+            "./inputs/day{:0>2}/{}",
+            $args.day, $args.input_path
+        ))
+        .expect("The day input file does not exist");
 
         let term_width = term_size::dimensions().map(|(w, _)| w).unwrap_or(150);
 
-        // Print day title and box
-        println!("+{}+", "=".repeat(term_width - 2));
-        let day_str = format!("🎄 Day {:0>2} 🎄", $day_num);
-        let day_side_width = (term_width - 2 /* subtract both + */ - day_str.chars().count() - 2 /* approx emoji extra w */) / 2;
-        println!(
-            "|{:>day_side_width$}{}{:>day_side_width$}|",
-            " ", day_str.yellow(), " "
-        );
-        println!("+{}+", "=".repeat(term_width - 2));
+        print_title_box($args.day, $args.benchmark_runs, term_width);
 
-        // Print parts
-        print_part("Parse", term_width, None, parse.time, parse.time_unit);
-        print_part("Part 1", term_width, Some(part1.value), part1.time, part1.time_unit);
-        print_part("Part 2", term_width, Some(part2.value), part2.time, part2.time_unit);
+        if $args.benchmark_runs > 0 {
+            let mut benchs = [("Parse", 0), ("Part 1", 0), ("Part 2", 0)];
+
+            for _i in 0..$args.benchmark_runs {
+                let parse = time_action!($day_module::parse, input_data.clone());
+
+                benchs[0].1 += parse.time_nanos;
+                benchs[1].1 += time_action!($day_module::part_1, &parse.value).time_nanos;
+                benchs[2].1 += time_action!($day_module::part_2, &parse.value).time_nanos;
+            }
+
+            benchs.iter().for_each(|(bench_name, time)| {
+                let avg_time = time / ($args.benchmark_runs as u128);
+                let (parsed_time, time_unit) = format_nanos(avg_time);
+
+                print_part(bench_name, term_width, None, parsed_time, time_unit, true)
+            });
+        } else {
+            let parse = time_action!($day_module::parse, input_data);
+            let part1 = time_action!($day_module::part_1, &parse.value);
+            let part2 = time_action!($day_module::part_2, &parse.value);
+
+            // Print parts
+            print_part(
+                "Parse",
+                term_width,
+                None,
+                parse.time,
+                parse.time_unit,
+                false,
+            );
+            print_part(
+                "Part 1",
+                term_width,
+                Some(part1.value),
+                part1.time,
+                part1.time_unit,
+                false,
+            );
+            print_part(
+                "Part 2",
+                term_width,
+                Some(part2.value),
+                part2.time,
+                part2.time_unit,
+                false,
+            );
+        }
     }};
+}
+
+struct Args<'a> {
+    day: usize,
+    input_path: &'a str,
+    benchmark_runs: usize,
 }
 
 fn main() {
@@ -102,6 +229,12 @@ fn main() {
                 .short('s')
                 .long("sample")
                 .action(ArgAction::SetTrue),
+        )
+        .arg(
+            Arg::new("benchmark_runs")
+                .short('b')
+                .long("bench")
+                .default_value("0"),
         )
         .get_matches();
 
@@ -119,8 +252,22 @@ fn main() {
         "input.txt"
     };
 
+    let benchmark_runs: usize = {
+        let bench_str = matches.get_one::<String>("benchmark_runs").unwrap();
+
+        bench_str
+            .parse::<usize>()
+            .expect(&format!("Invalid bench amount to run \"{bench_str}\""))
+    };
+
+    let args = Args {
+        day: day_to_run,
+        input_path,
+        benchmark_runs,
+    };
+
     match day_to_run {
-        1 => advent_day!(1, day01, input_path),
+        1 => advent_day!(day01, args),
         // 2 => advent_day!(2, day02, input_path),
         // 3 => advent_day!(3, day03, input_path),
         // 4 => advent_day!(4, day04, input_path),
