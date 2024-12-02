@@ -8,7 +8,8 @@ This repo contains my solutions for different years.
 
 | Day | Solution | Stars | Part 1 benchmark | Part 2 benchmark |
 |-----|----------|-------|------------------|------------------|
-| [Day 1](https://adventofcode.com/2024/day/1): Historian Hysteria | [Here](./2024/solutions/day01.rs) | ⭐⭐ | 19µs | 672µs |
+| [Day 1:](https://adventofcode.com/2024/day/1) Historian Hysteria | [Here](./2024/solutions/day01.rs) | ⭐⭐ | 19µs | 672µs |
+| [Day 2:](https://adventofcode.com/2024/day/2) Red-Nosed Reports | [Here](./2024/solutions/day02.rs) | ⭐⭐ | 175µs | 763µs |
 
 ## Run it yourself
 ### Run a day 
