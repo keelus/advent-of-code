@@ -269,7 +269,7 @@ fn main() {
     match day_to_run {
         1 => advent_day!(day01, args),
         2 => advent_day!(day02, args),
-        // 3 => advent_day!(day03, args),
+        3 => advent_day!(day03, args),
         // 4 => advent_day!(day04, args),
         // 5 => advent_day!(day05, args),
         // 6 => advent_day!(day06, args),
