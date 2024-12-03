@@ -6,11 +6,11 @@ This repo contains my solutions for different years.
 ## Days, stars and solutions 
 > Benchmarks are run on an "Intel i7-10700K @ 5.100Ghz CPU".
 
-| Day | Solution | Stars | Part 1 benchmark | Part 2 benchmark |
-|-----|----------|-------|------------------|------------------|
-| [Day 1:](https://adventofcode.com/2024/day/1) Historian Hysteria | [Here](./2024/solutions/day01.rs) | ⭐⭐ | 19µs | 672µs |
-| [Day 2:](https://adventofcode.com/2024/day/2) Red-Nosed Reports | [Here](./2024/solutions/day02.rs) | ⭐⭐ | 175µs | 763µs |
-| [Day 3:](https://adventofcode.com/2024/day/3) Mull It Over | [Here](./2024/solutions/day03.rs) | ⭐⭐ | 528µs | 831µs |
+| Day | Solution | Stars | Parse benchmark | Part 1 benchmark | Part 2 benchmark |
+|-----|----------|-------|-------------------|-----------------|------------------|
+| [Day 1:](https://adventofcode.com/2024/day/1) Historian Hysteria | [Here](./2024/solutions/day01.rs) | ⭐⭐ | 1ms | 19µs | 672µs |
+| [Day 2:](https://adventofcode.com/2024/day/2) Red-Nosed Reports | [Here](./2024/solutions/day02.rs) | ⭐⭐ | 1ms | 175µs | 763µs |
+| [Day 3:](https://adventofcode.com/2024/day/3) Mull It Over | [Here](./2024/solutions/day03.rs) | ⭐⭐ | 855µs | 8µs | 8µs |
 
 ## Run it yourself
 ### Run a day 
