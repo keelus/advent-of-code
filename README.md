@@ -5,13 +5,14 @@ This repo contains my solutions for different years.
 
 ## Days, stars and solutions 
 > Benchmarks are run on an "Intel i7-10700K @ 5.100Ghz CPU".
+> Use the `--release` flag when benchmarking a day.
 
 | Day | Solution | Stars | Parse benchmark | Part 1 benchmark | Part 2 benchmark |
 |-----|----------|-------|-------------------|-----------------|------------------|
-| [Day 1:](https://adventofcode.com/2024/day/1) Historian Hysteria | [Here](./2024/solutions/day01.rs) | ⭐⭐ | 1ms | 19µs | 672µs |
-| [Day 2:](https://adventofcode.com/2024/day/2) Red-Nosed Reports | [Here](./2024/solutions/day02.rs) | ⭐⭐ | 1ms | 175µs | 763µs |
-| [Day 3:](https://adventofcode.com/2024/day/3) Mull It Over | [Here](./2024/solutions/day03.rs) | ⭐⭐ | 855µs | 8µs | 8µs |
-| [Day 4:](https://adventofcode.com/2024/day/4) Ceres Search | [Here](./2024/solutions/day04.rs) | ⭐⭐ | 24µs | 9ms | 2ms |
+| [Day 1:](https://adventofcode.com/2024/day/1) Historian Hysteria | [Here](./2024/solutions/day01.rs) | ⭐⭐ | 63µ | 264ns | 50µs |
+| [Day 2:](https://adventofcode.com/2024/day/2) Red-Nosed Reports | [Here](./2024/solutions/day02.rs) | ⭐⭐ | 142µs | 7µs | 57µs |
+| [Day 3:](https://adventofcode.com/2024/day/3) Mull It Over | [Here](./2024/solutions/day03.rs) | ⭐⭐ | 65µs | 345ns | 466ns |
+| [Day 4:](https://adventofcode.com/2024/day/4) Ceres Search | [Here](./2024/solutions/day04.rs) | ⭐⭐ | 7µs | 1ms | 360µs |
 
 ## Run it yourself
 ### Run a day 
