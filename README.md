@@ -11,6 +11,7 @@ This repo contains my solutions for different years.
 | [Day 1:](https://adventofcode.com/2024/day/1) Historian Hysteria | [Here](./2024/solutions/day01.rs) | ⭐⭐ | 1ms | 19µs | 672µs |
 | [Day 2:](https://adventofcode.com/2024/day/2) Red-Nosed Reports | [Here](./2024/solutions/day02.rs) | ⭐⭐ | 1ms | 175µs | 763µs |
 | [Day 3:](https://adventofcode.com/2024/day/3) Mull It Over | [Here](./2024/solutions/day03.rs) | ⭐⭐ | 855µs | 8µs | 8µs |
+| [Day 4:](https://adventofcode.com/2024/day/4) Ceres Search | [Here](./2024/solutions/day04.rs) | ⭐| 24µs | 9ms | - |
 
 ## Run it yourself
 ### Run a day 
