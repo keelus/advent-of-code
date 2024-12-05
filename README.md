@@ -13,6 +13,7 @@ This repo contains my solutions for different years.
 | [Day 2:](https://adventofcode.com/2024/day/2) Red-Nosed Reports | [Here](./2024/solutions/day02.rs) | ⭐⭐ | 142µs | 7µs | 57µs |
 | [Day 3:](https://adventofcode.com/2024/day/3) Mull It Over | [Here](./2024/solutions/day03.rs) | ⭐⭐ | 65µs | 345ns | 466ns |
 | [Day 4:](https://adventofcode.com/2024/day/4) Ceres Search | [Here](./2024/solutions/day04.rs) | ⭐⭐ | 7µs | 1ms | 360µs |
+| [Day 5:](https://adventofcode.com/2024/day/5) Print Queue | [Here](./2024/solutions/day05.rs) | ⭐⭐ | 201µs | 609µs | 1ms |
 
 ## Run it yourself
 ### Run a day 

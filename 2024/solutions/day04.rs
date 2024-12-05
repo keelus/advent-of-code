@@ -1,9 +1,3 @@
-pub enum Token {
-    Multiplication(i64, i64),
-    Do,
-    Dont,
-}
-
 static TARGET_WORD: &str = "XMAS";
 static TARGET_WORD_LEN: usize = TARGET_WORD.len();
 static REV_TARGET_WORD: &str = "SAMX";
