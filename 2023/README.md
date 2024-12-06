@@ -6,29 +6,29 @@ A repo with my solutions for the daily Advent of Code puzzles, in Golang.
 ### Days, stars and solutions 
 | Day                                                           | #1 | #1 Solution | #2 | #2 Solution     |
 |---------------------------------------------------------------|----|-------------|----|-----------------|
-| [Day 1: Trebuchet?!](2023/day01/day01.go)                     | ⭐ | 57346      | ⭐ | 57345           |
-| [Day 2: Cube Conundrum](2023/day02/day02.go)                  | ⭐ | 2377       | ⭐ | 71220           |
-| [Day 3: Gear Ratios](2023/day03/day03.go)                     | ⭐ | 537732     | ⭐ | 84883664        |
-| [Day 4: Scratchcards](2023/day04/day04.go)                    | ⭐ | 22674      | ⭐ | 5747443         |
-| [Day 5: If You Give A Seed A Fertilizer](2023/day05/day05.go) | ⭐ | 346433842  | ⭐ | 60294664        |
-| [Day 6: Wait For It](2023/day06/day06.go)                     | ⭐ | 2374848    | ⭐ | 39132886        |
-| [Day 7: Camel Cards](2023/day07/day07.go)                     | ⭐ | 252295678  | ⭐ | 250577259       |
-| [Day 8: Haunted Wasteland](2023/day08/day08.go)               | ⭐ | 18023      | ⭐ | 14449445933179  |
-| [Day 9: Mirage Maintenance](2023/day09/day09.go)              | ⭐ | 1955513104 | ⭐ | 1131            |
-| [Day 10: Pipe Maze](2023/day10/day10.go)                      | ⭐ | 6682       | ⭐ | 353             |
-| [Day 11: Cosmic Expansion](2023/day11/day11.go)               | ⭐ | 9556896    | ⭐ | 685038186836    |
-| [Day 12: Hot Springs](2023/day12/day12.go)                    | ⭐ | 7084       |   | -               |
-| [Day 13: Point of Incidence](2023/day13/day13.go)             | ⭐ | 33047      | ⭐ | 28806           |
-| [Day 14: Parabolic Reflector Dish](2023/day14/day14.go)       | ⭐ | 107142     | ⭐ | 104815          |
-| [Day 15: Lens Library](2023/day15/main.go)                    | ⭐ | 517551     | ⭐ | 286097          |
-| [Day 16: The Floor Will Be Lava](2023/day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513            |
-| [Day 17: Clumsy Crucible](2023/day17/day17.go)                | ⭐ | 845        | ⭐ | 993             |
-| [Day 18: Lavaduct Lagoon](2023/day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719  |
-| [Day 19: Aplenty](2023/day19/day19.go)                        | ⭐ | 319062     | ⭐ | 118638369682135 |
-| [Day 20: Pulse Propagation](2023/day20/day20.go)              | ⭐ | 867118762  |   |                 |
-| [Day 21: Step Counter](2023/day21/day21.go)                   | ⭐ | 3758       |   |                 |
-| [Day 23: A Long Walk](2023/day23/day23.go)                    | ⭐ | 1930       |   |                 |
-| [Day 24: Never Tell Me The Odds](2023/day23/day23.go)         | ⭐ | 13149      |   |                 |
+| [Day 1: Trebuchet?!](./day01/day01.go)                     | ⭐ | 57346      | ⭐ | 57345           |
+| [Day 2: Cube Conundrum](./day02/day02.go)                  | ⭐ | 2377       | ⭐ | 71220           |
+| [Day 3: Gear Ratios](./day03/day03.go)                     | ⭐ | 537732     | ⭐ | 84883664        |
+| [Day 4: Scratchcards](./day04/day04.go)                    | ⭐ | 22674      | ⭐ | 5747443         |
+| [Day 5: If You Give A Seed A Fertilizer](./day05/day05.go) | ⭐ | 346433842  | ⭐ | 60294664        |
+| [Day 6: Wait For It](./day06/day06.go)                     | ⭐ | 2374848    | ⭐ | 39132886        |
+| [Day 7: Camel Cards](./day07/day07.go)                     | ⭐ | 252295678  | ⭐ | 250577259       |
+| [Day 8: Haunted Wasteland](./day08/day08.go)               | ⭐ | 18023      | ⭐ | 14449445933179  |
+| [Day 9: Mirage Maintenance](./day09/day09.go)              | ⭐ | 1955513104 | ⭐ | 1131            |
+| [Day 10: Pipe Maze](./day10/day10.go)                      | ⭐ | 6682       | ⭐ | 353             |
+| [Day 11: Cosmic Expansion](./day11/day11.go)               | ⭐ | 9556896    | ⭐ | 685038186836    |
+| [Day 12: Hot Springs](./day12/day12.go)                    | ⭐ | 7084       |   | -               |
+| [Day 13: Point of Incidence](./day13/day13.go)             | ⭐ | 33047      | ⭐ | 28806           |
+| [Day 14: Parabolic Reflector Dish](./day14/day14.go)       | ⭐ | 107142     | ⭐ | 104815          |
+| [Day 15: Lens Library](./day15/main.go)                    | ⭐ | 517551     | ⭐ | 286097          |
+| [Day 16: The Floor Will Be Lava](./day16/day16.go)         | ⭐ | 6855       | ⭐ | 7513            |
+| [Day 17: Clumsy Crucible](./day17/day17.go)                | ⭐ | 845        | ⭐ | 993             |
+| [Day 18: Lavaduct Lagoon](./day18/day18.go)                | ⭐ | 62573      | ⭐ | 54662804037719  |
+| [Day 19: Aplenty](./day19/day19.go)                        | ⭐ | 319062     | ⭐ | 118638369682135 |
+| [Day 20: Pulse Propagation](./day20/day20.go)              | ⭐ | 867118762  |   |                 |
+| [Day 21: Step Counter](./day21/day21.go)                   | ⭐ | 3758       |   |                 |
+| [Day 23: A Long Walk](./day23/day23.go)                    | ⭐ | 1930       |   |                 |
+| [Day 24: Never Tell Me The Odds](./day23/day23.go)         | ⭐ | 13149      |   |                 |
 
 
 ### Performance
@@ -69,7 +69,7 @@ go run . [-day=<1-25>] [-input=<file_name>] -year=2023
 ```
 > -day=<1-25> (default:`1`) Specify the day to execute the puzzle `(1-25)`
 
-> -input=<file_name> (default:`input`) Specify the puzzle input file (located at `2023/dayXX/.input/<file_name>`)
+> -input=<file_name> (default:`input`) Specify the puzzle input file (located at `./dayXX/.input/<file_name>`)
 ### Bench a day
 While being at the root directory:
 ```
