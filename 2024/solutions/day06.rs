@@ -71,7 +71,7 @@ pub fn parse(input_data: String) -> Input {
     Input { map, start_pos }
 }
 
-pub fn part_1(input: &Input) -> i64 {
+fn solve_path(input: &Input) -> HashSet<Position> {
     let mut pos = input.start_pos;
     let mut dir = Direction::Up;
 
@@ -93,19 +93,26 @@ pub fn part_1(input: &Input) -> i64 {
         }
     }
 
-    seen.len() as i64
+    seen
+}
+
+pub fn part_1(input: &Input) -> i64 {
+    solve_path(input).len() as i64
 }
 
 pub fn part_2(input: &Input) -> i64 {
-    let mut loop_positions = HashSet::new();
+    // Extract the base path, just exactly as
+    // we did in part 1.
+    let base_path = solve_path(input);
 
-    // I am not sure on how to solve this one so,
-    // lets drop a bruteforce.
-    for i in 0..input.map.len() {
-        for j in 0..input.map[i].len() {
+    // Then, bruteforce obstacles one by
+    // one along the path.
+    base_path
+        .iter()
+        .fold(HashSet::new(), |mut acc, &(i, j)| {
             let new_obstacle_pos = (i, j);
             if input.start_pos == new_obstacle_pos || input.map[i][j] == '#' {
-                continue;
+                return acc;
             }
 
             let mut pos = input.start_pos;
@@ -130,15 +137,15 @@ pub fn part_2(input: &Input) -> i64 {
 
                     if seen.contains(&(pos, dir)) {
                         // Is a loop
-                        loop_positions.insert((i, j));
+                        acc.insert((i, j));
                         break;
                     } else {
                         seen.insert((pos, dir));
                     }
                 }
             }
-        }
-    }
 
-    loop_positions.len() as i64
+            acc
+        })
+        .len() as i64
 }
