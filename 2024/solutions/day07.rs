@@ -1,5 +1,3 @@
-use std::fmt::format;
-
 #[derive(Debug)]
 pub struct Equation {
     numbers: Vec<i64>,
@@ -48,64 +46,15 @@ pub fn generate_combinations(operators: &[char], len: usize) -> Vec<Vec<char>> {
     new_generated
 }
 
-pub fn part_1(equations: &[Equation]) -> i64 {
+pub fn sum_valid_equations(operators: &[char], equations: &[Equation]) -> i64 {
     equations
         .iter()
         .filter_map(|e| {
-            let operators = ['+', '*'];
             let operator_orders = generate_combinations(&operators, e.numbers.len() - 1);
 
-            let mut valid = false;
-            for operator_order in operator_orders.into_iter() {
+            for operator_order in operator_orders.iter() {
                 let mut nums = e.numbers.iter();
-                let mut ops = operator_order.into_iter();
-
-                let mut acc = 0;
-                let mut prev_op = None;
-                while let Some(num) = nums.next() {
-                    match prev_op {
-                        Some(op) => {
-                            match op {
-                                '+' => acc = acc + num,
-                                '*' => acc = acc * num,
-                                _ => (),
-                            }
-                            prev_op = ops.next();
-
-                            if prev_op.is_none() {
-                                break;
-                            }
-                        }
-                        None => {
-                            // Will happen on first iteration
-                            acc += num;
-                            prev_op = Some(ops.next().unwrap());
-                        }
-                    }
-                }
-
-                if acc == e.result {
-                    valid = true;
-                    break;
-                }
-            }
-
-            valid.then_some(e.result)
-        })
-        .sum()
-}
-
-pub fn part_2(equations: &[Equation]) -> i64 {
-    equations
-        .iter()
-        .filter_map(|e| {
-            let operators = ['+', '*', '|'];
-            let operator_orders = generate_combinations(&operators, e.numbers.len() - 1);
-
-            let mut valid = false;
-            for operator_order in operator_orders.into_iter() {
-                let mut nums = e.numbers.iter();
-                let mut ops = operator_order.into_iter();
+                let mut ops = operator_order.iter();
 
                 let mut acc = 0;
                 let mut prev_op = None;
@@ -121,7 +70,7 @@ pub fn part_2(equations: &[Equation]) -> i64 {
                                 }
                                 _ => (),
                             }
-                            prev_op = ops.next();
+                            prev_op = ops.next().copied();
 
                             if prev_op.is_none() {
                                 break;
@@ -130,18 +79,25 @@ pub fn part_2(equations: &[Equation]) -> i64 {
                         None => {
                             // Will happen on first iteration
                             acc += num;
-                            prev_op = Some(ops.next().unwrap());
+                            prev_op = Some(*ops.next().unwrap());
                         }
                     }
                 }
 
                 if acc == e.result {
-                    valid = true;
-                    break;
+                    return Some(e.result);
                 }
             }
 
-            valid.then_some(e.result)
+            None
         })
         .sum()
+}
+
+pub fn part_1(equations: &[Equation]) -> i64 {
+    sum_valid_equations(&['+', '*'], equations)
+}
+
+pub fn part_2(equations: &[Equation]) -> i64 {
+    sum_valid_equations(&['+', '*', '|'], equations)
 }
