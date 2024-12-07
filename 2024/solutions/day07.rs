@@ -1,4 +1,3 @@
-#[derive(Debug)]
 pub struct Equation {
     numbers: Vec<i64>,
     result: i64,
@@ -27,77 +26,40 @@ pub fn parse(input_data: String) -> Vec<Equation> {
         .collect()
 }
 
-pub fn generate_combinations(operators: &[char], len: usize) -> Vec<Vec<char>> {
-    if len == 1 {
-        return operators.iter().copied().map(|op| vec![op]).collect();
+pub fn is_valid_1(equation: &Equation, acc: i64, index: usize) -> bool {
+    if index == equation.numbers.len() {
+        return equation.result == acc;
     }
 
-    let generated = generate_combinations(operators, len - 1);
-    let mut new_generated = Vec::with_capacity(generated.len() * operators.len());
-
-    for gen_op in generated {
-        for op in operators {
-            let mut new_gen_op = gen_op.clone();
-            new_gen_op.push(*op);
-            new_generated.push(new_gen_op);
-        }
-    }
-
-    new_generated
-}
-
-pub fn sum_valid_equations(operators: &[char], equations: &[Equation]) -> i64 {
-    equations
-        .iter()
-        .filter_map(|e| {
-            let operator_orders = generate_combinations(&operators, e.numbers.len() - 1);
-
-            for operator_order in operator_orders.iter() {
-                let mut nums = e.numbers.iter();
-                let mut ops = operator_order.iter();
-
-                let mut acc = 0;
-                let mut prev_op = None;
-                while let Some(num) = nums.next() {
-                    match prev_op {
-                        Some(op) => {
-                            match op {
-                                '+' => acc = acc + num,
-                                '*' => acc = acc * num,
-                                '|' => {
-                                    let acc_new = format!("{}{}", acc, num);
-                                    acc = acc_new.parse().unwrap();
-                                }
-                                _ => (),
-                            }
-                            prev_op = ops.next().copied();
-
-                            if prev_op.is_none() {
-                                break;
-                            }
-                        }
-                        None => {
-                            // Will happen on first iteration
-                            acc += num;
-                            prev_op = Some(*ops.next().unwrap());
-                        }
-                    }
-                }
-
-                if acc == e.result {
-                    return Some(e.result);
-                }
-            }
-
-            None
-        })
-        .sum()
+    let num = equation.numbers[index];
+    is_valid_1(equation, acc + num, index + 1) || is_valid_1(equation, acc * num, index + 1)
 }
 
 pub fn part_1(equations: &[Equation]) -> i64 {
-    sum_valid_equations(&['+', '*'], equations)
+    equations
+        .iter()
+        .filter_map(|e| is_valid_1(e, e.numbers[0], 1).then_some(e.result))
+        .sum()
+}
+
+pub fn is_valid_2(equation: &Equation, acc: i64, index: usize) -> bool {
+    if index == equation.numbers.len() {
+        return equation.result == acc;
+    }
+
+    let num = equation.numbers[index];
+
+    let acc_len = (num as f32).log10() + 1.0;
+    let concatenated = acc * 10i64.pow(acc_len.floor() as u32) + num;
+
+    is_valid_2(equation, acc + num, index + 1)
+        || is_valid_2(equation, if index == 0 { 0 } else { acc } * num, index + 1)
+        || is_valid_2(equation, concatenated, index + 1)
 }
 
 pub fn part_2(equations: &[Equation]) -> i64 {
-    sum_valid_equations(&['+', '*', '|'], equations)
+    equations
+        .iter()
+        .filter_map(|e| is_valid_2(e, e.numbers[0], 1).then_some(e.result))
+        .sum()
 }

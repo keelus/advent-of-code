@@ -15,7 +15,7 @@ This repo contains my solutions for different years.
 | [Day 4:](https://adventofcode.com/2024/day/4) Ceres Search | [Here](./2024/solutions/day04.rs) | ⭐⭐ | 7µs | 1ms | 360µs |
 | [Day 5:](https://adventofcode.com/2024/day/5) Print Queue | [Here](./2024/solutions/day05.rs) | ⭐⭐ | 201µs | 395µs | 797µs |
 | [Day 6:](https://adventofcode.com/2024/day/6) Guard Gallivant | [Here](./2024/solutions/day06.rs) | ⭐⭐ | 36µs | 251µs | 1s |
-| [Day 7:](https://adventofcode.com/2024/day/7) Bridge Repair | [Here](./2024/solutions/day07.rs) | ⭐⭐ | 455µs | 28ms | 3s |
+| [Day 7:](https://adventofcode.com/2024/day/7) Bridge Repair | [Here](./2024/solutions/day07.rs) | ⭐⭐ | 455µs | 578µs | 84ms |
 
 ## Run it yourself
 ### Run a day 
