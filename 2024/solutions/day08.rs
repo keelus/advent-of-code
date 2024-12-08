@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 pub struct Map {
     antenna_map: HashMap<char, Vec<Position>>,
@@ -57,32 +57,64 @@ pub fn parse(input_data: String) -> Map {
 }
 
 pub fn part_1(map: &Map) -> i64 {
-    map.antenna_map.iter().fold(0, |mut acc, (_k, positions)| {
-        let len = positions.len();
+    map.antenna_map
+        .iter()
+        .map(|(_k, positions)| {
+            let len = positions.len();
 
-        for i in 0..len {
-            let cur = positions[i];
-            for j in 0..len {
-                if i == j {
-                    continue;
-                }
+            (0..len)
+                .map(|i| {
+                    let cur = positions[i];
+                    (0..len)
+                        .filter(|&j| {
+                            if i == j {
+                                return false;
+                            }
 
-                let other = positions[j];
-                let (dx, dy) = (other.1 - cur.1, other.0 - cur.0);
+                            let other = positions[j];
+                            let (dx, dy) = (other.1 - cur.1, other.0 - cur.0);
+                            let antinode_pos = (other.0 + dy, other.1 + dx);
 
-                let antinode_pos = (other.0 + dy, other.1 + dx);
-                if map.is_inside(antinode_pos) {
-                    if !map.is_overlapping(antinode_pos) {
-                        acc += 1;
-                    }
-                }
-            }
-        }
+                            if map.is_inside(antinode_pos) {
+                                if !map.is_overlapping(antinode_pos) {
+                                    return true;
+                                }
+                            }
 
-        acc
-    })
+                            false
+                        })
+                        .count() as i64
+                })
+                .sum::<i64>()
+        })
+        .sum()
 }
 
 pub fn part_2(map: &Map) -> i64 {
-    0
+    map.antenna_map
+        .iter()
+        .fold(HashSet::new(), |mut acc, (_k, positions)| {
+            let len = positions.len();
+
+            (0..len).for_each(|i| {
+                let cur = positions[i];
+                (0..len).for_each(|j| {
+                    if i != j {
+                        let other = positions[j];
+                        let (dx, dy) = (other.1 - cur.1, other.0 - cur.0);
+                        let mut antinode_pos = (cur.0, cur.1);
+
+                        while map.is_inside(antinode_pos) {
+                            acc.insert(antinode_pos);
+
+                            antinode_pos.0 += dy;
+                            antinode_pos.1 += dx;
+                        }
+                    }
+                });
+            });
+
+            acc
+        })
+        .len() as i64
 }
