@@ -17,6 +17,7 @@ This repo contains my solutions for different years.
 | [Day 6:](https://adventofcode.com/2024/day/6) Guard Gallivant | [Here](./2024/solutions/day06.rs) | ⭐⭐ | 36µs | 251µs | 1s |
 | [Day 7:](https://adventofcode.com/2024/day/7) Bridge Repair | [Here](./2024/solutions/day07.rs) | ⭐⭐ | 455µs | 578µs | 84ms |
 | [Day 8:](https://adventofcode.com/2024/day/8) Resonant Collinearity | [Here](./2024/solutions/day08.rs) | ⭐⭐ | 21µs | 116µs | 92µs |
+| [Day 9:](https://adventofcode.com/2024/day/9) Disk Fragmenter | [Here](./2024/solutions/day09.rs) | ⭐⭐ | 3ms | 520ms | 332ms |
 
 ## Run it yourself
 ### Run a day 
