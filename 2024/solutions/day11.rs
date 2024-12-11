@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 type Rock = u64;
 
 pub fn parse<'p>(input_data: String) -> Vec<Rock> {
@@ -7,39 +9,47 @@ pub fn parse<'p>(input_data: String) -> Vec<Rock> {
         .collect()
 }
 
-fn blink(arrangement: &[Rock]) -> Vec<Rock> {
-    arrangement
-        .iter()
-        .map(|&n| {
-            let len = ((n as f32).log10() as usize) + 1;
-            if n == 0 {
-                vec![1]
-            } else if len % 2 == 0 {
-                let half_len = len / 2;
-                let nn = 10usize.pow(half_len as u32);
+fn blink_rock(rock: Rock, i: usize, cache: &mut HashMap<(Rock, usize), usize>) -> usize {
+    let len = ((rock as f32).log10() as usize) + 1;
 
-                let left_half = n / nn as u64;
-                let right_half = n % nn as u64;
+    if i == 1 {
+        return if len % 2 == 0 { 2 } else { 1 };
+    }
 
-                vec![left_half, right_half]
-            } else {
-                vec![n * 2024]
-            }
-        })
-        .flatten()
-        .collect()
+    if let Some(&v) = cache.get(&(rock, i)) {
+        return v;
+    }
+
+    let v = {
+        if rock == 0 {
+            blink_rock(1, i - 1, cache)
+        } else if len % 2 == 0 {
+            let half_len = len / 2;
+            let nn = 10usize.pow(half_len as u32);
+
+            let left_half = rock / nn as u64;
+            let right_half = rock % nn as u64;
+
+            blink_rock(left_half, i - 1, cache) + blink_rock(right_half, i - 1, cache)
+        } else {
+            blink_rock(rock * 2024, i - 1, cache)
+        }
+    };
+
+    cache.insert((rock, i), v);
+    v
 }
 
 pub fn part_1(input: &[Rock]) -> i64 {
-    let mut arrangement = input.to_vec();
-
-    for _i in 0..25 {
-        arrangement = blink(&arrangement);
-    }
-
-    arrangement.len() as i64
+    input
+        .iter()
+        .map(|&n| blink_rock(n, 25, &mut HashMap::new()))
+        .sum::<usize>() as i64
 }
 
 pub fn part_2(input: &[Rock]) -> i64 {
-    0
+    input
+        .iter()
+        .map(|&n| blink_rock(n, 75, &mut HashMap::new()))
+        .sum::<usize>() as i64
 }
