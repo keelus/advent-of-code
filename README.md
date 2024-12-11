@@ -19,6 +19,7 @@ This repo contains my solutions for different years.
 | [Day 8:](https://adventofcode.com/2024/day/8) Resonant Collinearity | [Here](./2024/solutions/day08.rs) | ⭐⭐ | 21µs | 116µs | 92µs |
 | [Day 9:](https://adventofcode.com/2024/day/9) Disk Fragmenter | [Here](./2024/solutions/day09.rs) | ⭐⭐ | 1ms | 520ms | 332ms |
 | [Day 10:](https://adventofcode.com/2024/day/10) Hoof It | [Here](./2024/solutions/day10.rs) | ⭐⭐ | 65µs | 489µs | 436µs |
+| [Day 11:](https://adventofcode.com/2024/day/11) Plutonian Pebbles | [Here](./2024/solutions/day11.rs) | ⭐ | 1µs | 9ms | - |
 
 ## Run it yourself
 ### Run a day 
