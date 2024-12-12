@@ -1,16 +1,26 @@
 use std::{
     collections::{HashMap, HashSet},
-    fmt::Debug,
+    usize,
 };
 
 type Position = (usize, usize);
 
 #[derive(Debug)]
 pub struct Region {
-    symbol: u8,
     w: usize,
     h: usize,
     points: HashSet<Position>,
+}
+
+pub struct Side {
+    from: Position,
+    to: Position,
+}
+
+impl Side {
+    pub fn new(from: Position, to: Position) -> Self {
+        Self { from, to }
+    }
 }
 
 #[derive(Eq, Hash, PartialEq)]
@@ -18,26 +28,6 @@ pub struct ComplexSide {
     from: Position,
     to_horiz: Option<Position>,
     to_vert: Option<Position>,
-}
-
-impl Debug for ComplexSide {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        if self.to_horiz.is_some() && self.to_vert.is_some() {
-            write!(
-                f,
-                "{:?}->[h:{:?}, v:{:?}]",
-                self.from,
-                self.to_horiz.unwrap(),
-                self.to_vert.unwrap()
-            )
-        } else if self.to_horiz.is_some() {
-            write!(f, "{:?}->h:{:?}", self.from, self.to_horiz.unwrap())
-        } else if self.to_vert.is_some() {
-            write!(f, "{:?}->v:{:?}", self.from, self.to_vert.unwrap())
-        } else {
-            write!(f, "{:?}->X", self.from)
-        }
-    }
 }
 
 impl ComplexSide {
@@ -78,23 +68,6 @@ impl ComplexSide {
         });
 
         map
-    }
-}
-
-pub struct Side {
-    from: Position,
-    to: Position,
-}
-
-impl Debug for Side {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}->{:?}", self.from, self.to)
-    }
-}
-
-impl Side {
-    pub fn new(from: Position, to: Position) -> Self {
-        Self { from, to }
     }
 }
 
@@ -172,29 +145,40 @@ impl Region {
         self.get_sides().len()
     }
 
-    // Works correctly, except that puzzle-mentioned
-    // Moebious specific case.
     pub fn merge_sides(&self) -> Vec<Side> {
         let sides = ComplexSide::map_from_side_vec(&self.get_sides());
 
-        let mut horiz_ign = HashSet::new();
-        let mut vert_ign = HashSet::new();
+        // (vert, horiz)
+        let mut used_sides = (HashSet::new(), HashSet::new());
+        let mut point_count = HashMap::new();
 
-        // First pass:
+        // A first pass to:
+        // 1. Count how many sides start and end at each point.
+        // 2. Get the sides that will be used for merging (the ones inside other sides).
         sides.iter().for_each(|(_, cpx_side)| {
             let cur_from = cpx_side.from;
+
+            point_count
+                .entry(cur_from)
+                .and_modify(|c| *c += 1)
+                .or_insert(1);
 
             // Do horizontals
             let final_to = cpx_side.to_horiz;
             if final_to.is_some() {
                 let mut final_to = final_to.unwrap();
+
+                point_count
+                    .entry(final_to)
+                    .and_modify(|c| *c += 1)
+                    .or_insert(1);
+
                 loop {
                     if let Some(other_cpx_side) = sides.get(&final_to) {
                         if let Some(other_to_horiz) = other_cpx_side.to_horiz {
-                            horiz_ign.insert(other_cpx_side.from);
                             // Is Expandable
+                            used_sides.1.insert(other_cpx_side.from);
                             final_to = other_to_horiz;
-                            // viewed_horiz.insert(other_cpx_side.from);
                             continue;
                         }
                     }
@@ -208,12 +192,18 @@ impl Region {
             let final_to = cpx_side.to_vert;
             if final_to.is_some() {
                 let mut final_to = final_to.unwrap();
+
+                point_count
+                    .entry(final_to)
+                    .and_modify(|c| *c += 1)
+                    .or_insert(1);
+
                 loop {
                     if let Some(other_cpx_side) = sides.get(&final_to) {
                         if let Some(other_to_vert) = other_cpx_side.to_vert {
                             // Is Expandable
                             final_to = other_to_vert;
-                            vert_ign.insert(other_cpx_side.from);
+                            used_sides.0.insert(other_cpx_side.from);
                             continue;
                         }
                     }
@@ -224,60 +214,82 @@ impl Region {
             }
         });
 
-        let mut merged_sides: Vec<Side> = Vec::new();
-
-        // Second pass
-        sides.iter().for_each(|(_, cpx_side)| {
-            let cur_from = cpx_side.from;
-
-            // Do horizontals
-            let final_to = cpx_side.to_horiz;
-            if !horiz_ign.contains(&cur_from) && final_to.is_some() {
-                let mut final_to = final_to.unwrap();
-                loop {
-                    if let Some(other_cpx_side) = sides.get(&final_to) {
-                        if let Some(other_to_horiz) = other_cpx_side.to_horiz {
-                            horiz_ign.insert(other_cpx_side.from);
-                            // Is Expandable
-                            final_to = other_to_horiz;
-                            continue;
-                        }
-                    }
-
-                    // Not expandable, save it
-                    merged_sides.push(Side {
-                        from: cur_from,
-                        to: final_to,
-                    });
-                    break;
-                }
-            }
-
-            // Do verticals
-            let final_to = cpx_side.to_vert;
-            if !vert_ign.contains(&cur_from) && final_to.is_some() {
-                let mut final_to = final_to.unwrap();
-                loop {
-                    if let Some(other_cpx_side) = sides.get(&final_to) {
-                        if let Some(other_to_vert) = other_cpx_side.to_vert {
-                            // Is Expandable
-                            final_to = other_to_vert;
-                            vert_ign.insert(other_cpx_side.from);
-                            continue;
-                        }
-                    }
-
-                    // Not expandable, save it
-                    merged_sides.push(Side {
-                        from: cur_from,
-                        to: final_to,
-                    });
-                    break;
-                }
+        // Allow those points with greater count to
+        // be merged from, as they wont be consumed
+        // from bigger sides.
+        point_count.iter().for_each(|(p, c)| {
+            if *c > 2 {
+                used_sides.0.remove(p);
+                used_sides.1.remove(p);
             }
         });
 
-        merged_sides
+        // Second pass
+        sides
+            .iter()
+            .map(|(_, cpx_side)| {
+                let mut cur_merged = Vec::with_capacity(2);
+                let cur_from = cpx_side.from;
+
+                // Do horizontals
+                let final_to = cpx_side.to_horiz;
+                if !used_sides.1.contains(&cur_from) && final_to.is_some() {
+                    let mut final_to = final_to.unwrap();
+                    loop {
+                        if let Some(other_cpx_side) = sides.get(&final_to) {
+                            if let Some(other_to_horiz) = other_cpx_side.to_horiz {
+                                if let Some(&count) = point_count.get(&other_to_horiz) {
+                                    // Is Expandable
+                                    final_to = other_to_horiz;
+
+                                    // If is further expandable
+                                    if count <= 2 {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+
+                    cur_merged.push(Side {
+                        from: cur_from,
+                        to: final_to,
+                    });
+                }
+
+                // Do verticals
+                let final_to = cpx_side.to_vert;
+                if !used_sides.0.contains(&cur_from) && final_to.is_some() {
+                    let mut final_to = final_to.unwrap();
+                    loop {
+                        if let Some(other_cpx_side) = sides.get(&final_to) {
+                            if let Some(other_to_vert) = other_cpx_side.to_vert {
+                                if let Some(&count) = point_count.get(&other_to_vert) {
+                                    // Is Expandable
+                                    final_to = other_to_vert;
+
+                                    // If is further expandable
+                                    if count <= 2 {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+
+                    // Not expandable, save it
+                    cur_merged.push(Side {
+                        from: cur_from,
+                        to: final_to,
+                    });
+                }
+
+                cur_merged
+            })
+            .flatten()
+            .collect()
     }
 
     fn calc_fence_price(&self) -> usize {
@@ -385,38 +397,25 @@ fn get_region(target: u8, map: &mut [Vec<u8>]) -> Option<Region> {
     });
 
     let visited = visited.into_iter().collect::<Vec<_>>();
-    let mut min_i = 99;
-    let mut min_j = 99;
-    let mut max_i = 0;
-    let mut max_j = 0;
+    let mut min = (usize::MAX, usize::MAX);
+    let mut max = (usize::MIN, usize::MIN);
+
     visited.iter().for_each(|&(i, j)| {
-        if i < min_i {
-            min_i = i;
-        }
-        if i > max_i {
-            max_i = i;
-        }
-
-        if j < min_j {
-            min_j = j;
-        }
-
-        if j > max_j {
-            max_j = j;
-        }
+        min.0 = min.0.min(i);
+        max.0 = max.0.max(i);
+        min.1 = min.1.min(j);
+        max.1 = max.1.max(j);
     });
 
-    let max_i = max_i - min_i;
-    let max_j = max_j - min_j;
+    let max_i = max.0 - min.0;
+    let max_j = max.1 - min.1;
 
     let visited = visited
         .iter()
-        .map(|(i, j)| (i - min_i, j - min_j))
+        .map(|(i, j)| (i - min.0, j - min.1))
         .collect::<HashSet<_>>();
 
-    // We can now construct the current region.
     Some(Region {
-        symbol: target,
         w: max_j + 1,
         h: max_i + 1,
         points: visited,
@@ -439,5 +438,16 @@ pub fn part_1(input: &Input) -> i64 {
 }
 
 pub fn part_2(input: &Input) -> i64 {
-    0
+    let mut map = input.map.to_vec();
+
+    let mut sum = 0;
+    input.plant_types.iter().for_each(|&p| loop {
+        if let Some(region) = get_region(p, &mut map) {
+            sum += region.calc_fence_price_p2()
+        } else {
+            break;
+        }
+    });
+
+    sum as i64
 }
