@@ -21,6 +21,7 @@ This repo contains my solutions for different years.
 | [Day 10:](https://adventofcode.com/2024/day/10) Hoof It | [Here](./2024/solutions/day10.rs) | ⭐⭐ | 65µs | 489µs | 436µs |
 | [Day 11:](https://adventofcode.com/2024/day/11) Plutonian Pebbles | [Here](./2024/solutions/day11.rs) | ⭐⭐ | 1µs | 582µs | 32ms |
 | [Day 12:](https://adventofcode.com/2024/day/12) Garden Groups | [Here](./2024/solutions/day12.rs) | ⭐⭐ | 221µs | 7ms | 11ms |
+| [Day 13:](https://adventofcode.com/2024/day/13) Claw Contraption | [Here](./2024/solutions/day13.rs) | ⭐⭐ | 158µs | 3µs | 6µs |
 
 ## Run it yourself
 ### Run a day 
