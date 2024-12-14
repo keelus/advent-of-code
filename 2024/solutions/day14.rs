@@ -1,4 +1,3 @@
-use image::{ImageBuffer, Rgb};
 use std::collections::HashMap;
 
 type Position = (usize, usize);
@@ -99,32 +98,68 @@ pub fn robots_to_ascii(robots: &[Robot]) -> Vec<Vec<char>> {
         .collect()
 }
 
-// I've just generated 10k images (yes) until I
-// found the pattern manually, which is very easy
+// At the beginning I solved this by just
+// generating 10k images (yes) until I found
+// the pattern manually, which is very easy
 // to see.
+//
+// Now that I know it will be a filled tree,
+// I find the max neighbour count.
 pub fn part_2(robots: &[Robot]) -> i64 {
     let mut robots = robots.to_vec();
 
     const MAX_SECS: usize = 10000;
+    let mut max_neighbour_count: Option<(usize, usize)> = None;
+
     (0..MAX_SECS).into_iter().for_each(|secs| {
         robots.iter_mut().for_each(|r| {
             r.iterate(1);
         });
 
-        let ascii = robots_to_ascii(&robots);
-
-        let mut img = ImageBuffer::new(WIDTH as u32, HEIGHT as u32);
-        ascii.iter().enumerate().for_each(|(i, row)| {
-            row.iter().enumerate().for_each(|(j, c)| {
-                let color = match c {
-                    '.' => Rgb([0u8, 0, 0]),
-                    _ => Rgb([255u8, 255, 255]),
-                };
-                img.put_pixel(j as u32, i as u32, color);
-            });
+        let positions = robots.iter().fold(HashMap::new(), |mut acc, r| {
+            acc.entry(r.pos).and_modify(|c| *c += 1).or_insert(1);
+            acc
         });
-        img.save(format!("part2_images/{secs}.png")).unwrap()
+
+        let cur_neighbour_count: usize = positions
+            .iter()
+            .map(|(pos, _)| {
+                (-1..=1)
+                    .into_iter()
+                    .map(|d_i| {
+                        (-1..=1)
+                            .into_iter()
+                            .filter_map(|d_j| {
+                                if d_i != d_j {
+                                    let i = pos.0 as isize + d_i;
+                                    let j = pos.0 as isize + d_i;
+
+                                    if i >= 0 && j >= 0 {
+                                        let i = i as usize;
+                                        let j = i as usize;
+
+                                        if let Some(c) = positions.get(&(i, j)) {
+                                            return Some(c);
+                                        }
+                                    }
+                                }
+
+                                None
+                            })
+                            .sum::<usize>()
+                    })
+                    .sum::<usize>()
+            })
+            .sum();
+
+        if let Some(ref mut max_neighbour_count) = max_neighbour_count {
+            if cur_neighbour_count > max_neighbour_count.1 {
+                *max_neighbour_count = (secs + 1, cur_neighbour_count);
+            }
+        } else {
+            max_neighbour_count = Some((secs + 1, cur_neighbour_count));
+        }
     });
 
-    0
+    max_neighbour_count.unwrap().0 as i64
 }

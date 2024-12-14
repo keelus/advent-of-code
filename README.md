@@ -22,7 +22,7 @@ This repo contains my solutions for different years.
 | [Day 11:](https://adventofcode.com/2024/day/11) Plutonian Pebbles | [Here](./2024/solutions/day11.rs) | ⭐⭐ | 1µs | 582µs | 32ms |
 | [Day 12:](https://adventofcode.com/2024/day/12) Garden Groups | [Here](./2024/solutions/day12.rs) | ⭐⭐ | 221µs | 7ms | 11ms |
 | [Day 13:](https://adventofcode.com/2024/day/13) Claw Contraption | [Here](./2024/solutions/day13.rs) | ⭐⭐ | 158µs | 3µs | 6µs |
-| [Day 14:](https://adventofcode.com/2024/day/14) Restroom Redoubt | [Here](./2024/solutions/day14.rs) | ⭐⭐ | 94µs | 180µs | - |
+| [Day 14:](https://adventofcode.com/2024/day/14) Restroom Redoubt | [Here](./2024/solutions/day14.rs) | ⭐⭐ | 94µs | 180µs | 790ms |
 
 ## Run it yourself
 ### Run a day 
