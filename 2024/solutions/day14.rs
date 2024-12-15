@@ -72,32 +72,6 @@ pub fn part_1(robots: &[Robot]) -> i64 {
     cuadrant_count.iter().product::<usize>() as i64
 }
 
-pub fn robots_to_ascii(robots: &[Robot]) -> Vec<Vec<char>> {
-    let mut counts = HashMap::new();
-
-    robots.iter().for_each(|r| {
-        counts.entry(r.pos).and_modify(|c| *c += 1).or_insert(1);
-    });
-
-    (0..HEIGHT)
-        .into_iter()
-        .map(|i| {
-            (0..WIDTH)
-                .into_iter()
-                .map(|j| {
-                    let pos = (i, j);
-
-                    if let Some(_) = counts.get(&pos) {
-                        '#'
-                    } else {
-                        '.'
-                    }
-                })
-                .collect()
-        })
-        .collect()
-}
-
 // At the beginning I solved this by just
 // generating 10k images (yes) until I found
 // the pattern manually, which is very easy

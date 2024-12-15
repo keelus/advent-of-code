@@ -198,28 +198,6 @@ mod part_02 {
             })
             .sum()
     }
-
-    pub fn print_memory(memory: &Memory) {
-        let mut output = String::new();
-
-        for block in memory.iter() {
-            if let Some(id) = block.id {
-                for _i in 0..block.size {
-                    if id < 10 {
-                        output.push_str(&id.to_string());
-                    } else {
-                        output.push_str(&format!("({id})"));
-                    }
-                }
-            } else {
-                for _i in 0..block.size {
-                    output.push_str(".");
-                }
-            }
-        }
-
-        println!("{output}");
-    }
 }
 
 pub fn part_2(parsed_parts: &ParsedParts) -> i64 {
