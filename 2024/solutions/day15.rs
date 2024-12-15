@@ -1,5 +1,13 @@
 type Position = (usize, usize);
 
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum CellType {
+    Box,
+    RightBox,
+    Wall,
+    Air,
+}
+
 #[derive(PartialEq, Eq, Debug)]
 pub enum Direction {
     Up,
@@ -49,290 +57,283 @@ impl Direction {
 }
 
 pub struct Input {
-    warehouse_1: part_1::Warehouse,
-    warehouse_2: part_2::Warehouse,
+    warehouse_1: Warehouse,
+    warehouse_2: Warehouse,
     directions: Vec<Direction>,
 }
 
 pub fn parse<'p>(input_data: String) -> Input {
+    let (warehouse_1, warehouse_2) = input_data
+        .lines()
+        .enumerate()
+        .take_while(|(_, l)| !l.trim().is_empty())
+        .fold(
+            (Warehouse::new(), Warehouse::new()),
+            |(mut acc_1, mut acc_2), (i, l)| {
+                let mut row_1 = Vec::new();
+                let mut row_2 = Vec::new();
+
+                l.chars().enumerate().for_each(|(j, c)| match c {
+                    '#' => {
+                        row_1.push(CellType::Wall);
+
+                        row_2.push(CellType::Wall);
+                        row_2.push(CellType::Wall);
+                    }
+                    'O' => {
+                        row_1.push(CellType::Box);
+
+                        row_2.push(CellType::Box);
+                        row_2.push(CellType::RightBox);
+                    }
+                    '@' => {
+                        acc_1.robot = (i, j);
+                        row_1.push(CellType::Air);
+
+                        acc_2.robot = (i, j);
+                        row_2.push(CellType::Air);
+                        row_2.push(CellType::Air);
+                    }
+                    _ => {
+                        row_1.push(CellType::Air);
+
+                        row_2.push(CellType::Air);
+                        row_2.push(CellType::Air);
+                    }
+                });
+
+                acc_1.map.push(row_1);
+                acc_2.map.push(row_2);
+
+                (acc_1, acc_2)
+            },
+        );
+
     Input {
-        warehouse_1: part_1::parse(&input_data),
-        warehouse_2: part_2::parse(&input_data),
+        warehouse_1,
+        warehouse_2,
         directions: Direction::parse_vec_from_str(
             input_data.lines().skip_while(|l| !l.is_empty()).skip(1),
         ),
     }
 }
 
-mod part_1 {
-    use super::{Direction, Position};
-    use std::collections::HashSet;
+#[derive(Clone)]
+pub struct Warehouse {
+    robot: Position,
+    map: Vec<Vec<CellType>>,
+}
 
-    #[derive(Clone)]
-    pub struct Warehouse {
-        robot: Position,
-        walls: HashSet<Position>,
-        boxes: HashSet<Position>,
+impl Warehouse {
+    pub fn new() -> Self {
+        Self {
+            robot: (0, 0),
+            map: Vec::new(),
+        }
     }
 
-    impl Warehouse {
-        pub fn new() -> Self {
-            Self {
-                robot: (0, 0),
-                walls: HashSet::new(),
-                boxes: HashSet::new(),
-            }
+    pub fn get_sum(&self) -> usize {
+        self.map
+            .iter()
+            .enumerate()
+            .map(|(i, row)| {
+                row.iter()
+                    .enumerate()
+                    .filter_map(|(j, cell)| {
+                        let pos = (i, j);
+                        (*cell == CellType::Box).then_some(pos.0 * 100 + pos.1)
+                    })
+                    .sum::<usize>()
+            })
+            .sum()
+    }
+
+    pub fn is_box(&self, pos: &Position) -> bool {
+        self.map[pos.0][pos.1] == CellType::Box
+    }
+
+    pub fn is_wall(&self, pos: &Position) -> bool {
+        self.map[pos.0][pos.1] == CellType::Wall
+    }
+
+    //
+    // Part 1 related functions
+    //
+    pub fn move_robot_1(&mut self, dir: &Direction) {
+        let new_pos = dir.move_position_towards(self.robot);
+
+        if self.is_wall(&new_pos) {
+            // Against a wall, do nothing
+            return;
         }
 
-        pub fn move_robot(&mut self, dir: &Direction) {
-            let new_pos = dir.move_position_towards(self.robot);
-
-            if self.walls.contains(&new_pos) {
-                // Against a wall, do nothing
+        if self.is_box(&new_pos) {
+            // Against a box, try propagating
+            if !self.move_box_1(new_pos, dir) {
                 return;
             }
-
-            if self.boxes.contains(&new_pos) {
-                // Against a box, try propagating
-                if !self.move_box(new_pos, dir) {
-                    return;
-                }
-            }
-
-            self.robot = new_pos;
         }
 
-        fn move_box(&mut self, pos: Position, dir: &Direction) -> bool {
-            if self.walls.contains(&pos) {
-                return false;
+        self.robot = new_pos;
+    }
+
+    fn move_box_1(&mut self, pos: Position, dir: &Direction) -> bool {
+        if self.is_wall(&pos) {
+            return false;
+        }
+
+        if !self.is_box(&pos) {
+            true
+        } else {
+            let new_pos = dir.move_position_towards(pos);
+            let next_moved = self.move_box_1(new_pos, dir);
+
+            if next_moved {
+                self.map[pos.0][pos.1] = CellType::Air;
+                self.map[new_pos.0][new_pos.1] = CellType::Box;
             }
 
-            if !self.boxes.contains(&pos) {
-                true
-            } else {
-                let new_pos = dir.move_position_towards(pos);
-                let next_moved = self.move_box(new_pos, dir);
+            next_moved
+        }
+    }
 
+    //
+    // Part 2 related functions
+    //
+    pub fn is_right_box(&self, pos: &Position) -> bool {
+        self.map[pos.0][pos.1] == CellType::RightBox
+    }
+
+    pub fn move_robot_2(&mut self, dir: &Direction) {
+        let new_pos = dir.move_position_towards(self.robot);
+
+        if self.is_wall(&new_pos) {
+            // Against a wall, do nothing
+            return;
+        }
+
+        if self.is_box(&new_pos) {
+            // Against a box, try propagating
+            if !self.move_box_2(new_pos, dir) {
+                return;
+            }
+        } else if self.is_right_box(&new_pos) {
+            // Against a right box, try propagating but to the left
+            if !self.move_box_2((new_pos.0, new_pos.1 - 1), dir) {
+                return;
+            }
+        }
+
+        self.robot = new_pos;
+    }
+
+    fn move_box_2(&mut self, pos: Position, dir: &Direction) -> bool {
+        assert!(
+            !self.is_right_box(&pos),
+            "Should never be called against a right box."
+        );
+
+        match dir {
+            Direction::Left | Direction::Right => {
+                if self.is_wall(&pos) {
+                    return false;
+                }
+            }
+            Direction::Up | Direction::Down => {
+                if self.is_wall(&pos) || self.is_wall(&(pos.0, pos.1 + 1)) {
+                    return false;
+                }
+            }
+        }
+
+        let mut pos = pos;
+        match dir {
+            Direction::Left | Direction::Right => {
+                if !self.is_box(&pos) {
+                    return true;
+                }
+            }
+            Direction::Up | Direction::Down => {
+                if !self.is_box(&pos) {
+                    if !self.is_box(&(pos.0, pos.1 + 1)) {
+                        return true;
+                    } else {
+                        pos = (pos.0, pos.1 + 1)
+                    }
+                }
+            }
+        }
+
+        // "We" are a left part box.
+        let new_pos = dir.move_position_towards(pos);
+        let mut check_pos = new_pos;
+
+        match dir {
+            Direction::Left | Direction::Right => {
+                // Ensure right part is ignored
+                if *dir == Direction::Right {
+                    check_pos.1 += 1;
+                }
+
+                // Ensure checking part is left
+                if self.is_right_box(&check_pos) {
+                    check_pos = (check_pos.0, check_pos.1 - 1);
+                }
+
+                // Propagate move
+                let next_moved = self.move_box_2(check_pos, dir);
+
+                // Do move
                 if next_moved {
-                    self.boxes.remove(&pos);
-                    self.boxes.insert(new_pos);
+                    self.map[pos.0][pos.1] = CellType::Air;
+                    self.map[pos.0][pos.1 + 1] = CellType::Air;
+
+                    self.map[new_pos.0][new_pos.1] = CellType::Box;
+                    self.map[new_pos.0][new_pos.1 + 1] = CellType::RightBox;
                 }
 
                 next_moved
             }
-        }
+            Direction::Up | Direction::Down => {
+                let mut check_positions = Vec::new();
 
-        pub fn get_sum(&self) -> usize {
-            self.boxes.iter().map(|pos| pos.0 * 100 + pos.1).sum()
-        }
-    }
+                // If the top/bottom right is a wall, stop (left is checked earlier)
+                if self.is_wall(&(check_pos.0, check_pos.1 + 1)) {
+                    return false;
+                }
 
-    pub fn parse(input_data: &str) -> Warehouse {
-        let warehouse = input_data
-            .lines()
-            .enumerate()
-            .take_while(|(_, l)| !l.trim().is_empty())
-            .fold(Warehouse::new(), |mut acc, (i, l)| {
-                l.chars().enumerate().for_each(|(j, c)| match c {
-                    '#' => {
-                        acc.walls.insert((i, j));
-                    }
-                    'O' => {
-                        acc.boxes.insert((i, j));
-                    }
-                    '@' => acc.robot = (i, j),
-                    _ => (),
-                });
-                acc
-            });
+                // Ensure checking part is left
+                if self.is_right_box(&check_pos) {
+                    check_positions.push((check_pos.0, check_pos.1 - 1));
+                } else {
+                    check_positions.push(check_pos);
+                }
 
-        warehouse
-    }
-}
+                // If top/bottom right is a box (must be left part), add it
+                if self.is_box(&(check_pos.0, check_pos.1 + 1)) {
+                    check_positions.push((check_pos.0, check_pos.1 + 1));
+                }
 
-mod part_2 {
-    use std::collections::HashSet;
+                // Save pre-propagated state
+                let map = self.map.clone();
 
-    use super::{Direction, Position};
+                // Check positions (will be one or two)
+                let all_moved = check_positions.iter().all(|p| self.move_box_2(*p, dir));
 
-    #[derive(Clone)]
-    pub struct Warehouse {
-        robot: Position,
-        walls: HashSet<Position>,
-        boxes: HashSet<Position>,
-        right_boxes: HashSet<Position>,
-    }
+                if all_moved {
+                    self.map[pos.0][pos.1] = CellType::Air;
+                    self.map[pos.0][pos.1 + 1] = CellType::Air;
 
-    impl Warehouse {
-        pub fn new() -> Self {
-            Self {
-                robot: (0, 0),
-                walls: HashSet::new(),
-                boxes: HashSet::new(),
-                right_boxes: HashSet::new(),
+                    self.map[new_pos.0][new_pos.1] = CellType::Box;
+                    self.map[new_pos.0][new_pos.1 + 1] = CellType::RightBox;
+                } else {
+                    // Reverte propagated box moves
+                    self.map = map;
+                }
+
+                all_moved
             }
         }
-        pub fn move_robot(&mut self, dir: &Direction) {
-            let new_pos = dir.move_position_towards(self.robot);
-
-            if self.walls.contains(&new_pos) {
-                // Against a wall, do nothing
-                return;
-            }
-
-            if self.boxes.contains(&new_pos) {
-                // Against a box, try propagating
-                if !self.move_box(new_pos, dir) {
-                    return;
-                }
-            } else if self.right_boxes.contains(&new_pos) {
-                // Against a right box, try propagating but to the left
-                if !self.move_box((new_pos.0, new_pos.1 - 1), dir) {
-                    return;
-                }
-            }
-
-            self.robot = new_pos;
-        }
-
-        fn move_box(&mut self, pos: Position, dir: &Direction) -> bool {
-            assert!(
-                !self.right_boxes.contains(&pos),
-                "Should never be called against a right box."
-            );
-
-            match dir {
-                Direction::Left | Direction::Right => {
-                    if self.walls.contains(&pos) {
-                        return false;
-                    }
-                }
-                Direction::Up | Direction::Down => {
-                    if self.walls.contains(&pos) || self.walls.contains(&(pos.0, pos.1 + 1)) {
-                        return false;
-                    }
-                }
-            }
-
-            let mut pos = pos;
-            match dir {
-                Direction::Left | Direction::Right => {
-                    if !self.boxes.contains(&pos) {
-                        return true;
-                    }
-                }
-                Direction::Up | Direction::Down => {
-                    if !self.boxes.contains(&pos) {
-                        if !self.boxes.contains(&(pos.0, pos.1 + 1)) {
-                            return true;
-                        } else {
-                            pos = (pos.0, pos.1 + 1)
-                        }
-                    }
-                }
-            }
-
-            // "We" are a left part box.
-            let new_pos = dir.move_position_towards(pos);
-            let mut check_pos = new_pos;
-
-            match dir {
-                Direction::Left | Direction::Right => {
-                    // Ensure right part is ignored
-                    if *dir == Direction::Right {
-                        check_pos.1 += 1;
-                    }
-
-                    // Ensure checking part is left
-                    if self.right_boxes.contains(&check_pos) {
-                        check_pos = (check_pos.0, check_pos.1 - 1);
-                    }
-
-                    // Propagate move
-                    let next_moved = self.move_box(check_pos, dir);
-
-                    // Do move
-                    if next_moved {
-                        self.boxes.remove(&pos);
-                        self.right_boxes.remove(&(pos.0, pos.1 + 1));
-
-                        self.boxes.insert(new_pos);
-                        self.right_boxes.insert((new_pos.0, new_pos.1 + 1));
-                    }
-
-                    next_moved
-                }
-                Direction::Up | Direction::Down => {
-                    let mut check_positions = Vec::new();
-
-                    // If the top/bottom right is a wall, stop (left is checked earlier)
-                    if self.walls.contains(&(check_pos.0, check_pos.1 + 1)) {
-                        return false;
-                    }
-
-                    // Ensure checking part is left
-                    if self.right_boxes.contains(&check_pos) {
-                        check_positions.push((check_pos.0, check_pos.1 - 1));
-                    } else {
-                        check_positions.push(check_pos);
-                    }
-
-                    // If top/bottom right is a box (must be left part), add it
-                    if self.boxes.contains(&(check_pos.0, check_pos.1 + 1)) {
-                        check_positions.push((check_pos.0, check_pos.1 + 1));
-                    }
-
-                    // Save pre-propagated state
-                    let boxes = self.boxes.clone();
-                    let right_boxes = self.right_boxes.clone();
-
-                    // Check positions (will be one or two)
-                    let all_moved = check_positions.iter().all(|p| self.move_box(*p, dir));
-
-                    if all_moved {
-                        self.boxes.remove(&pos);
-                        self.right_boxes.remove(&(pos.0, pos.1 + 1));
-
-                        self.boxes.insert(new_pos);
-                        self.right_boxes.insert((new_pos.0, new_pos.1 + 1));
-                    } else {
-                        // Reverte propagated box moves
-                        self.boxes = boxes;
-                        self.right_boxes = right_boxes;
-                    }
-
-                    all_moved
-                }
-            }
-        }
-
-        pub fn get_sum(&self) -> usize {
-            self.boxes.iter().map(|pos| pos.0 * 100 + pos.1).sum()
-        }
-    }
-
-    pub fn parse(input_data: &str) -> Warehouse {
-        let warehouse = input_data
-            .lines()
-            .enumerate()
-            .take_while(|(_, l)| !l.trim().is_empty())
-            .fold(Warehouse::new(), |mut acc, (i, l)| {
-                l.chars().enumerate().for_each(|(j, c)| match c {
-                    '#' => {
-                        acc.walls.insert((i, j * 2));
-                        acc.walls.insert((i, j * 2 + 1));
-                    }
-                    'O' => {
-                        acc.boxes.insert((i, j * 2));
-                        acc.right_boxes.insert((i, j * 2 + 1));
-                    }
-                    '@' => acc.robot = (i, j * 2),
-                    _ => (),
-                });
-                acc
-            });
-
-        warehouse
     }
 }
 
@@ -341,7 +342,7 @@ pub fn part_1(input: &Input) -> i64 {
     let directions = &input.directions;
 
     directions.iter().for_each(|d| {
-        warehouse.move_robot(d);
+        warehouse.move_robot_1(d);
     });
 
     warehouse.get_sum() as i64
@@ -352,7 +353,7 @@ pub fn part_2(input: &Input) -> i64 {
     let directions = &input.directions;
 
     directions.iter().for_each(|d| {
-        warehouse.move_robot(d);
+        warehouse.move_robot_2(d);
     });
 
     warehouse.get_sum() as i64
