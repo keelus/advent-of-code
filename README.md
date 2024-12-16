@@ -24,6 +24,7 @@ This repo contains my solutions for different years.
 | [Day 13:](https://adventofcode.com/2024/day/13) Claw Contraption | [Here](./2024/solutions/day13.rs) | ⭐⭐ | 158µs | 3µs | 6µs |
 | [Day 14:](https://adventofcode.com/2024/day/14) Restroom Redoubt | [Here](./2024/solutions/day14.rs) | ⭐⭐ | 94µs | 180µs | 790ms |
 | [Day 15:](https://adventofcode.com/2024/day/15) Warehouse Woes | [Here](./2024/solutions/day15.rs) | ⭐⭐ | 210µs | 130µs | 3ms |
+| [Day 16:](https://adventofcode.com/2024/day/16) Reindeer Maze | [Here](./2024/solutions/day16.rs) | ⭐ | 20µs | 3s | - |
 
 ## Run it yourself
 ### Run a day 
