@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 type Position = (usize, usize);
 
@@ -94,10 +94,10 @@ pub fn parse(input_data: String) -> Input {
     }
 }
 
-pub fn explore(
+pub fn explore_1(
     pos: Position,
     dir: Direction,
-    accum_points: usize,
+    accum_score: usize,
     input: &Input,
     visited: &mut HashMap<(Position, Direction), usize>,
 ) {
@@ -105,12 +105,12 @@ pub fn explore(
         return;
     }
 
-    let min_accum_points = *visited.get(&(pos, dir)).unwrap_or(&usize::MAX);
-    if accum_points > min_accum_points {
+    let min_accum_score = *visited.get(&(pos, dir)).unwrap_or(&usize::MAX);
+    if accum_score > min_accum_score {
         return;
     }
 
-    visited.insert((pos, dir), accum_points);
+    visited.insert((pos, dir), accum_score);
 
     if pos == input.end_position {
         return;
@@ -118,15 +118,66 @@ pub fn explore(
 
     let new_dirs = [dir, dir.turn_90_left(), dir.turn_90_right()];
     new_dirs.into_iter().for_each(|new_dir| {
-        let accum_points = accum_points + if new_dir == dir { 1 } else { 1001 };
+        let accum_score = accum_score + if new_dir == dir { 1 } else { 1001 };
         let new_pos = new_dir.move_position_towards(pos);
-        explore(new_pos, new_dir, accum_points, input, visited);
+        explore_1(new_pos, new_dir, accum_score, input, visited);
     });
+}
+
+pub fn explore_2(
+    pos: Position,
+    dir: Direction,
+    accum_score: usize,
+    target_score: usize,
+    input: &Input,
+    visited: &mut HashMap<(Position, Direction), usize>,
+    best_paths: &mut HashSet<Position>,
+) -> bool {
+    if input.map[pos.0][pos.1] == b'#' {
+        return false;
+    }
+
+    let min_accum_score = *visited.get(&(pos, dir)).unwrap_or(&usize::MAX);
+    if accum_score > min_accum_score {
+        return false;
+    }
+
+    visited.insert((pos, dir), accum_score);
+
+    if pos == input.end_position {
+        if accum_score == target_score {
+            return true;
+        }
+        return false;
+    }
+
+    let new_dirs = [dir, dir.turn_90_left(), dir.turn_90_right()];
+
+    let mut ends_at_best_paths = false;
+    new_dirs.into_iter().for_each(|new_dir| {
+        let accum_score = accum_score + if new_dir == dir { 1 } else { 1001 };
+        let new_pos = new_dir.move_position_towards(pos);
+
+        if explore_2(
+            new_pos,
+            new_dir,
+            accum_score,
+            target_score,
+            input,
+            visited,
+            best_paths,
+        ) {
+            best_paths.insert(new_pos);
+            ends_at_best_paths = true;
+        }
+    });
+
+    ends_at_best_paths
 }
 
 pub fn part_1(input: &Input) -> i64 {
     let mut visited = HashMap::new();
-    explore(
+    explore_1(
         input.start_position,
         Direction::Right,
         0,
@@ -142,5 +193,32 @@ pub fn part_1(input: &Input) -> i64 {
 }
 
 pub fn part_2(input: &Input) -> i64 {
-    0
+    let mut visited = HashMap::new();
+    explore_1(
+        input.start_position,
+        Direction::Right,
+        0,
+        &input,
+        &mut visited,
+    );
+
+    let min = *Direction::all()
+        .into_iter()
+        .filter_map(|dir| visited.get(&(input.end_position, dir)))
+        .min()
+        .unwrap();
+
+    let mut visited = HashMap::new();
+    let mut best_paths = HashSet::new();
+    explore_2(
+        input.start_position,
+        Direction::Right,
+        0,
+        min,
+        &input,
+        &mut visited,
+        &mut best_paths,
+    );
+
+    best_paths.len() as i64 + 1 /* start pos */
 }
