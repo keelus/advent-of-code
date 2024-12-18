@@ -26,7 +26,7 @@ This repo contains my solutions for different years.
 | [Day 15:](https://adventofcode.com/2024/day/15) Warehouse Woes | [Here](./2024/solutions/day15.rs) | ⭐⭐ | 210µs | 130µs | 3ms |
 | [Day 16:](https://adventofcode.com/2024/day/16) Reindeer Maze | [Here](./2024/solutions/day16.rs) | ⭐⭐ | 20µs | 3s | 6s |
 | [Day 17:](https://adventofcode.com/2024/day/17) Reindeer Maze | [Here](./2024/solutions/day17.rs) | ⭐ | 532ns | 224ns | - |
-| [Day 18:](https://adventofcode.com/2024/day/18) RAM Run | [Here](./2024/solutions/day18.rs) | ⭐⭐ | 231µs | 1ms | 3s |
+| [Day 18:](https://adventofcode.com/2024/day/18) RAM Run | [Here](./2024/solutions/day18.rs) | ⭐⭐ | 255µs | 113µs | 257ms |
 
 ## Run it yourself
 ### Run a day 
