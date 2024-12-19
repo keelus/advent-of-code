@@ -27,6 +27,7 @@ This repo contains my solutions for different years.
 | [Day 16:](https://adventofcode.com/2024/day/16) Reindeer Maze | [Here](./2024/solutions/day16.rs) | ⭐⭐ | 20µs | 3s | 6s |
 | [Day 17:](https://adventofcode.com/2024/day/17) Reindeer Maze | [Here](./2024/solutions/day17.rs) | ⭐ | 532ns | 224ns | - |
 | [Day 18:](https://adventofcode.com/2024/day/18) RAM Run | [Here](./2024/solutions/day18.rs) | ⭐⭐ | 255µs | 113µs | 257ms |
+| [Day 19:](https://adventofcode.com/2024/day/19) Linen Layout | [Here](./2024/solutions/day19.rs) | ⭐⭐ | 64µs | 4ms | 30ms |
 
 ## Run it yourself
 ### Run a day 

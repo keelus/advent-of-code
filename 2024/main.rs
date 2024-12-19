@@ -285,7 +285,7 @@ fn main() {
         16 => advent_day!(day16, args),
         17 => advent_day!(day17, args),
         18 => advent_day!(day18, args),
-        // 19 => advent_day!(day19, args),
+        19 => advent_day!(day19, args),
         // 20 => advent_day!(day20, args),
         // 21 => advent_day!(day21, args),
         // 22 => advent_day!(day22, args),
