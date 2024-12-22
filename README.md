@@ -25,11 +25,12 @@ This repo contains my solutions for different years.
 | [Day 14:](https://adventofcode.com/2024/day/14) Restroom Redoubt | [Here](./2024/solutions/day14.rs) | ⭐⭐ | 94µs | 180µs | 790ms |
 | [Day 15:](https://adventofcode.com/2024/day/15) Warehouse Woes | [Here](./2024/solutions/day15.rs) | ⭐⭐ | 210µs | 130µs | 3ms |
 | [Day 16:](https://adventofcode.com/2024/day/16) Reindeer Maze | [Here](./2024/solutions/day16.rs) | ⭐⭐ | 20µs | 3s | 6s |
-| [Day 17:](https://adventofcode.com/2024/day/17) Reindeer Maze | [Here](./2024/solutions/day17.rs) | ⭐ | 532ns | 224ns | - |
+| [Day 17:](https://adventofcode.com/2024/day/17) Chronospatial Computer | [Here](./2024/solutions/day17.rs) | ⭐ | 532ns | 224ns | - |
 | [Day 18:](https://adventofcode.com/2024/day/18) RAM Run | [Here](./2024/solutions/day18.rs) | ⭐⭐ | 255µs | 113µs | 257ms |
 | [Day 19:](https://adventofcode.com/2024/day/19) Linen Layout | [Here](./2024/solutions/day19.rs) | ⭐⭐ | 64µs | 4ms | 30ms |
 | [Day 20:](https://adventofcode.com/2024/day/20) Race Condition | [Here](./2024/solutions/day20.rs) | - | - | - | - |
 | [Day 21:](https://adventofcode.com/2024/day/21) Keypad Conundrum | [Here](./2024/solutions/day21.rs) | ⭐ | 1µs | 5s | - |
+| [Day 22:](https://adventofcode.com/2024/day/22) Monkey Market | [Here](./2024/solutions/day22.rs) | ⭐ | 30µs | 5ms | - |
 
 ## Run it yourself
 ### Run a day 
