@@ -30,7 +30,7 @@ This repo contains my solutions for different years.
 | [Day 19:](https://adventofcode.com/2024/day/19) Linen Layout | [Here](./2024/solutions/day19.rs) | ⭐⭐ | 64µs | 4ms | 30ms |
 | [Day 20:](https://adventofcode.com/2024/day/20) Race Condition | [Here](./2024/solutions/day20.rs) | - | - | - | - |
 | [Day 21:](https://adventofcode.com/2024/day/21) Keypad Conundrum | [Here](./2024/solutions/day21.rs) | ⭐ | 1µs | 5s | - |
-| [Day 22:](https://adventofcode.com/2024/day/22) Monkey Market | [Here](./2024/solutions/day22.rs) | ⭐ | 30µs | 5ms | - |
+| [Day 22:](https://adventofcode.com/2024/day/22) Monkey Market | [Here](./2024/solutions/day22.rs) | ⭐⭐ | 30µs | 5ms | 394ms |
 
 ## Run it yourself
 ### Run a day 
