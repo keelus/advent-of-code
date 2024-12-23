@@ -31,6 +31,7 @@ This repo contains my solutions for different years.
 | [Day 20:](https://adventofcode.com/2024/day/20) Race Condition | [Here](./2024/solutions/day20.rs) | - | - | - | - |
 | [Day 21:](https://adventofcode.com/2024/day/21) Keypad Conundrum | [Here](./2024/solutions/day21.rs) | ⭐ | 1µs | 5s | - |
 | [Day 22:](https://adventofcode.com/2024/day/22) Monkey Market | [Here](./2024/solutions/day22.rs) | ⭐⭐ | 30µs | 5ms | 394ms |
+| [Day 23:](https://adventofcode.com/2024/day/23) LAN Party | [Here](./2024/solutions/day23.rs) | ⭐⭐ | 584µs | 2ms | 26ms |
 
 ## Run it yourself
 ### Run a day 
