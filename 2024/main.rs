@@ -291,7 +291,7 @@ fn main() {
         22 => advent_day!(day22, args),
         23 => advent_day!(day23, args),
         24 => advent_day!(day24, args),
-        // 25 => advent_day!(day25, args),
+        25 => advent_day!(day25, args),
         _ => eprintln!("The day {day_to_run} is not yet implemented!"),
     }
 }
