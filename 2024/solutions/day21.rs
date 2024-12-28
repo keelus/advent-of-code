@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use itertools::Itertools;
 
@@ -74,6 +74,8 @@ pub trait Keypad {
             .iter()
             .map(|target_code| {
                 let mut current_key = 'A';
+
+                // Obtain all possible directions
                 let directions = target_code
                     .chars()
                     .map(|c| {
@@ -81,31 +83,62 @@ pub trait Keypad {
                             Self::shortest_paths(current_key, c, &mut HashSet::new(), vec![]);
                         let directions = shortest_paths
                             .iter()
-                            .map(|path| path_to_directions(path.to_vec()))
+                            .map(|path| path_to_directions(path))
+                            .map(|dirs| (cost(&dirs), dirs))
                             .collect::<Vec<_>>();
 
                         current_key = c;
                         directions
                     })
+                    .collect::<Vec<Vec<(usize, String)>>>();
+
+                // Remove directions of higher "cost"
+                let min_costs = directions
+                    .iter()
+                    .map(|dirs| dirs.iter().map(|(cur_cost, _)| cur_cost).min().unwrap())
                     .collect::<Vec<_>>();
 
+                let directions = directions
+                    .iter()
+                    .zip(min_costs)
+                    .map(|(dirs, min_cost)| {
+                        dirs.into_iter()
+                            .filter_map(|(cur_cost, dirs)| {
+                                if cur_cost == min_cost {
+                                    Some(dirs)
+                                } else {
+                                    None
+                                }
+                            })
+                            .collect::<Vec<_>>()
+                    })
+                    .collect::<Vec<_>>();
+
+                // Compute combinations
                 directions
                     .iter()
                     .map(|v| v.iter())
                     .multi_cartesian_product()
-                    .map(|dirs| dir_vec_to_str(dirs))
-                    .collect::<Vec<String>>()
+                    .enumerate()
+                    .map(|(i, dirs)| {
+                        dirs.iter()
+                            .map(|&s| s.as_str())
+                            .collect::<Vec<&str>>()
+                            .join("")
+                    })
+                    .collect::<Vec<_>>()
             })
             .flatten()
-            .collect::<Vec<String>>();
+            .map(|dirs| (dirs.len(), cost(&dirs), dirs))
+            .collect::<Vec<_>>();
 
-        let shortest_len = directions.iter().map(|d| d.len()).min().unwrap();
+        // Return only minimum length ones
+        let min_len = *directions.iter().map(|(len, ..)| len).min().unwrap();
+        let min_cost = *directions.iter().map(|(_, cost, ..)| cost).min().unwrap();
         directions
             .into_iter()
-            .filter(|d| d.len() == shortest_len)
-            .collect::<HashSet<_>>()
-            .into_iter()
-            .collect::<Vec<String>>()
+            .filter_map(|(len, cost, dirs)| (len == min_len && cost == min_cost).then_some(dirs))
+            .collect::<Vec<_>>()
     }
 }
 
@@ -219,27 +252,7 @@ pub fn parse(input_data: String) -> Vec<String> {
     input_data.lines().map(|l| l.to_string()).collect()
 }
 
-pub fn dir_vec_to_str(dirs: Vec<&Vec<Direction>>) -> String {
-    dirs.iter()
-        .map(|dirs| {
-            dirs.iter()
-                .map(|dir| {
-                    let key_byte = match dir {
-                        Direction::Left => '<',
-                        Direction::Right => '>',
-                        Direction::Up => '^',
-                        Direction::Down => 'v',
-                    };
-                    key_byte
-                })
-                .chain(std::iter::once('A'))
-                .collect::<Vec<char>>()
-        })
-        .flatten()
-        .collect::<String>()
-}
-
-pub fn path_to_directions(path: Vec<Position>) -> Vec<Direction> {
+pub fn path_to_directions(path: &[Position]) -> String {
     path.windows(2)
         .map(|w| {
             let a = w[0];
@@ -249,17 +262,18 @@ pub fn path_to_directions(path: Vec<Position>) -> Vec<Direction> {
             let d_j = b.1 as isize - a.1 as isize;
 
             if d_i == -1 {
-                Direction::Up
+                '^'
             } else if d_i == 1 {
-                Direction::Down
+                'v'
             } else if d_j == -1 {
-                Direction::Left
+                '<'
             } else if d_j == 1 {
-                Direction::Right
+                '>'
             } else {
                 unreachable!("Got diffs of d_i={}, d_j={}", d_i, d_j);
             }
         })
+        .chain(std::iter::once('A'))
         .collect()
 }
 
@@ -269,6 +283,16 @@ pub fn numeric_part_of_code(code: &str) -> usize {
         .collect::<String>()
         .parse()
         .unwrap()
+}
+
+pub fn cost(dirs: &str) -> usize {
+    let mut cost = 0;
+    dirs.chars().tuple_windows().for_each(|(c1, c2)| {
+        if c1 != c2 {
+            cost += 1
+        }
+    });
+    cost
 }
 
 pub fn part_1(codes: &[String]) -> i64 {
