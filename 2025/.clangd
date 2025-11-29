@@ -1,0 +1,11 @@
+CompileFlags:
+  Add: [
+    -xc,
+    -std=gnu23,
+    -Wextra,
+    -Wall,
+    -pedantic,
+    -Wno-unused-function,
+    -Wno-empty-translation-unit
+  ]
+
