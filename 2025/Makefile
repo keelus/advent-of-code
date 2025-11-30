@@ -4,7 +4,8 @@ CC := gcc
 CFLAGS := -Wextra -Wall -pedantic -std=gnu23
 LDFLAGS := -lm
 
-SOURCES := aoc.c
+SOURCES := aoc.c \
+			  $(wildcard solutions/*c)
 
 BUILD_TYPE ?= default
 

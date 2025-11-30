@@ -10,7 +10,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "solutions/day01.h"
 #include "aoc.h"
 
 #define ARG_DAY_MIN 1U
@@ -38,14 +37,14 @@
 					   ((ts_end).tv_nsec - (ts_start).tv_nsec));               \
 	} while(0);
 
-#define RUN_DAY(day)                                                           \
+#define RUN_DAY(day_n)                                                         \
 	do {                                                                       \
-		res = run_day(#day, "inputs/day" #day,                                 \
-					  use_sample ? "sample.txt" : "input.txt", bench_runs,     \
-					  DAY_PARSE_NAME(day), DAY_PART_NAME(day, 1),              \
-					  DAY_PART_NAME(day, 2), DAY_FREE_PARSE_NAME(day));        \
+		res = run_day(day##day_n, #day_n, "inputs/day" #day_n,                 \
+					  use_sample ? "sample.txt" : "input.txt", bench_runs);    \
 	} while(0);
 
+extern struct Day day01, day02, day03, day04, day05, day06, day07, day08, day09,
+	day10, day11, day12;
 
 char *read_file_content(const char *folder, const char *filename) {
 	size_t len = strlen(folder) + strlen(filename) + 2;
@@ -285,10 +284,9 @@ void print_bench_progress(const struct winsize w, const uint32_t bench_runs,
 	fflush(stdout);
 }
 
-int run_day(const char *day_str, const char *day_input_folder,
-			const char *day_input_filename, const uint32_t bench_runs,
-			void *(*parse)(const char *), uint64_t (*part_1)(void *),
-			uint64_t (*part_2)(void *), void (*free_parse)(void *)) {
+int run_day(const struct Day day, const char *day_str,
+			const char *day_input_folder, const char *day_input_filename,
+			const uint32_t bench_runs) {
 	struct winsize w;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
@@ -306,15 +304,15 @@ int run_day(const char *day_str, const char *day_input_folder,
 		for(uint32_t i = 0; i < bench_runs; ++i) {
 			print_bench_progress(w, bench_runs, i);
 
-			BENCH_PART(parsed_input = parse(input_data), parse_ns);
-			BENCH_PART(res_1 = part_1(parsed_input), part_1_ns);
-			BENCH_PART(res_2 = part_2(parsed_input), part_2_ns);
+			BENCH_PART(parsed_input = day.parse(input_data), parse_ns);
+			BENCH_PART(res_1 = day.part_1(parsed_input), part_1_ns);
+			BENCH_PART(res_2 = day.part_2(parsed_input), part_2_ns);
 
 			total_parse_ns += parse_ns;
 			total_part_1_ns += part_1_ns;
 			total_part_2_ns += part_2_ns;
 
-			free_parse(parsed_input);
+			day.free(parsed_input);
 		}
 
 		total_parse_ns /= bench_runs;
@@ -325,16 +323,16 @@ int run_day(const char *day_str, const char *day_input_folder,
 					total_part_2_ns);
 	} else {
 		print_day_progress(w, 0);
-		BENCH_PART(parsed_input = parse(input_data), parse_ns);
+		BENCH_PART(parsed_input = day.parse(input_data), parse_ns);
 
 		print_day_progress(w, 1);
-		BENCH_PART(res_1 = part_1(parsed_input), part_1_ns);
+		BENCH_PART(res_1 = day.part_1(parsed_input), part_1_ns);
 
 		print_day_progress(w, 2);
-		BENCH_PART(res_2 = part_2(parsed_input), part_2_ns);
+		BENCH_PART(res_2 = day.part_2(parsed_input), part_2_ns);
 
 		print_day_progress(w, 3);
-		free_parse(parsed_input);
+		day.free(parsed_input);
 
 		print_stats(w, false, parse_ns, res_1, part_1_ns, res_2, part_2_ns);
 	}
@@ -406,7 +404,6 @@ int main(const int argc, const char *argv[]) {
 
 	int res = EXIT_SUCCESS;
 	switch(day) {
-	case 1: RUN_DAY(01); break;
 	default:
 		fprintf(stderr, "[ERROR] The day %u is not yet implemented!\n", day);
 		return EXIT_FAILURE;
