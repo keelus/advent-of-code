@@ -46,7 +46,8 @@
 extern struct Day day01, day02, day03, day04, day05, day06, day07, day08, day09,
 	day10, day11, day12;
 
-char *read_file_content(const char *folder, const char *filename) {
+char *read_file_content(const char *folder, const char *filename,
+						size_t *input_len) {
 	size_t len = strlen(folder) + strlen(filename) + 2;
 	char *full_path;
 	if(!(full_path = malloc(len))) {
@@ -103,6 +104,7 @@ char *read_file_content(const char *folder, const char *filename) {
 	}
 
 	data[expected_size] = '\0';
+	*input_len = expected_size;
 	return data;
 }
 
@@ -292,7 +294,9 @@ int run_day(const struct Day day, const char *day_str,
 
 	print_header(w, day_str, bench_runs);
 
-	char *input_data = read_file_content(day_input_folder, day_input_filename);
+	size_t input_len;
+	char *input_data =
+		read_file_content(day_input_folder, day_input_filename, &input_len);
 	if(!input_data) { return EXIT_FAILURE; }
 
 	uint64_t parse_ns, part_1_ns, part_2_ns;
@@ -304,7 +308,8 @@ int run_day(const struct Day day, const char *day_str,
 		for(uint32_t i = 0; i < bench_runs; ++i) {
 			print_bench_progress(w, bench_runs, i);
 
-			BENCH_PART(parsed_input = day.parse(input_data), parse_ns);
+			BENCH_PART(parsed_input = day.parse(input_data, input_len),
+					   parse_ns);
 			BENCH_PART(res_1 = day.part_1(parsed_input), part_1_ns);
 			BENCH_PART(res_2 = day.part_2(parsed_input), part_2_ns);
 
@@ -323,7 +328,7 @@ int run_day(const struct Day day, const char *day_str,
 					total_part_2_ns);
 	} else {
 		print_day_progress(w, 0);
-		BENCH_PART(parsed_input = day.parse(input_data), parse_ns);
+		BENCH_PART(parsed_input = day.parse(input_data, input_len), parse_ns);
 
 		print_day_progress(w, 1);
 		BENCH_PART(res_1 = day.part_1(parsed_input), part_1_ns);
@@ -404,6 +409,7 @@ int main(const int argc, const char *argv[]) {
 
 	int res = EXIT_SUCCESS;
 	switch(day) {
+	case 1: RUN_DAY(01); break;
 	default:
 		fprintf(stderr, "[ERROR] The day %u is not yet implemented!\n", day);
 		return EXIT_FAILURE;
