@@ -410,6 +410,7 @@ int main(const int argc, const char *argv[]) {
 	int res = EXIT_SUCCESS;
 	switch(day) {
 	case 1: RUN_DAY(01); break;
+	case 2: RUN_DAY(02); break;
 	default:
 		fprintf(stderr, "[ERROR] The day %u is not yet implemented!\n", day);
 		return EXIT_FAILURE;

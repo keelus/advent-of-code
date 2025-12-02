@@ -27,7 +27,7 @@ cat <<EOF > "$IMPL_PATH"
 #include "../aoc.h"
 #include <stdlib.h>
 
-void *day${DAY}_parse(const char *input_data) {
+void *day${DAY}_parse(const char *input_data, const size_t input_len) {
 	return NULL;
 }
 
