@@ -1,9 +1,15 @@
 #include "../aoc.h"
+#include <assert.h>
+#include <math.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+
+uint64_t mod(int64_t v, int64_t d) {
+	return (v % d + d) % d;
+}
 
 struct ParsedInput {
 	int64_t *rotations;
@@ -49,7 +55,7 @@ uint64_t day01_part_1(const void *vparsed_input) {
 	uint64_t dial_zeros = 0;
 	int64_t dial = 50;
 	for(size_t i = 0; i < parsed_input.rotations_len; i++) {
-		dial = (dial + parsed_input.rotations[i]) % 100;
+		dial = mod(dial + parsed_input.rotations[i], 100);
 		if(dial == 0) { dial_zeros++; }
 	}
 
@@ -64,13 +70,18 @@ uint64_t day01_part_2(const void *vparsed_input) {
 	int64_t dial = 50;
 	for(size_t i = 0; i < parsed_input.rotations_len; i++) {
 		int64_t value = parsed_input.rotations[i];
-		int8_t delta = value < 0 ? -1 : 1;
 
-		while(value) {
-			dial = (dial + delta) % 100;
-			value -= delta;
-			if(dial == 0) { dial_zeros++; }
+		uint64_t hundreds = floor(abs(value) / 100.0f);
+		value += (value < 0 ? 100 : -100) * hundreds;
+
+		dial_zeros += hundreds;
+
+		int64_t new_dial = dial + value;
+		if(value != 0 && dial != 0) {
+			if(new_dial <= 0 || new_dial > 99) { dial_zeros++; }
 		}
+
+		dial = mod(new_dial, 100);
 	}
 
 	return dial_zeros;
