@@ -31,15 +31,15 @@ void *day${DAY}_parse(const char *input_data, const size_t input_len) {
 	return NULL;
 }
 
-uint64_t day${DAY}_part_1(const void *vparsed_input) {
+uint64_t day${DAY}_part_1(void *vparsed_input) {
 	return 0;
 }
 
-uint64_t day${DAY}_part_2(const void *vparsed_input) {
+uint64_t day${DAY}_part_2(void *vparsed_input) {
 	return 0;
 }
 
-void day${DAY}_free(const void *vparsed_input) {}
+void day${DAY}_free(void *vparsed_input) {}
 
 const struct Day day$DAY = {
 	.parse = day${DAY}_parse,
