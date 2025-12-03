@@ -9,6 +9,8 @@ This repo contains my solutions for different years.
 
 | Day | Solution | Stars | Parse benchmark | Part 1 benchmark | Part 2 benchmark |
 |-----|----------|-------|-------------------|-----------------|------------------|
+| [Day 1:](https://adventofcode.com/2025/day/1) Secret Entrance | [Here](./2025/solutions/day01.c) | ⭐⭐ | 72µs | 24µs | 26µs |
+| [Day 2:](https://adventofcode.com/2025/day/2) Gift Shop | [Here](./2025/solutions/day02.c) | ⭐⭐ | 2µs | 11ms | 72ms |
 
 ## Run it yourself
 ### Run a day

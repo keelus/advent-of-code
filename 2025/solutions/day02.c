@@ -42,7 +42,16 @@ void *day02_parse(const char *input_data, const size_t input_len) {
 	return parsed_input;
 }
 
-uint64_t day02_part_1(const void *vparsed_input) {
+uint64_t pow_uint64(uint64_t a, uint64_t b) {
+	uint64_t n = 1;
+	while(b) {
+		n *= a;
+		b--;
+	}
+	return n;
+}
+
+uint64_t day02_part_1(void *vparsed_input) {
 	struct ParsedInput parsed_input = *(struct ParsedInput *)vparsed_input;
 
 	uint64_t sum = 0;
@@ -55,7 +64,7 @@ uint64_t day02_part_1(const void *vparsed_input) {
 			uint64_t digits = floor(log10(num)) + 1;
 			if(digits % 2 != 0) { continue; }
 
-			uint64_t half = pow(10.0f, digits / 2.0f);
+			uint64_t half = pow_uint64(10, digits / 2);
 			uint64_t rem = num % half;
 			uint64_t div = num / half;
 			if(rem == div) { sum += num; }
@@ -65,11 +74,49 @@ uint64_t day02_part_1(const void *vparsed_input) {
 	return sum;
 }
 
-uint64_t day02_part_2(const void *vparsed_input) {
-	return 0;
+uint64_t get_part(uint64_t n, uint64_t w, uint64_t o) {
+	return (n / pow_uint64(10, o)) % pow_uint64(10, w);
 }
 
-void day02_free(const void *vparsed_input) {
+bool is_valid(uint64_t n, uint64_t w) {
+	size_t len = n >= 9 ? (floor(log10(n)) + 1) : 1;
+	if(len % w != 0) { return false; }
+
+	uint64_t a = get_part(n, w, 0);
+	for(size_t o = 0; o < len; o += w) {
+		uint64_t b = get_part(n, w, o);
+		if(a != b) { return false; }
+	}
+
+	return true;
+}
+
+uint64_t day02_part_2(void *vparsed_input) {
+	struct ParsedInput parsed_input = *(struct ParsedInput *)vparsed_input;
+
+	uint64_t sum = 0;
+	for(size_t i = 0; i < parsed_input.raw_ranges_len - 1; i += 2) {
+		uint64_t from = parsed_input.raw_ranges[i];
+		uint64_t to = parsed_input.raw_ranges[i + 1];
+
+		for(size_t n = from; n <= to; n++) {
+			size_t digits = n >= 9 ? floor(log10(n)) + 1 : 1;
+			for(size_t w = 1; w < digits / 2 + 1; w++) {
+				if(is_valid(n, w)) {
+					sum += n;
+					break;
+				}
+			}
+		}
+	}
+
+	return sum;
+}
+
+void day02_free(void *vparsed_input) {
+	struct ParsedInput *parsed_input = (struct ParsedInput *)vparsed_input;
+	free(parsed_input->raw_ranges);
+	free(parsed_input);
 }
 
 const struct Day day02 = {

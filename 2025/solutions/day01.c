@@ -48,9 +48,9 @@ void *day01_parse(const char *input_data, size_t input_len) {
 	return parsed_input;
 }
 
-uint64_t day01_part_1(const void *vparsed_input) {
+uint64_t day01_part_1(void *vparsed_input) {
 	const struct ParsedInput parsed_input =
-		*(const struct ParsedInput *)vparsed_input;
+		*(struct ParsedInput *)vparsed_input;
 
 	uint64_t dial_zeros = 0;
 	int64_t dial = 50;
@@ -62,9 +62,9 @@ uint64_t day01_part_1(const void *vparsed_input) {
 	return dial_zeros;
 }
 
-uint64_t day01_part_2(const void *vparsed_input) {
+uint64_t day01_part_2(void *vparsed_input) {
 	const struct ParsedInput parsed_input =
-		*(const struct ParsedInput *)vparsed_input;
+		*(struct ParsedInput *)vparsed_input;
 
 	uint64_t dial_zeros = 0;
 	int64_t dial = 50;
@@ -87,11 +87,10 @@ uint64_t day01_part_2(const void *vparsed_input) {
 	return dial_zeros;
 }
 
-void day01_free(const void *vparsed_input) {
-	const struct ParsedInput parsed_input =
-		*(const struct ParsedInput *)vparsed_input;
-	free(parsed_input.rotations);
-	free((void *)vparsed_input);
+void day01_free(void *vparsed_input) {
+	struct ParsedInput *parsed_input = (struct ParsedInput *)vparsed_input;
+	free(parsed_input->rotations);
+	free(parsed_input);
 }
 
 const struct Day day01 = {

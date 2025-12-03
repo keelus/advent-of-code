@@ -6,9 +6,9 @@
 
 struct Day {
 	void *(*parse)(const char *, const size_t);
-	uint64_t (*part_1)(const void *);
-	uint64_t (*part_2)(const void *);
-	void (*free)(const void *);
+	uint64_t (*part_1)(void *);
+	uint64_t (*part_2)(void *);
+	void (*free)(void *);
 };
 
 #endif
