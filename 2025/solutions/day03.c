@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <threads.h>
 
 struct ParsedInput {
 	uint8_t **banks;
@@ -45,29 +47,60 @@ void *day03_parse(const char *input_data, const size_t input_len) {
 	return parsed_input;
 }
 
+int8_t get_max_index(uint8_t *numbers, uint8_t from, uint8_t to) {
+	uint8_t max = 0;
+	uint8_t max_i = 0;
+	for(size_t i = from; i <= to; i++) {
+		if(i == from || numbers[i] > max) {
+			max = numbers[i];
+			max_i = i;
+		}
+	}
+
+	return max_i;
+}
+
+uint64_t calculate_joltage(uint8_t *bank, uint64_t bank_width,
+						   uint8_t batteries) {
+	uint64_t number = 0;
+	uint8_t digits = 0;
+
+	uint8_t i = 0;
+	while(digits != batteries) {
+		uint8_t needed = batteries - digits;
+
+		int8_t max_index =
+			get_max_index((uint8_t *)bank, i, bank_width - needed);
+		number = number * 10 + bank[max_index];
+		digits++;
+		i = max_index + 1;
+	}
+
+	return number;
+}
+
 uint64_t day03_part_1(void *vparsed_input) {
 	struct ParsedInput parsed_input = *(struct ParsedInput *)vparsed_input;
+
 	uint64_t sum = 0;
 	for(size_t i = 0; i < parsed_input.banks_len; i++) {
-		uint8_t *bank = parsed_input.banks[i];
-
-		uint8_t max_num = 0;
-		for(size_t j = 0; j < parsed_input.bank_width; j++) {
-			uint8_t l = bank[j];
-			for(size_t k = j + 1; k < parsed_input.bank_width; k++) {
-				uint8_t r = bank[k];
-				uint8_t num = l * 10 + r;
-				if(num > max_num) { max_num = num; }
-			}
-		}
-
-		sum += max_num;
+		sum += calculate_joltage(parsed_input.banks[i], parsed_input.bank_width,
+								 2);
 	}
+
 	return sum;
 }
 
 uint64_t day03_part_2(void *vparsed_input) {
-	return 0;
+	struct ParsedInput parsed_input = *(struct ParsedInput *)vparsed_input;
+
+	uint64_t sum = 0;
+	for(size_t i = 0; i < parsed_input.banks_len; i++) {
+		sum += calculate_joltage(parsed_input.banks[i], parsed_input.bank_width,
+								 12);
+	}
+
+	return sum;
 }
 
 void day03_free(void *vparsed_input) {
