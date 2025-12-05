@@ -13,6 +13,7 @@ This repo contains my solutions for different years.
 | [Day 2:](https://adventofcode.com/2025/day/2) Gift Shop | [Here](./2025/solutions/day02.c) | ⭐⭐ | 2µs | 11ms | 72ms |
 | [Day 3:](https://adventofcode.com/2025/day/3) Lobby | [Here](./2025/solutions/day03.c) | ⭐⭐ | 22µs | 15µs | 41µs |
 | [Day 4:](https://adventofcode.com/2025/day/4) Printing Department | [Here](./2025/solutions/day04.c) | ⭐⭐ | 12µs | 118µs | 883µs |
+| [Day 5:](https://adventofcode.com/2025/day/5) Cafeteria | [Here](./2025/solutions/day05.c) | ⭐⭐ | 95µs | 39µs | 45ns |
 
 ## Run it yourself
 ### Run a day
