@@ -415,6 +415,7 @@ int main(const int argc, const char *argv[]) {
 	case 4: RUN_DAY(04); break;
 	case 5: RUN_DAY(05); break;
 	case 6: RUN_DAY(06); break;
+	case 7: RUN_DAY(07); break;
 	default:
 		fprintf(stderr, "[ERROR] The day %u is not yet implemented!\n", day);
 		return EXIT_FAILURE;

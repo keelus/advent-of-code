@@ -15,6 +15,7 @@ This repo contains my solutions for different years.
 | [Day 4:](https://adventofcode.com/2025/day/4) Printing Department | [Here](./2025/solutions/day04.c) | ⭐⭐ | 12µs | 118µs | 883µs |
 | [Day 5:](https://adventofcode.com/2025/day/5) Cafeteria | [Here](./2025/solutions/day05.c) | ⭐⭐ | 95µs | 39µs | 45ns |
 | [Day 6:](https://adventofcode.com/2025/day/6) Trash Compactor | [Here](./2025/solutions/day06.c) | ⭐⭐ | 28µs | 76µs | 22µs |
+| [Day 7:](https://adventofcode.com/2025/day/7) Laboratories | [Here](./2025/solutions/day07.c) | ⭐⭐ | 3µs | 241µs | 469µs |
 
 ## Run it yourself
 ### Run a day
