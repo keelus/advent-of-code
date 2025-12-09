@@ -17,6 +17,7 @@ This repo contains my solutions for different years.
 | [Day 6:](https://adventofcode.com/2025/day/6) Trash Compactor | [Here](./2025/solutions/day06.c) | ⭐⭐ | 28µs | 76µs | 22µs |
 | [Day 7:](https://adventofcode.com/2025/day/7) Laboratories | [Here](./2025/solutions/day07.c) | ⭐⭐ | 3µs | 241µs | 469µs |
 | [Day 8:](https://adventofcode.com/2025/day/8) Playground | [Here](./2025/solutions/day08.c) | ⭐⭐ | 55ms | 122µs | 762ms |
+| [Day 9:](https://adventofcode.com/2025/day/9) Movie Theater | [Here](./2025/solutions/day09.c) | ⭐ | 41µs | 114µs | - |
 
 ## Run it yourself
 ### Run a day
