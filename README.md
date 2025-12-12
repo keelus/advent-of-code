@@ -18,7 +18,9 @@ This repo contains my solutions for different years.
 | [Day 7:](https://adventofcode.com/2025/day/7) Laboratories | [Here](./2025/solutions/day07.c) | ⭐⭐ | 3µs | 241µs | 469µs |
 | [Day 8:](https://adventofcode.com/2025/day/8) Playground | [Here](./2025/solutions/day08.c) | ⭐⭐ | 55ms | 122µs | 762ms |
 | [Day 9:](https://adventofcode.com/2025/day/9) Movie Theater | [Here](./2025/solutions/day09.c) | ⭐ | 41µs | 114µs | - |
+| [Day 10:](https://adventofcode.com/2025/day/10) Factory | [Here](./2025/solutions/day10.c) | ⭐ | 32µs | 6ms | - |
 | [Day 11:](https://adventofcode.com/2025/day/11) Reactor | [Here](./2025/solutions/day11.c) | ⭐⭐ | 113µs | 8µs | 120µs |
+| [Day 12:](https://adventofcode.com/2025/day/12) Christmas Tree Farm | [Here](./2025/solutions/day12.c) | ⭐ | 343µs | 2µs | - |
 
 ## Run it yourself
 ### Run a day
